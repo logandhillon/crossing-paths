@@ -1,6 +1,7 @@
 package com.logandhillon.fptgame.engine;
 
 import com.logandhillon.fptgame.entity.core.Entity;
+import com.logandhillon.fptgame.entity.physics.CollisionEntity;
 import javafx.animation.AnimationTimer;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -34,8 +35,9 @@ import static com.logandhillon.fptgame.GameHandler.*;
 public abstract class GameScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(GameScene.class);
 
-    private final ArrayList<Entity>   entities = new ArrayList<>();
-    private final List<HandlerRef<?>> handlers = new ArrayList<>();
+    private final List<Entity>          entities          = new ArrayList<>();
+    private final List<CollisionEntity> collisionEntities = new ArrayList<>();
+    private final List<HandlerRef<?>>   handlers          = new ArrayList<>();
 
     private AnimationTimer lifecycle;
 
@@ -178,6 +180,7 @@ public abstract class GameScene {
      */
     public void addEntity(Entity e) {
         entities.add(e);
+        if (e instanceof CollisionEntity) collisionEntities.add((CollisionEntity)e);
         e.onAttach(this);
     }
 
@@ -188,16 +191,56 @@ public abstract class GameScene {
      * @param predicate the predicate to only remove entities that match it.
      */
     public void clearEntities(boolean discard, Predicate<Entity> predicate) {
-        int removed = 0;
         for (Iterator<Entity> it = entities.iterator(); it.hasNext(); ) {
-            Entity e = it.next();
+            var e = it.next();
             if (predicate.test(e)) {
                 it.remove(); // safe removal
                 if (discard) e.onDestroy();
-                removed++;
             }
         }
-        LOG.info("Successfully removed {} entities from this modal", removed);
+        LOG.info("Successfully removed all entities from this scene");
+
+        for (Iterator<CollisionEntity> it = collisionEntities.iterator(); it.hasNext(); ) {
+            var e = it.next();
+            if (predicate.test(e)) {
+                it.remove(); // safe removal
+                if (discard) e.onDestroy();
+            }
+        }
+        LOG.info("Successfully removed all collision entities from this scene");
+    }
+
+    /**
+     * Checks if entity A is colliding with entity B
+     *
+     * @param a entity 1
+     * @param b entity 2
+     *
+     * @return is collision happening
+     *
+     * @see GameScene#isEntityColliding(CollisionEntity)
+     */
+    public boolean checkCollision(CollisionEntity a, CollisionEntity b) {
+        return a.getX() < b.getX() + b.getWidth() &&
+               a.getX() + a.getWidth() > b.getX() &&
+               a.getY() < b.getY() + b.getHeight() &&
+               a.getY() + a.getHeight() > b.getY();
+    }
+
+    /**
+     * Checks if an entity is colliding with ANY other entity
+     *
+     * @param target entity to check collisions for
+     *
+     * @return is collision happening against entity anywhere
+     *
+     * @see GameScene#checkCollision(CollisionEntity, CollisionEntity)
+     */
+    public boolean isEntityColliding(CollisionEntity target) {
+        // short-circuit; return true if collision is found
+        for (CollisionEntity e: collisionEntities)
+            if (checkCollision(target, e)) return true;
+        return false;
     }
 
     /**
