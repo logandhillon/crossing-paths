@@ -8,7 +8,6 @@ import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -27,7 +26,7 @@ public class CreditsMenuScene extends UIScene {
      * Original credits text from resources, split by newlines.
      */
     private static final String[] CREDITS;
-    private static final Font     FONT        = Font.font(Fonts.PIXELIFY_SANS, 18);
+    private static final Font     FONT        = Font.font(Fonts.DOGICA, 18);
     private static final int      TEXT_Y      = 150;
     private static final int      TEXT_X      = CANVAS_WIDTH / 2;
     private static final int      LINE_HEIGHT = (int)(1.5 * 18);

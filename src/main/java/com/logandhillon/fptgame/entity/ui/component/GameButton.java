@@ -2,7 +2,6 @@ package com.logandhillon.fptgame.entity.ui.component;
 
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -13,9 +12,9 @@ import javafx.scene.text.FontWeight;
  */
 public class GameButton extends DynamicButtonEntity {
     private static final ButtonEntity.Style DEFAULT_STYLE = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.DEFAULT, Variant.OUTLINE, true, Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 16));
+            Colors.FOREGROUND, Colors.DEFAULT, Variant.OUTLINE, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 16));
     private static final ButtonEntity.Style ACTIVE_STYLE  = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.PRIMARY, Variant.OUTLINE, true, Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 17));
+            Colors.FOREGROUND, Colors.PRIMARY, Variant.OUTLINE, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 17));
 
     /**
      * Creates a new dynamic button entity using the preset styles for menu buttons.

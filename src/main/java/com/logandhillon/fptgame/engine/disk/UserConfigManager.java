@@ -63,7 +63,7 @@ public class UserConfigManager {
 
         try (FileInputStream file = new FileInputStream(FILE)) {
             var c = UserConfig.parseFrom(file);
-            LOG.info("Successfully loaded user config for '{}' from disk", "{PLACEHOLDER: c.getName()}");
+            LOG.info("Successfully loaded user config for '{}' from disk", c.getName());
             return c;
         } catch (IOException e) {
             LOG.error("Failed to load user configuration from {}", FILE.getAbsolutePath(), e);

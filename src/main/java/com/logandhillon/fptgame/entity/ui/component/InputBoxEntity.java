@@ -28,13 +28,13 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class InputBoxEntity extends Clickable {
     private static final Logger LOG = LoggerContext.getContext().getLogger(InputBoxEntity.class);
 
-    private static final int  INPUT_FONT_SIZE  = 20;
-    private static final int  INPUT_CHAR_WIDTH = 12;
+    private static final int  INPUT_FONT_SIZE  = 18;
+    private static final int  INPUT_CHAR_WIDTH = 11;
     private static final int  CORNER_RADIUS    = 16;
     private static final int  MARGIN_X         = 16;
     private static final int  MARGIN_Y         = 12;
-    private static final Font INPUT_FONT       = Font.font(Fonts.PIXELIFY_SANS, INPUT_FONT_SIZE);
-    private static final Font LABEL_FONT       = Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 18);
+    private static final Font INPUT_FONT       = Font.font(Fonts.DOGICA, INPUT_FONT_SIZE);
+    private static final Font LABEL_FONT       = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20);
 
     private final   float  maxWidth;
     private final   String placeholder;

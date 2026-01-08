@@ -29,14 +29,13 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  */
 public class LobbyGameScene extends UIScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(LobbyGameScene.class);
-    private static final Font   LABEL_FONT = Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 18);
+    private static final Font   LABEL_FONT = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 18);
     private static final float  ENTITY_GAP = 48;
 
     private final LabeledModalEntity lobbyModal;
     private final String             roomName;
 
-    private float dyTeam1;
-    private float dyTeam2;
+    private float playerListDy;
 
     /**
      * @param mgr       the game manager responsible for switching active scenes.
@@ -77,22 +76,20 @@ public class LobbyGameScene extends UIScene {
      *
      * @param name  player name
      * @param color player skin's color
-     * @param team  player team (1 or 2)
      */
     public void addPlayer(String name, Color color) {
         LOG.info("Adding player \"{}\" with color {}", name, color.toString());
 
         var p = new LobbyPlayerEntity(color, name);
-        p.setPosition(32, p.getY() + dyTeam1 + 128);
-        dyTeam1 += ENTITY_GAP;
+        p.setPosition(32, p.getY() + playerListDy + 128);
+        playerListDy += ENTITY_GAP;
         lobbyModal.addEntity(p);
     }
 
     public void clearPlayers() {
         LOG.info("Clearing player list");
         clearEntities(true, LobbyPlayerEntity.class::isInstance);
-        dyTeam1 = 0;
-        dyTeam2 = 0;
+        playerListDy = 0;
     }
 
     @Override

@@ -60,7 +60,7 @@ public class MainMenuScene extends UIScene {
         userInput.setInput(GameHandler.getUserConfig().getName());
         userInput.setOnBlur(() -> GameHandler.updateUserConfig(
                 ConfigProto.UserConfig.newBuilder().setName(userInput.getInput()).buildPartial()));
-        TextEntity skinLabel = new TextEntity("CHOOSE SKIN", Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 18),
+        TextEntity skinLabel = new TextEntity("CHOOSE SKIN", Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 18),
                                               Colors.FOREGROUND, TextAlignment.LEFT, VPos.TOP, 16, 113);
 
         skins = new SkinOptionsEntity[4];

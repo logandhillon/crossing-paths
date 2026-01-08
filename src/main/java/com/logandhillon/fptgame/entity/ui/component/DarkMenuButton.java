@@ -3,7 +3,6 @@ package com.logandhillon.fptgame.entity.ui.component;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -16,9 +15,9 @@ import javafx.scene.text.TextAlignment;
  */
 public class DarkMenuButton extends DynamicButtonEntity {
     private static final ButtonEntity.Style DEFAULT_STYLE = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.ACTIVE, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 20));
+            Colors.FOREGROUND, Colors.ACTIVE, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20));
     private static final ButtonEntity.Style ACTIVE_STYLE  = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.PRIMARY, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 21));
+            Colors.FOREGROUND, Colors.PRIMARY, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 21));
 
     private final Runnable pressHandler;
 

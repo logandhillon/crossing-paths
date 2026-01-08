@@ -22,8 +22,8 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  * @author Logan Dhillon
  */
 public class MenuAlertScene extends UIScene {
-    private static final Font TITLE_FONT = Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 20);
-    private static final Font BODY_FONT  = Font.font(Fonts.PIXELIFY_SANS, 16);
+    private static final Font TITLE_FONT = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20);
+    private static final Font BODY_FONT  = Font.font(Fonts.DOGICA, 16);
 
     public MenuAlertScene(String title, String msg, GameHandler game) {
         addEntity(new ModalEntity(

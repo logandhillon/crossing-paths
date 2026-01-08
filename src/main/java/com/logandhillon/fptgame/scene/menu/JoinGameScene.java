@@ -13,7 +13,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -36,7 +35,7 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
 public class JoinGameScene extends UIScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(JoinGameScene.class);
 
-    private static final Font LABEL_FONT = Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 18);
+    private static final Font LABEL_FONT = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 18);
     private static final int  ENTITY_GAP = 53;
 
     private final ServerEntryEntity[] serverButtons = new ServerEntryEntity[4];

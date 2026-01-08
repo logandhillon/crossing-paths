@@ -19,7 +19,7 @@ import javafx.scene.text.TextAlignment;
  * @author Jack Ross, Logan Dhillon
  */
 public class LobbyPlayerEntity extends BoundEntity<UIScene> {
-    private static final Font LABEL_FONT = Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 16);
+    private static final Font LABEL_FONT = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 16);
     private final Color color;
     private final String playerName;
 
