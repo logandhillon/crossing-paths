@@ -38,8 +38,9 @@ public abstract class GameScene {
     private final List<HandlerRef<?>> handlers = new ArrayList<>();
 
     private AnimationTimer lifecycle;
+    private Scene scene;
 
-    private record HandlerRef<T extends Event>(EventType<T> type, EventHandler<? super T> handler) {}
+    public record HandlerRef<T extends Event>(EventType<T> type, EventHandler<? super T> handler) {}
 
     /**
      * Do not instantiate this class.
@@ -98,21 +99,42 @@ public abstract class GameScene {
         Group parent = new Group(canvas);
         StackPane root = new StackPane(parent);
         root.setBackground(Background.fill(Color.BLACK));
-        Scene scene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
+        scene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         // update scaling
         scene.widthProperty().addListener((obs, oldVal, newVal) -> updateScale(scene, parent));
         scene.heightProperty().addListener((obs, oldVal, newVal) -> updateScale(scene, parent));
 
         // register all event handlers
+        bindAllEvents();
+
+        onBuild(scene);
+
+        return scene;
+    }
+
+    /**
+     * Abstract method to run code during the build process
+     *
+     * @param scene JAVAFX SCENE from engine
+     */
+    public void onBuild(Scene scene) {
+    }
+
+    /**
+     * Without checking for safety, immediately binds all events to the scene.
+     *
+     * @apiNote You must ensure it is safe to call this method before using it!!!!
+     */
+    public void bindAllEvents() {
+        if (scene == null) throw new IllegalStateException("GameScene not bound to engine yet, thus cannot bind events");
+
         for (HandlerRef<?> h: handlers) {
             @SuppressWarnings("unchecked") EventType<Event> t = (EventType<Event>)h.type();
             @SuppressWarnings("unchecked") EventHandler<Event> eh = (EventHandler<Event>)h.handler();
 
             scene.addEventHandler(t, eh);
         }
-
-        return scene;
     }
 
     /**
@@ -130,13 +152,7 @@ public abstract class GameScene {
         lifecycle.stop();
 
         // remove all stored event handlers
-        for (HandlerRef<?> h: handlers) {
-            @SuppressWarnings("unchecked") EventType<Event> t = (EventType<Event>)h.type();
-            @SuppressWarnings("unchecked") EventHandler<Event> eh = (EventHandler<Event>)h.handler();
-
-            scene.removeEventHandler(t, eh);
-        }
-        handlers.clear();
+        clearAllHandlers();
     }
 
     /**
@@ -208,5 +224,29 @@ public abstract class GameScene {
      */
     public <T extends Event> void addHandler(EventType<T> type, EventHandler<? super T> handler) {
         handlers.add(new HandlerRef<>(type, handler));
+    }
+
+    /**
+     * Safely unregister and delete all handlers
+     */
+    public void clearAllHandlers() {
+        if (scene == null) {
+            LOG.warn("Master scene not found, cannot unregister handlers.");
+            return;
+        }
+
+        LOG.info("Unregistering all registered handlers from this GameScene");
+        // remove all stored event handlers
+        for (HandlerRef<?> h: handlers) {
+            @SuppressWarnings("unchecked") EventType<Event> t = (EventType<Event>)h.type();
+            @SuppressWarnings("unchecked") EventHandler<Event> eh = (EventHandler<Event>)h.handler();
+
+            scene.removeEventHandler(t, eh);
+        }
+        handlers.clear();
+    }
+
+    public List<HandlerRef<?>> getEventHandlers() {
+        return handlers;
     }
 }

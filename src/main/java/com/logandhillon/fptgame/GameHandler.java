@@ -113,7 +113,7 @@ public class GameHandler extends Application {
         LOG.info("Creating lobby named {}", roomName);
         MenuHandler menu = getActiveScene(MenuHandler.class);
         var lobby = new LobbyGameScene(menu, roomName, true);
-        menu.updateContent(lobby); // set content first so we can populate lobby after
+        menu.setContent(lobby); // set content first so we can populate lobby after
         lobby.addPlayer(GameHandler.getUserConfig().getName(), UserConfigManager.parseColor(GameHandler.getUserConfig()));
 
         if (server != null) throw new IllegalStateException("Server already exists, cannot establish connection");
@@ -155,7 +155,7 @@ public class GameHandler extends Application {
         discoverer = new ServerDiscoverer(this);
         discoverer.start();
         MenuHandler menu = getActiveScene(MenuHandler.class);
-        menu.updateContent(new JoinGameScene(menu, this::joinGame));
+        menu.setContent(new JoinGameScene(menu, this::joinGame));
     }
 
     /**

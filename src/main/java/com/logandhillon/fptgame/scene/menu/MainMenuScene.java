@@ -32,8 +32,8 @@ public class MainMenuScene implements MenuContent {
 
 
         MenuController controller = new MenuController(
-                new MenuButton("Host Game", x, y, 256, 48, () -> menu.updateContent(new HostGameScene(menu))),
-                new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.updateContent(
+                new MenuButton("Host Game", x, y, 256, 48, () -> menu.setContent(new HostGameScene(menu))),
+                new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.setContent(
                         new JoinGameScene(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
                 new MenuButton("Settings", x, y + 2 * dy, 256, 48, () -> {
                 }),

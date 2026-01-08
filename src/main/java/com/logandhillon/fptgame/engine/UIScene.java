@@ -8,7 +8,6 @@ import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -37,8 +36,20 @@ public abstract class UIScene extends GameScene {
      * Creates a new UI scene and registers the mouse events.
      */
     public UIScene() {
+       this.addMouseEvents(false);
+    }
+
+    /**
+     * Attaches the UI scene's mouse events to the ref list.
+     *
+     * @param force if true, will the refs in list. This may be unsafe (duplicate events!) and cause really weird errors. Ensure safety before calling this.
+     */
+    public void addMouseEvents(boolean force) {
         this.addHandler(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
         this.addHandler(MouseEvent.MOUSE_MOVED, this::onMouseMoved);
+        if (force) {
+            this.bindAllEvents();
+        }
     }
 
     @Override

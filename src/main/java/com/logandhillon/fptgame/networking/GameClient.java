@@ -144,7 +144,7 @@ public class GameClient {
                 game.setInMenu(true);
 
                 // run setScene on the FX thread
-                Platform.runLater(() -> menu.updateContent(lobby));
+                Platform.runLater(() -> menu.setContent(lobby));
             }
             case SRV_DENY_CONN__USERNAME_TAKEN, SRV_DENY_CONN__FULL -> {
                 LOG.error("Failed to join: {}", packet.type());

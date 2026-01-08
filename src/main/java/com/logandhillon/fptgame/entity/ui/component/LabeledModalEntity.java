@@ -1,6 +1,5 @@
 package com.logandhillon.fptgame.entity.ui.component;
 
-import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.core.Clickable;
 import com.logandhillon.fptgame.entity.core.Entity;
@@ -96,7 +95,7 @@ public class LabeledModalEntity extends ModalEntity {
          */
         @Override
         public void onClick(MouseEvent e) {
-            game.updateContent(new MainMenuScene(game));
+            game.setContent(new MainMenuScene(game));
         }
 
         @Override

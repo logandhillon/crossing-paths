@@ -1,7 +1,5 @@
 package com.logandhillon.fptgame.scene.menu;
 
-import com.logandhillon.fptgame.GameHandler;
-import com.logandhillon.fptgame.engine.UIScene;
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.LobbyPlayerEntity;
 import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
@@ -16,9 +14,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
-
-import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
-import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
 
 /**
  * The lobby game menu shows all users in a lobby and allots the host with special permissions to start the
@@ -92,7 +87,7 @@ public class LobbyGameScene implements MenuContent {
 
     public void clearPlayers() {
         LOG.info("Clearing player list");
-        this.menu.clear(true, LobbyPlayerEntity.class::isInstance);
+        this.menu.clearEntities(true, LobbyPlayerEntity.class::isInstance);
         playerListDy = 0;
     }
 
