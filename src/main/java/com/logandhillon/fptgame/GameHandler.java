@@ -113,9 +113,8 @@ public class GameHandler extends Application {
         LOG.info("Creating lobby named {}", roomName);
         MenuHandler menu = getActiveScene(MenuHandler.class);
         var lobby = new LobbyGameScene(menu, roomName, true);
-        lobby.addPlayer(
-                GameHandler.getUserConfig().getName(), UserConfigManager.parseColor(GameHandler.getUserConfig()));
-        menu.updateContent(lobby);
+        menu.updateContent(lobby); // set content first so we can populate lobby after
+        lobby.addPlayer(GameHandler.getUserConfig().getName(), UserConfigManager.parseColor(GameHandler.getUserConfig()));
 
         if (server != null) throw new IllegalStateException("Server already exists, cannot establish connection");
 
@@ -149,6 +148,9 @@ public class GameHandler extends Application {
         Platform.runLater(() -> setScene(new MainGameScene()));
     }
 
+    /**
+     * @deprecated not updated to use {@link MenuHandler}, implement that before using this method
+     */
     public void showJoinGameMenu() {
         discoverer = new ServerDiscoverer(this);
         discoverer.start();

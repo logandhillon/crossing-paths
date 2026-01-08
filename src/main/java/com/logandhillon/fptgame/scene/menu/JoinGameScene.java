@@ -1,7 +1,5 @@
 package com.logandhillon.fptgame.scene.menu;
 
-import com.logandhillon.fptgame.GameHandler;
-import com.logandhillon.fptgame.engine.UIScene;
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.ServerEntryEntity;
 import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
@@ -23,9 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
-import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
-
 /**
  * The join game menu allows users to join existing servers through manual IP Address searching or local server
  * discovery. When the user has joined a game, they will be transported to the {@link LobbyGameScene}
@@ -40,6 +35,7 @@ public class JoinGameScene implements MenuContent {
     private static final Font LABEL_FONT = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 18);
     private static final int ENTITY_GAP = 53;
 
+    private final LabeledModalEntity joinModal;
     private final ServerEntryEntity[] serverButtons = new ServerEntryEntity[4];
 
     private int scrollServerIndex;
@@ -112,10 +108,20 @@ public class JoinGameScene implements MenuContent {
             onJoin.handleJoin(selectedServerAddr);
         });
 
-        LabeledModalEntity joinModal = new LabeledModalEntity(
+        joinModal = new LabeledModalEntity(
                 359, 99, 562, 523, "JOIN A GAME", menu, serverListRect, serverListLabel, joinServer, joinDirectButton,
                 joinDiscoverButton);
 
+        entities = new Entity[]{joinModal};
+
+        // create event handler that uses the event and the array of buttons
+        menu.addHandler(KeyEvent.KEY_PRESSED, e -> onKeyPressed(e, serverButtons));
+    }
+
+    @Override
+    public void onShow() {
+        // attach server buttons (via modal) only once content is shown (so this content has a parent)
+        // XXX: this should not be in the constructor (for reasons above)
         for (int i = 0; i < serverButtons.length; i++) {
             // populate with dummy values and hide them
             serverButtons[i] = new ServerEntryEntity(32, 231 + (ENTITY_GAP * i), 498, 37,
@@ -125,13 +131,7 @@ public class JoinGameScene implements MenuContent {
             LOG.debug("Creating (hidden) server button for this modal. {}/{}", i + 1, serverButtons.length);
             joinModal.addEntity(serverButtons[i]);
         }
-
-        entities = new Entity[]{joinModal};
-
-        // create event handler that uses the event and the array of buttons
-        menu.addHandler(KeyEvent.KEY_PRESSED, e -> onKeyPressed(e, serverButtons));
     }
-
 
     /**
      * Clears the UI discovered server list and repopulates it with the values of {@link JoinGameScene#serverList}

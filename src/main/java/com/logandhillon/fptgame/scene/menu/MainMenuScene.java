@@ -2,23 +2,12 @@ package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.engine.MenuController;
-import com.logandhillon.fptgame.engine.UIScene;
 import com.logandhillon.fptgame.entity.core.Entity;
-import com.logandhillon.fptgame.entity.ui.SkinOptionsEntity;
 import com.logandhillon.fptgame.entity.ui.component.InputBoxEntity;
 import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
-import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
-import com.logandhillon.fptgame.resource.Colors;
-import com.logandhillon.fptgame.resource.Fonts;
-import javafx.geometry.VPos;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
-import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
 
 /**
@@ -44,7 +33,8 @@ public class MainMenuScene implements MenuContent {
 
         MenuController controller = new MenuController(
                 new MenuButton("Host Game", x, y, 256, 48, () -> menu.updateContent(new HostGameScene(menu))),
-//                new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.updateContent(new JoinGameScene(menu))),
+                new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.updateContent(
+                        new JoinGameScene(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
                 new MenuButton("Settings", x, y + 2 * dy, 256, 48, () -> {
                 }),
 //                new MenuButton("Credits", x, y + 3 * dy, 256, 48, () -> menu.updateContent(new CreditsMenuScene(menu))),
