@@ -57,9 +57,9 @@ public class MainMenuScene extends UIScene {
         );
 
         userInput = new InputBoxEntity(16, 47, 316, "YOUR NAME", "YOUR NAME", 20);
-        userInput.setInput("PLACEHOLDER");
-        userInput.setOnBlur(() -> System.out.println("should set name now"));
-
+        userInput.setInput(GameHandler.getUserConfig().getName());
+        userInput.setOnBlur(() -> GameHandler.updateUserConfig(
+                ConfigProto.UserConfig.newBuilder().setName(userInput.getInput()).buildPartial()));
         TextEntity skinLabel = new TextEntity("CHOOSE SKIN", Font.font(Fonts.PIXELIFY_SANS, FontWeight.MEDIUM, 18),
                                               Colors.FOREGROUND, TextAlignment.LEFT, VPos.TOP, 16, 113);
 

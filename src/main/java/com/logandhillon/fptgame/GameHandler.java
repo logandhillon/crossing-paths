@@ -4,6 +4,7 @@ import com.logandhillon.fptgame.engine.GameEngine;
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.engine.disk.UserConfigManager;
 import com.logandhillon.fptgame.networking.GameClient;
+import com.logandhillon.fptgame.networking.GamePacket;
 import com.logandhillon.fptgame.networking.GameServer;
 import com.logandhillon.fptgame.networking.ServerDiscoverer;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
@@ -111,10 +112,9 @@ public class GameHandler extends Application {
     public void createLobby(String roomName) {
         LOG.info("Creating lobby named {}", roomName);
 
-        LOG.info("Setting team number to 1 (host default)");
-
         var lobby = new LobbyGameScene(this, roomName, true);
-        lobby.addPlayer("PLACEHOLDER (get this users name)", UserConfigManager.parseColor(GameHandler.getUserConfig()));
+        lobby.addPlayer(
+                GameHandler.getUserConfig().getName(), UserConfigManager.parseColor(GameHandler.getUserConfig()));
         setScene(lobby);
 
         if (server != null) throw new IllegalStateException("Server already exists, cannot establish connection");
@@ -136,8 +136,10 @@ public class GameHandler extends Application {
     public void startGame() {
         if (server != null) {
             // TODO: broadcast game start to clients via server
+            server.broadcast(new GamePacket(GamePacket.Type.SRV_GAME_STARTING));
         } else if (client != null) {
             // TODO: handle game scene setup from GameClient
+            // nothing to do for now !!
         } else {
             throw new IllegalStateException("You cannot start the game without an active server or client!");
         }

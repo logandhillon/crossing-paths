@@ -7,11 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
 
-/**
- * The main game loop for Type of War.
- *
- * @author Logan Dhillon
- */
 public class MainGameScene extends GameScene {
     public MainGameScene() {
     }

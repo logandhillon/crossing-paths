@@ -77,7 +77,19 @@ public class UserConfigManager {
      * @param partial the partial values, whatever is set here will be updated, otherwise it will remain the same.
      */
     public static UserConfig update(UserConfig current, UserConfig partial) {
+        LOG.debug("Updating user config");
         UserConfig.Builder builder = current.toBuilder();
+
+        if (!partial.getName().isEmpty()) {
+            LOG.info("Setting name to {}", partial.getName());
+            builder.setName(partial.getName());
+        }
+
+        // Only override if the field is explicitly set (non-default)
+        if (partial.hasColorIdx()) {
+            LOG.info("Setting color to index {}", partial.getColorIdx().getValue());
+            builder.setColorIdx(partial.getColorIdx());
+        }
 
         // Build and save
         UserConfig merged = builder.build();
