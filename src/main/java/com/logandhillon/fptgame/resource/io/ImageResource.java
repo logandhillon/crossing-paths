@@ -1,6 +1,8 @@
 package com.logandhillon.fptgame.resource.io;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -22,7 +24,25 @@ public class ImageResource extends Resource<Image> {
         super("gfx/" + path);
     }
 
-    // TODO #28: hue sampling
+    public static Image recolor(Image src, Color tint) {
+        int w = (int)src.getWidth();
+        int h = (int)src.getHeight();
+        WritableImage output = new WritableImage(w, h);
+
+        for (int ix = 0; ix < w; ix++) {
+            for (int iy = 0; iy < h; iy++) {
+                Color base = src.getPixelReader().getColor(ix, iy);
+                output.getPixelWriter().setColor(ix, iy, new Color(
+                        base.getRed() * tint.getRed(),
+                        base.getGreen() * tint.getGreen(),
+                        base.getBlue() * tint.getBlue(),
+                        base.getOpacity()
+                ));
+            }
+        }
+
+        return output;
+    }
 
     @Override
     public Image load() {

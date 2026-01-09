@@ -2,12 +2,14 @@ package com.logandhillon.fptgame.entity.game;
 
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.physics.PhysicsEntity;
+import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Textures;
 import com.logandhillon.fptgame.resource.io.ImageResource;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -40,7 +42,7 @@ public class PlayerEntity extends PhysicsEntity {
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        Textures.PLAYER.draw(g, 0, 0, x, y, w, h);
+        Textures.PLAYER.draw(g, 0, 0, x, y, w, h, Colors.PLAYER_SKINS.getFirst());
     }
 
     @Override
