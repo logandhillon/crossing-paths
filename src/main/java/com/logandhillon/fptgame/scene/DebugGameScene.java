@@ -3,6 +3,7 @@ package com.logandhillon.fptgame.scene;
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.game.PlatformEntity;
 import com.logandhillon.fptgame.entity.game.PlayerEntity;
+import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -25,7 +26,13 @@ public class DebugGameScene extends GameScene {
         addEntity(new PlatformEntity(700, 100, 40, 300));
         addEntity(new PlatformEntity(1100, 200, 40, 300));
 
-        addEntity(new PlayerEntity(1280 / 2f, 200));
+        var player = new PlayerEntity(1280 / 2f, 200);
+        addEntity(player);
+
+        addEntity(new TextEntity.Builder(10, 30)
+                          .setText(() -> "[PLAYER]\nisGrounded: " + player.isGrounded())
+                          .setFontSize(14)
+                          .build());
 
         addHandler(KeyEvent.KEY_PRESSED, e -> {
             // create new instance when R pressed (reload)

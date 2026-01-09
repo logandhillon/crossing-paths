@@ -53,17 +53,16 @@ public class PlayerEntity extends PhysicsEntity {
     }
 
     private void onKeyPressed(KeyEvent e) {
-        if (e.getCode() == KeyCode.SPACE && this.grounded)
+        if (e.getCode() == KeyCode.SPACE && this.isGrounded())
             this.vy = -JUMP_POWER;
 
         if (e.getCode() == KeyCode.A) moveDirection = -1;
         else if (e.getCode() == KeyCode.D) moveDirection = 1;
-
     }
 
     private void onKeyReleased(KeyEvent e) {
         if ((e.getCode() == KeyCode.A && moveDirection == -1) ||
-                (e.getCode() == KeyCode.D && moveDirection == 1))
+            (e.getCode() == KeyCode.D && moveDirection == 1))
             moveDirection = 0;
     }
 }

@@ -25,7 +25,7 @@ public abstract class PhysicsEntity extends CollisionEntity {
     }
 
     // Track if entity is on the ground for jumping logic
-    protected boolean grounded;
+    private boolean grounded;
 
     @Override
     public void onUpdate(float dt) {
@@ -64,5 +64,9 @@ public abstract class PhysicsEntity extends CollisionEntity {
 
         // Store grounded state for jump checks
         this.grounded = grounded;
+    }
+
+    public boolean isGrounded() {
+        return grounded;
     }
 }
