@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.resource;
+package com.logandhillon.fptgame.resource.io;
 
 import javafx.scene.image.Image;
 
@@ -22,8 +22,10 @@ public class ImageResource extends Resource<Image> {
         super("gfx/" + path);
     }
 
+    // TODO #28: hue sampling
+
     @Override
-    public Image read() {
+    public Image load() {
         assert this.stream != null;
         return new Image(this.stream);
     }

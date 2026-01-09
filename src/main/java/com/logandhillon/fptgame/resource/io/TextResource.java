@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.resource;
+package com.logandhillon.fptgame.resource.io;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class TextResource extends Resource<String> {
         super(filename);
     }
 
-    public String read() throws IOException {
+    public String load() throws IOException {
         assert stream != null; // stream obviously isn't null bc resource will kill itself if it is
         return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
     }

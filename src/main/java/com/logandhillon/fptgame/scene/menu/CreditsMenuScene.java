@@ -5,7 +5,7 @@ import com.logandhillon.fptgame.engine.UIScene;
 import com.logandhillon.fptgame.entity.ui.component.GameButton;
 import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
-import com.logandhillon.fptgame.resource.TextResource;
+import com.logandhillon.fptgame.resource.io.TextResource;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.TextAlignment;
@@ -48,7 +48,7 @@ public class CreditsMenuScene extends UIScene {
     static {
         // read credits from resources and store them into static
         try (TextResource res = new TextResource("credits.txt")) {
-            CREDITS = res.read();
+            CREDITS = res.load();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load credits.txt", e);
         }
