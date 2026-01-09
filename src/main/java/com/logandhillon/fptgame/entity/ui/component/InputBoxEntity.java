@@ -71,13 +71,13 @@ public class InputBoxEntity extends Clickable {
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        g.setFill(Colors.ACTIVE);
+        g.setFill(Colors.ACTIVE_TRANS);
         g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
 
         g.setTextAlign(TextAlignment.LEFT);
         g.setTextBaseline(VPos.TOP);
         g.setFont(LABEL_FONT);
-        g.setFill(Colors.FOREGROUND);
+        g.setFill(Colors.ACTIVE);
         g.fillText(label, x, y - 31);
 
         // when active, show a blinking cursor for 500 ms every 1000 ms
@@ -92,7 +92,8 @@ public class InputBoxEntity extends Clickable {
         g.setFont(INPUT_FONT);
         if (input.isEmpty()) {
             // render placeholder
-            g.setFill(Color.hsb(0, 0, 1, 0.2));
+            g.setTextAlign(TextAlignment.LEFT);
+            g.setFill(Colors.DEFAULT_TRANS);
             g.fillText(placeholder, x + MARGIN_X, y + MARGIN_Y, maxWidth);
         } else {
             // render input (font is already white)

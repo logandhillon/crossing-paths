@@ -4,6 +4,7 @@ import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.resource.Colors;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * A modal is a group of other entities that is rendered inside it. This modal is made for generic menus, without any
@@ -16,7 +17,6 @@ public class ModalEntity extends Entity {
     private static final int    CORNER_DIAMETER = 50;
 
     protected final float w, h;
-    protected final int radTopLeft, radTopRight, radBottomLeft, radBottomRight;
     private final Entity[] entities;
 
     private GameScene parent;
@@ -35,26 +35,11 @@ public class ModalEntity extends Entity {
         this.w = w;
         this.h = h;
         this.entities = entities;
-        radTopLeft = -1;
-        radTopRight = -1;
-        radBottomLeft = -1;
-        radBottomRight = -1;
-    }
-
-    public ModalEntity(float x, float y, float w, float h, int radTopLeft, int radTopRight, int radBottomLeft, int radBottomRight, Entity... entities) {
-        super(x, y);
-        this.w = w;
-        this.h = h;
-        this.radTopLeft = radTopLeft;
-        this.radTopRight = radTopRight;
-        this.radBottomLeft = radBottomLeft;
-        this.radBottomRight = radBottomRight;
-        this.entities = entities;
     }
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        g.setFill(Colors.DEFAULT);
+        g.setFill(Color.rgb(0, 0, 0, 0.4));
         g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
     }
 
