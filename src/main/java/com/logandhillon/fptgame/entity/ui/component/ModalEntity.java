@@ -13,9 +13,10 @@ import javafx.scene.canvas.GraphicsContext;
  * @apiNote Do not attach entities inside this modal, just the modal itself.
  */
 public class ModalEntity extends Entity {
-    private static final int    CORNER_RADIUS = 16;
+    private static final int    CORNER_DIAMETER = 50;
 
     protected final float w, h;
+    protected final int radTopLeft, radTopRight, radBottomLeft, radBottomRight;
     private final Entity[] entities;
 
     private GameScene parent;
@@ -34,12 +35,27 @@ public class ModalEntity extends Entity {
         this.w = w;
         this.h = h;
         this.entities = entities;
+        radTopLeft = -1;
+        radTopRight = -1;
+        radBottomLeft = -1;
+        radBottomRight = -1;
+    }
+
+    public ModalEntity(float x, float y, float w, float h, int radTopLeft, int radTopRight, int radBottomLeft, int radBottomRight, Entity... entities) {
+        super(x, y);
+        this.w = w;
+        this.h = h;
+        this.radTopLeft = radTopLeft;
+        this.radTopRight = radTopRight;
+        this.radBottomLeft = radBottomLeft;
+        this.radBottomRight = radBottomRight;
+        this.entities = entities;
     }
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
         g.setFill(Colors.DEFAULT);
-        g.fillRoundRect(x, y, w, h, CORNER_RADIUS, CORNER_RADIUS);
+        g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
     }
 
     @Override

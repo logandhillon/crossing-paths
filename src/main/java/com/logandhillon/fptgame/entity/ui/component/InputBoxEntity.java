@@ -29,9 +29,9 @@ public class InputBoxEntity extends Clickable {
     private static final Logger LOG = LoggerContext.getContext().getLogger(InputBoxEntity.class);
 
     private static final float  INPUT_FONT_SIZE  = 18.5f;
-    private static final int  INPUT_CHAR_WIDTH = 11;
-    private static final int  CORNER_RADIUS    = 16;
-    private static final int  MARGIN_X         = 16;
+    private static final int INPUT_CHAR_WIDTH = 11;
+    private static final int CORNER_DIAMETER  = 50;
+    private static final int MARGIN_X         = 16;
     private static final int  MARGIN_Y         = 12;
     private static final Font INPUT_FONT       = Font.font(Fonts.DOGICA, INPUT_FONT_SIZE);
     private static final Font LABEL_FONT       = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20);
@@ -72,7 +72,7 @@ public class InputBoxEntity extends Clickable {
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
         g.setFill(Colors.ACTIVE);
-        g.fillRoundRect(x, y, w, h, CORNER_RADIUS, CORNER_RADIUS);
+        g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
 
         g.setTextAlign(TextAlignment.LEFT);
         g.setTextBaseline(VPos.TOP);

@@ -5,9 +5,11 @@ import com.logandhillon.fptgame.engine.MenuController;
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.component.InputBoxEntity;
 import com.logandhillon.fptgame.entity.ui.component.MenuButton;
+import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
 import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 
+import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
 
 /**
@@ -26,9 +28,9 @@ public class MainMenuContent implements MenuContent {
      * @param menu the main class that can switch scenes, manage connections, etc.
      */
     public MainMenuContent(MenuHandler menu) {
-        float x = (CANVAS_WIDTH - 652) / 2f;
+        float x = 30f;
         int dy = 48 + 16; // ∆y per button height
-        int y = 176;
+        int y = 448;
 
         userInput = new InputBoxEntity(16, 47, 316, "YOUR NAME", "YOUR NAME", 20);
         userInput.setInput(GameHandler.getUserConfig().getName());
@@ -40,14 +42,14 @@ public class MainMenuContent implements MenuContent {
                 new MenuButton("Host Game", x, y, 256, 48, () -> menu.setContent(new HostGameContent(menu))),
                 new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.setContent(
                         new JoinGameContent(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
-                new MenuButton("Settings", x, y + 2 * dy, 256, 48, () -> {
+                new MenuButton("Level Creator", x, y + 2 * dy, 256, 48, () -> {
                 }),
-                new MenuButton("Credits", x, y + 3 * dy, 256, 48, () -> menu.setContent(new CreditsMenuContent(menu))),
-                new MenuButton("Quit", x, y + 4 * dy, 256, 48, () -> System.exit(0))
+                new MenuButton("", x, y + 3 * dy, 120, 48, () -> System.exit(0)),
+                new MenuButton("", x + 136, y + 3 * dy, 120, 48, () -> System.exit(0))
         );
 
         // creates list of entities to be used by menu handler
-        entities = new Entity[]{ new ModalEntity(618, y, 348, 368 - dy, userInput), controller };
+        entities = new Entity[]{ new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT), new ModalEntity(896, 79, 434, 131, new InputBoxEntity(20, 57, 336, "Player1", "YOUR NAME", 20)), controller};
     }
 
     /**
