@@ -30,7 +30,11 @@ public class DebugGameScene extends GameScene {
         addEntity(player);
 
         addEntity(new TextEntity.Builder(10, 30)
-                          .setText(() -> "[PLAYER]\nisGrounded: " + player.isGrounded())
+                          .setText(() -> String.format(
+                                  "[PLAYER]\nisGrounded: %s\npos: %.1f, %.1f\nvel: %.1f, %.1f",
+                                  player.isGrounded(),
+                                  player.getX(), player.getY(),
+                                  player.vx, player.vy))
                           .setFontSize(14)
                           .build());
 
