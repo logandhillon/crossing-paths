@@ -9,6 +9,7 @@ package com.logandhillon.fptgame.entity.physics;
 public abstract class PhysicsEntity extends CollisionEntity {
     private static final float GRAVITY = 0.391f;
     private static final float MAX_VEL = 10f; // max scalar velocity
+    private static final float GROUND_EPSILON = 0.01f;
 
     public float vx, vy;
 
@@ -29,41 +30,49 @@ public abstract class PhysicsEntity extends CollisionEntity {
 
     @Override
     public void onUpdate(float dt) {
-        // Apply gravity, clamp velocities
-        vy += GRAVITY;
+        // Apply gravity only if not grounded
+        if (!grounded) vy += GRAVITY;
+
+        // Clamp velocities
         if (vx > MAX_VEL) vx = MAX_VEL;
         if (vx < -MAX_VEL) vx = -MAX_VEL;
         if (vy > MAX_VEL) vy = MAX_VEL;
         if (vy < -MAX_VEL) vy = -MAX_VEL;
 
-        boolean grounded = false;
-        var e = getCollision();
-
-        // Move horizontally and resolve collisions
+        // --- Horizontal movement ---
         translate(vx, 0);
+        var e = getCollision();
         if (e != null) {
             if (vx > 0) translate(e.getX() - (getX() + getWidth()), 0);
             else if (vx < 0) translate(e.getX() + e.getWidth() - getX(), 0);
-
             vx = 0;
         }
 
-        // Move vertically and resolve collisions
+        // --- Vertical movement ---
         translate(0, vy);
+        e = getCollision();
         if (e != null) {
             if (vy > 0) {
-                // Falling, snap to top of entity
+                // Falling: snap to ground
                 translate(0, e.getY() - (getY() + getHeight()));
-                grounded = true;
+                vy = 0;
             } else if (vy < 0) {
-                // Rising, snap to bottom of entity
+                // Rising: snap to ceiling
                 translate(0, e.getY() + e.getHeight() - getY());
+                vy = 0;
             }
-            vy = 0;
         }
 
-        // Store grounded state for jump checks
-        this.grounded = grounded;
+        // --- Ground probe (authoritative grounded check) ---
+        translate(0, GROUND_EPSILON);
+        e = getCollision();
+        if (e != null) {
+            grounded = true;
+            translate(0, e.getY() - (getY() + getHeight()));
+        } else {
+            grounded = false;
+            translate(0, -GROUND_EPSILON);
+        }
     }
 
     public boolean isGrounded() {
