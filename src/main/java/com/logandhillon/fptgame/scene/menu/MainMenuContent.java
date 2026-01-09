@@ -16,8 +16,10 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  * @author Logan Dhillon, Jack Ross
  */
 public class MainMenuContent implements MenuContent {
-    private static InputBoxEntity userInput;
     private final Entity[] entities;
+
+    private final InputBoxEntity userInput;
+
     /**
      * Creates a new main menu
      *
@@ -28,8 +30,13 @@ public class MainMenuContent implements MenuContent {
         int dy = 48 + 16; // ∆y per button height
         int y = 176;
 
+        userInput = new InputBoxEntity(16, 47, 316, "YOUR NAME", "YOUR NAME", 20);
+        userInput.setInput(GameHandler.getUserConfig().getName());
+        userInput.setOnBlur(() -> GameHandler.updateUserConfig(
+                ConfigProto.UserConfig.newBuilder().setName(userInput.getInput()).buildPartial()));
 
         MenuController controller = new MenuController(
+                () -> !userInput.getIsActive(),
                 new MenuButton("Host Game", x, y, 256, 48, () -> menu.setContent(new HostGameContent(menu))),
                 new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.setContent(
                         new JoinGameContent(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
@@ -39,13 +46,8 @@ public class MainMenuContent implements MenuContent {
                 new MenuButton("Quit", x, y + 4 * dy, 256, 48, () -> System.exit(0))
         );
 
-        userInput = new InputBoxEntity(16, 47, 316, "YOUR NAME", "YOUR NAME", 20);
-        userInput.setInput(GameHandler.getUserConfig().getName());
-        userInput.setOnBlur(() -> GameHandler.updateUserConfig(
-                ConfigProto.UserConfig.newBuilder().setName(userInput.getInput()).buildPartial()));
-
         // creates list of entities to be used by menu handler
-        entities = new Entity[]{new ModalEntity(618, y, 348, 368 - dy, userInput), controller};
+        entities = new Entity[]{ new ModalEntity(618, y, 348, 368 - dy, userInput), controller };
     }
 
     /**
@@ -56,9 +58,5 @@ public class MainMenuContent implements MenuContent {
     @Override
     public Entity[] getEntities() {
         return entities;
-    }
-
-    public static InputBoxEntity getUserInput() {
-        return userInput;
     }
 }
