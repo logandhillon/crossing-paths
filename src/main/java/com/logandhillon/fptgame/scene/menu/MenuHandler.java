@@ -19,13 +19,11 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  * @see MenuContent
  */
 public class MenuHandler extends UIScene {
-    private final GameHandler mgr;
 
     private MenuContent content;
 
-    public MenuHandler(GameHandler mgr) {
+    public MenuHandler() {
         this.content = new MainMenuContent(this);
-        this.mgr = mgr;
     }
 
     /**
@@ -75,14 +73,14 @@ public class MenuHandler extends UIScene {
      * @see GameHandler
      */
     public void createLobby(String roomName) {
-        this.mgr.createLobby(roomName);
+        this.getParent().createLobby(roomName);
     }
 
     /**
      * Communicates with engine to start the game
      */
     public void startGame() {
-        this.mgr.startGame();
+        this.getParent().startGame();
     }
 
     /**

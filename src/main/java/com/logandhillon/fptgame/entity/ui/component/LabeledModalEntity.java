@@ -28,7 +28,7 @@ public class LabeledModalEntity extends ModalEntity {
     private static final int   MARGIN         = 16;
 
     private final String      header;
-    private final MenuHandler mgr;
+    private final MenuHandler menu;
 
     /**
      * Creates an entity at the specified position.
@@ -40,11 +40,11 @@ public class LabeledModalEntity extends ModalEntity {
      * @param w width of modal
      * @param h height of modal
      */
-    public LabeledModalEntity(float x, float y, float w, float h, String header, MenuHandler mgr,
+    public LabeledModalEntity(float x, float y, float w, float h, String header, MenuHandler menu,
                               Entity... entities) {
         super(x, y, w, h, entities);
         this.header = header;
-        this.mgr = mgr;
+        this.menu = menu;
 
         // after super (which moves entities to relative 0,0), move them below the header
         for (Entity e: entities) e.translate(0, 64);
@@ -69,7 +69,7 @@ public class LabeledModalEntity extends ModalEntity {
     public void onAttach(GameScene parent) {
         super.onAttach(parent);
         // add back button AFTER moving the other entities
-        parent.addEntity(new BackButtonEntity(x + MARGIN, y + 20, mgr));
+        parent.addEntity(new BackButtonEntity(x + MARGIN, y + 20, menu));
     }
 
     /**

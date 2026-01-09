@@ -63,7 +63,7 @@ public class GameHandler extends Application {
         stage.setMinWidth(CANVAS_WIDTH / 2f);
         stage.setMinHeight(CANVAS_HEIGHT / 2f);
 
-        setScene(new MenuHandler(this));
+        setScene(new MenuHandler());
         stage.show();
     }
 
@@ -98,7 +98,7 @@ public class GameHandler extends Application {
     }
 
     public void goToMainMenu() {
-        this.setScene(new MenuHandler(this));
+        this.setScene(new MenuHandler());
         setInMenu(true);
         terminateClient();
         terminateServer();

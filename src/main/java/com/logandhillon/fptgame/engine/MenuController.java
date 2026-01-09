@@ -49,7 +49,7 @@ public class MenuController extends Entity {
      * Handles key presses from JavaFX, used to change the actively selected button or press it.
      */
     public void onKeyPressed(KeyEvent e) {
-        if(!MainMenuContent.getUserInput().getIsActive()) {
+        if( !MainMenuContent.getUserInput().getIsActive()) {
             // when W/UP/SHIFT+TAB pressed, go up (-1) in buttons
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W ||
                     (e.isShiftDown() && e.getCode() == KeyCode.TAB)) {
