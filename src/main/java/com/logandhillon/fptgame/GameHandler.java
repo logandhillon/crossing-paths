@@ -8,11 +8,13 @@ import com.logandhillon.fptgame.networking.GamePacket;
 import com.logandhillon.fptgame.networking.GameServer;
 import com.logandhillon.fptgame.networking.ServerDiscoverer;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
-import com.logandhillon.fptgame.scene.MainGameScene;
+import com.logandhillon.fptgame.scene.DebugGameScene;
 import com.logandhillon.fptgame.scene.component.MenuAlertScene;
 import com.logandhillon.fptgame.scene.menu.JoinGameContent;
 import com.logandhillon.fptgame.scene.menu.LobbyGameContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
+import com.logandhillon.fptgame.scene.menu.JoinGameScene;
+import com.logandhillon.fptgame.scene.menu.LobbyGameScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -94,7 +96,7 @@ public class GameHandler extends Application {
      * @param scene the GameScene to switch
      */
     public void setScene(GameScene scene) {
-        activeScene = GameEngine.setScene(stage, activeScene, scene);
+        activeScene = GameEngine.setScene(this, stage, activeScene, scene);
     }
 
     public void goToMainMenu() {
@@ -146,7 +148,7 @@ public class GameHandler extends Application {
 
         isInMenu = false;
 
-        Platform.runLater(() -> setScene(new MainGameScene()));
+        Platform.runLater(() -> setScene(new DebugGameScene()));
     }
 
     /**

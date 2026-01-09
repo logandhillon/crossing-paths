@@ -16,8 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 /**
- * The lobby game menu shows all users in a lobby and allots the host with special permissions to start the
- * {@link com.logandhillon.fptgame.scene.MainGameScene}
+ * The lobby game menu shows all users in a lobby and allots the host with special permissions to start the game
  *
  * @author Jack Ross, Logan Dhillon
  * @see LobbyPlayerEntity

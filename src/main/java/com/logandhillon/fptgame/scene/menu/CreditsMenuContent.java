@@ -3,6 +3,11 @@ package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.component.GameButton;
+import com.logandhillon.fptgame.entity.ui.component.TextEntity;
+import com.logandhillon.fptgame.resource.Colors;
+import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.TextAlignment;
 import com.logandhillon.fptgame.resource.Fonts;
 import javafx.scene.text.Font;
 
@@ -16,25 +21,29 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  * @author Logan Dhillon
  */
 public class CreditsMenuContent implements MenuContent {
-
     private final Entity[] entities;
-    /**
-     * Original credits text from resources, split by newlines.
-     */
-    private static final String[] CREDITS;
-    private static final Font     FONT        = Font.font(Fonts.DOGICA, 18);
-    private static final int      TEXT_Y      = 150;
-    private static final int      TEXT_X      = CANVAS_WIDTH / 2;
-    private static final int      LINE_HEIGHT = (int)(1.5 * 18);
+
+    private static final String CREDITS;
 
     public CreditsMenuContent(MenuHandler menu) {
-        //FIXME: Adjust menu handler to work with new credits entity system
-//        for (int i = 0; i < CREDITS.length; i++) {
-//            addEntity(new TextEntity(CREDITS[i], FONT, Colors.FOREGROUND, TextAlignment.CENTER, VPos.TOP, TEXT_X,
-//                                     TEXT_Y + i * LINE_HEIGHT));
-//        }
+        var text = new TextEntity.Builder(150, CANVAS_WIDTH / 2f)
+                          .setText(CREDITS)
+                          .setFontSize(18)
+                          .setAlign(TextAlignment.CENTER)
+                          .setBaseline(VPos.TOP)
+                          .build();
 
-        entities = new Entity[]{new GameButton("BACK TO MENU", 481, 613, 318, 45, menu::goToMainMenu)};
+        entities = new Entity[]{text, new GameButton("BACK TO MENU", 481, 613, 318, 45, menu::goToMainMenu)};
+    }
+
+    @Override
+    protected void render(GraphicsContext g) {
+        // background
+        g.setFill(Colors.GENERIC_BG);
+        g.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        // render all other entities
+        super.render(g);
     }
 
     static {
@@ -43,7 +52,7 @@ public class CreditsMenuContent implements MenuContent {
             if (is == null) {
                 throw new IllegalStateException("credits.txt not found on classpath");
             }
-            CREDITS = new String(is.readAllBytes(), StandardCharsets.UTF_8).split("\n");
+            CREDITS = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load credits.txt", e);
         }
