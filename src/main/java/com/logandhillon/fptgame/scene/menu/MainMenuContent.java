@@ -3,11 +3,13 @@ package com.logandhillon.fptgame.scene.menu;
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.engine.MenuController;
 import com.logandhillon.fptgame.entity.core.Entity;
-import com.logandhillon.fptgame.entity.ui.component.InputBoxEntity;
-import com.logandhillon.fptgame.entity.ui.component.MenuButton;
-import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
-import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
+import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
+import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.fptgame.resource.Fonts;
+import javafx.geometry.VPos;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 
@@ -17,7 +19,9 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
  * @author Logan Dhillon, Jack Ross
  */
 public class MainMenuContent implements MenuContent {
-    private final Entity[] entities;
+    private final            Entity[] entities;
+    private static final Font HEADER_FONT   = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 40);
+    private static final String header      = "Game Logo";
 
     private final InputBoxEntity userInput;
 
@@ -52,7 +56,13 @@ public class MainMenuContent implements MenuContent {
         // creates list of entities to be used by menu handler
         entities = new Entity[]{ new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT, false, menu), new ModalEntity(
                 896, 79, 434, 131, new InputBoxEntity(
-                20, 57, 336, "Player1", "YOUR NAME", 20)), controller };
+                20, 57, 336, "Player1", "YOUR NAME", 20)),
+                                 new TextEntity.Builder(32, 32)
+                                         .setColor(Colors.ACTIVE)
+                                         .setText(header::toUpperCase)
+                                         .setFont(HEADER_FONT)
+                                         .setBaseline(VPos.TOP).build()
+                , controller };
     }
 
     /**
