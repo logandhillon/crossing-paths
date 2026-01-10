@@ -49,7 +49,7 @@ public class MainMenuContent implements MenuContent {
         );
 
         // creates list of entities to be used by menu handler
-        entities = new Entity[]{ new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT), new ModalEntity(896, 79, 434, 131, new InputBoxEntity(20, 57, 336, "Player1", "YOUR NAME", 20)), controller};
+        entities = new Entity[]{ new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT, false, menu), new ModalEntity(896, 79, 434, 131, new InputBoxEntity(20, 57, 336, "Player1", "YOUR NAME", 20)), controller};
     }
 
     /**

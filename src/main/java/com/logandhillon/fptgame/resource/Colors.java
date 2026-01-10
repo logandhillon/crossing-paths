@@ -13,10 +13,10 @@ import java.util.List;
 public final class Colors {
     public static final Color PRIMARY    = Color.rgb(75, 150, 249);
     public static final Color DEFAULT    = Color.valueOf("#F3F3F3");
-    public static final Color DEFAULT_TRANS = Color.rgb(0, 0, 0, 0.4);
     public static final Color ACTIVE     = Color.WHITE;
     public static final Color ACTIVE_TRANS = Color.rgb(255, 255, 255, 0.5);
-    public static final Color FOREGROUND = Color.BLACK;
+    public static final Color FOREGROUND       = Color.BLACK;
+    public static final Color FOREGROUND_TRANS = Color.rgb(0, 0, 0, 0.4);
 
     public static final Color GENERIC_BG = Color.valueOf("#D2D1D1");
 

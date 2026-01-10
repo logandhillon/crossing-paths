@@ -9,7 +9,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -82,7 +81,7 @@ public class InputBoxEntity extends Clickable {
 
         // when active, show a blinking cursor for 500 ms every 1000 ms
         if (isActive && System.currentTimeMillis() % 1000 > 500) {
-            g.setStroke(Colors.FOREGROUND);
+            g.setStroke(Colors.FOREGROUND_TRANS);
             g.setLineWidth(2);
 
             float cursorX = x + input.length() * INPUT_CHAR_WIDTH + MARGIN_X;
@@ -93,10 +92,11 @@ public class InputBoxEntity extends Clickable {
         if (input.isEmpty()) {
             // render placeholder
             g.setTextAlign(TextAlignment.LEFT);
-            g.setFill(Colors.DEFAULT_TRANS);
+            g.setFill(Colors.FOREGROUND_TRANS);
             g.fillText(placeholder, x + MARGIN_X, y + MARGIN_Y, maxWidth);
         } else {
             // render input (font is already white)
+            g.setFill(Colors.FOREGROUND);
             g.fillText(input.toString(), x + MARGIN_X, y + MARGIN_Y, maxWidth);
         }
     }

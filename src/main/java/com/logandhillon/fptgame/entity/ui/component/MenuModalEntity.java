@@ -1,6 +1,8 @@
 package com.logandhillon.fptgame.entity.ui.component;
 
+import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.core.Entity;
+import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -10,6 +12,10 @@ import javafx.scene.paint.Color;
  * @author Jack Ross
  */
 public class MenuModalEntity extends ModalEntity{
+    private static final float MARGIN = 32;
+    private final boolean back;
+    private final MenuHandler menu;
+
     /**
      * Creates an entity at the specified position. All entities passed to this modal will be translated such that (0, 0) is
      * the top-left corner of this modal.
@@ -18,9 +24,12 @@ public class MenuModalEntity extends ModalEntity{
      * @param y y-position (from top)
      * @param w width of modal
      * @param h height of modal
+     * @param back determines if a back button is needed
      */
-    public MenuModalEntity(float x, float y, float w, float h, Entity... entities) {
+    public MenuModalEntity(float x, float y, float w, float h, boolean back, MenuHandler menu, Entity... entities) {
         super(x, y, w, h, entities);
+        this.back = back;
+        this.menu = menu;
     }
 
     /**
@@ -37,5 +46,14 @@ public class MenuModalEntity extends ModalEntity{
         double[] yPoints = new double[]{y, y, y + h, y + h};
         g.setFill(Color.rgb(0, 0, 0, 0.4));
         g.fillPolygon(xPoints, yPoints, 4);
+    }
+
+    @Override
+    public void onAttach(GameScene parent) {
+        super.onAttach(parent);
+        // add back button AFTER moving the other entities
+        if (this.back) {
+            parent.addEntity(new BackButtonEntity(x + MARGIN, y + MARGIN, menu));
+        }
     }
 }
