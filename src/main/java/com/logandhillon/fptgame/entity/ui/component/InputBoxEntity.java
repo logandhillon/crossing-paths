@@ -81,7 +81,7 @@ public class InputBoxEntity extends Clickable {
 
         // when active, show a blinking cursor for 500 ms every 1000 ms
         if (isActive && System.currentTimeMillis() % 1000 > 500) {
-            g.setStroke(Colors.FOREGROUND_TRANS);
+            g.setStroke(Colors.FOREGROUND);
             g.setLineWidth(2);
 
             float cursorX = x + input.length() * INPUT_CHAR_WIDTH + MARGIN_X;

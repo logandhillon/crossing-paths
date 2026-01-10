@@ -42,7 +42,8 @@ public class MenuModalEntity extends ModalEntity{
      */
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        double[] xPoints = new double[]{x, x + w, x + w - 75, x};
+
+        double[] xPoints = new double[]{x, x + w, x + w - 75, x}; // offset polygon by 75 pixels
         double[] yPoints = new double[]{y, y, y + h, y + h};
         g.setFill(Color.rgb(0, 0, 0, 0.4));
         g.fillPolygon(xPoints, yPoints, 4);

@@ -6,10 +6,8 @@ import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import javafx.geometry.VPos;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 /**
  * The host game menu allows the user to input parameters needed for hosting a live server
