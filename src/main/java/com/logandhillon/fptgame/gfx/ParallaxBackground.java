@@ -42,7 +42,7 @@ public class ParallaxBackground extends Entity {
     @Override
     public void onUpdate(float dt) {
         for (Layer layer: layers) {
-            if (layer.x > GameHandler.CANVAS_WIDTH) layer.x = 0;
+            if (layer.x < -GameHandler.CANVAS_WIDTH) layer.x = 0;
             else layer.x -= layer.speed * dt;
         }
     }
