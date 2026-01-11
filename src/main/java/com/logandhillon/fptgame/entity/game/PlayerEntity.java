@@ -2,6 +2,7 @@ package com.logandhillon.fptgame.entity.game;
 
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.physics.PhysicsEntity;
+import com.logandhillon.fptgame.gfx.AnimationSequence;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Textures;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,23 +12,28 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 /**
+ * The player is a physics entity that is controlled by a human either on the device or over the network.
+ *
  * @author Logan Dhillon
  */
 public class PlayerEntity extends PhysicsEntity {
     private static final Logger LOG = LoggerContext.getContext().getLogger(PlayerEntity.class);
 
-    private static final float JUMP_POWER = 75f; // m/s
-    private static final float MOVE_SPEED = 400f; // px/s
+    private static final float JUMP_POWER = 12f * PX_PER_METER; // m/s
+    private static final float MOVE_SPEED = 6f * PX_PER_METER; // m/s
+    private static final int   Y_OFFSET   = 12;
+
+    private final AnimationSequence texture = Textures.ANIM_PLAYER_IDLE.instance();
 
     private int moveDirection = 0; // left=-1, 0=none, 1=right
 
     public PlayerEntity(float x, float y) {
-        super(x, y, 42, 84);
+        super(x, y, 42, 72);
     }
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        Textures.PLAYER_IDLE.draw(g, 0, 0, x, y, w, h, Colors.PLAYER_SKINS.getFirst());
+        texture.draw(g, x, y - Y_OFFSET, w, h + Y_OFFSET, Colors.PLAYER_SKINS.getFirst());
     }
 
     @Override
@@ -38,6 +44,7 @@ public class PlayerEntity extends PhysicsEntity {
     @Override
     public void onUpdate(float dt) {
         super.onUpdate(dt);
+        texture.onUpdate(dt);
 
         if (Math.abs(moveDirection) > 0) x += MOVE_SPEED * dt * moveDirection;
     }

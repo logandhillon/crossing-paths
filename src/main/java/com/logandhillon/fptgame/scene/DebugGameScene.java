@@ -4,7 +4,9 @@ import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.fptgame.entity.game.PlatformEntity;
 import com.logandhillon.fptgame.entity.game.PlayerEntity;
 import com.logandhillon.fptgame.entity.ui.component.TextEntity;
+import com.logandhillon.fptgame.gfx.ParallaxBackground;
 import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.fptgame.resource.Textures;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,6 +21,8 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  */
 public class DebugGameScene extends GameScene {
     public DebugGameScene() {
+        addEntity(Textures.ocean8());
+
         addEntity(new PlatformEntity(0, 680, 1280, 40));
         addEntity(new PlatformEntity(200, 550, 200, 40));
         addEntity(new PlatformEntity(400, 400, 200, 40));
@@ -32,14 +36,15 @@ public class DebugGameScene extends GameScene {
         addEntity(new TextEntity.Builder(10, 30)
                 .setText(() -> String.format(
                         """
-                                [PLAYER]
-                                isGrounded: %s
-                                pos: %.1f, %.1f
-                                vel: %.1f, %.1f
-                                collision: %s
+                        [PLAYER]
+                        isGrounded: %s
+                        pos: %.1f, %.1f
+                        vel: %.1f, %.1f
+                        collision: %s
 
-                                [DEBUG]
-                                press [T] to force jump""",
+                        [DEBUG]
+                        press [R] to restart
+                        press [T] to force jump""",
                         player.isGrounded(),
                         player.getX(), player.getY(),
                         player.vx, player.vy,

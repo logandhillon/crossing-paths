@@ -67,8 +67,11 @@ public abstract class GameScene {
      * @param g the graphical context to render to.
      */
     protected void render(GraphicsContext g) {
-        for (Entity e: entities)
+        for (Entity e: entities) {
+            g.save();
             e.render(g);
+            g.restore();
+        }
     }
 
     /**
