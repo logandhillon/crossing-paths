@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * A {@link AutoCloseable} resource manager that handles streaming IO from disk to the application for engine-layer
- * management.
+ * Loads a resource file as a UTF-8 {@link String}
  *
  * @author Logan Dhillon
  */
