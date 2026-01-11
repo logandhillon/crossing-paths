@@ -18,6 +18,9 @@ import java.util.HashMap;
 public class ImageResource extends Resource<Image> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(ImageResource.class);
 
+    /**
+     * A hash-based cache of all recolored images, mapped to their {@link Object#hashCode()} (from the image + the tint)
+     */
     private static final HashMap<Integer, Image> CACHED_RECOLORS = new HashMap<>();
 
     /**
@@ -31,7 +34,19 @@ public class ImageResource extends Resource<Image> {
         super("gfx/" + path);
     }
 
+    /**
+     * Utility method for efficiently recoloring (and caching) an {@link Image}
+     * <p>
+     * If the image was previously recolored, it will be immediately pulled from cache; otherwise it will calculate on
+     * the spot.
+     *
+     * @param src  the source image
+     * @param tint the color to recolor with
+     *
+     * @return the recolored image
+     */
     public static Image recolor(Image src, Color tint) {
+        // first try getting from cache
         int hash = src.hashCode() + tint.hashCode();
         Image cache = CACHED_RECOLORS.get(hash);
         if (cache != null) return cache;
@@ -42,9 +57,11 @@ public class ImageResource extends Resource<Image> {
         int h = (int)src.getHeight();
         WritableImage output = new WritableImage(w, h);
 
+        // iterate through each pixel and recolor it
         for (int ix = 0; ix < w; ix++) {
             for (int iy = 0; iy < h; iy++) {
                 Color base = src.getPixelReader().getColor(ix, iy);
+                // calculate new color by base * tint; use original opacity
                 output.getPixelWriter().setColor(ix, iy, new Color(
                         base.getRed() * tint.getRed(),
                         base.getGreen() * tint.getGreen(),
@@ -54,6 +71,7 @@ public class ImageResource extends Resource<Image> {
             }
         }
 
+        // store in cache
         CACHED_RECOLORS.put(hash, output);
         return output;
     }

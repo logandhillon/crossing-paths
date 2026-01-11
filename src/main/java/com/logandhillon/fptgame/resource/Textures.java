@@ -1,6 +1,8 @@
 package com.logandhillon.fptgame.resource;
 
 /**
+ * References to static textures
+ *
  * @author Logan Dhillon
  */
 public class Textures {
