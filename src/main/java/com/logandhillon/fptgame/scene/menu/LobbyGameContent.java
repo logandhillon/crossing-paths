@@ -2,21 +2,16 @@ package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.entity.core.Entity;
-import com.logandhillon.fptgame.entity.ui.LobbyPlayerEntity;
+import com.logandhillon.fptgame.entity.ui.PlayerIconEntity;
 import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
-import com.logandhillon.fptgame.entity.ui.component.LabeledModalEntity;
 import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
 import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
-import com.logandhillon.fptgame.resource.Textures;
 import javafx.geometry.VPos;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -24,7 +19,7 @@ import org.apache.logging.log4j.core.LoggerContext;
  * The lobby game menu shows all users in a lobby and allots the host with special permissions to start the game
  *
  * @author Jack Ross, Logan Dhillon
- * @see LobbyPlayerEntity
+ * @see
  */
 public class LobbyGameContent implements MenuContent {
     private static final Logger LOG = LoggerContext.getContext().getLogger(LobbyGameContent.class);
@@ -98,7 +93,7 @@ public class LobbyGameContent implements MenuContent {
      */
     public void clearPlayers() {
         LOG.info("Clearing player list");
-        this.menu.clearEntities(true, LobbyPlayerEntity.class::isInstance);
+        this.menu.clearEntities(true, PlayerIconEntity.class::isInstance);
         playerListDx = 0;
     }
 
@@ -116,42 +111,4 @@ public class LobbyGameContent implements MenuContent {
         return roomName;
     }
 
-    private static class PlayerIconEntity extends Entity {
-
-        private final int color;
-
-        /**
-         * Creates an entity at the specified position.
-         *
-         * @param x x-position (from left)
-         * @param y y-position (from top)
-         */
-        public PlayerIconEntity(float x, float y, int color) {
-            super(x, y);
-            this.color = color;
-        }
-
-        @Override
-        protected void onRender(GraphicsContext g, float x, float y) {
-            g.save();
-            g.beginPath();
-            int radius = 49;
-            g.arc(x + 33, y + 58, radius, radius, 0, 360);
-            g.clip();
-            g.setFill(Colors.ACTIVE_TRANS_2);
-            g.fillArc(x - 16, 153, radius * 2, radius * 2, 0, 360, ArcType.ROUND);
-            Textures.PLAYER_IDLE.draw(g, 0, 0, x, y, 66, 132, Colors.PLAYER_SKINS.get(color));
-            g.restore();
-        }
-
-        @Override
-        public void onUpdate(float dt) {
-
-        }
-
-        @Override
-        public void onDestroy() {
-
-        }
-    }
 }
