@@ -1,6 +1,7 @@
 package com.logandhillon.fptgame.resource;
 
 import com.logandhillon.fptgame.gfx.AnimationSequence;
+import com.logandhillon.fptgame.gfx.ParallaxBackground;
 
 /**
  * References to static textures
@@ -35,4 +36,13 @@ public class Textures {
                                                                                    1, 0,
                                                                                    2, 0,
                                                                                    3, 0);
+
+    public static ParallaxBackground ocean8() {
+        return new ParallaxBackground(
+                new ParallaxBackground.Layer("bg/ocean8/1.png", 100f),
+                new ParallaxBackground.Layer("bg/ocean8/2.png", 120f),
+                new ParallaxBackground.Layer("bg/ocean8/3.png", 140f),
+                new ParallaxBackground.Layer("bg/ocean8/4.png", 160f),
+                new ParallaxBackground.Layer("bg/ocean8/5.png", 200f));
+    }
 }
