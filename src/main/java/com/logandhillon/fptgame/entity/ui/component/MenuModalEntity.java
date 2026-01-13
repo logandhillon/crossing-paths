@@ -7,14 +7,17 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * The modal displayed on the left side in every menu screen
+ * The modal displayed on the left side in every menu screen.
  *
+ * @apiNote This cannot be moved as the x-y points are fixed
  * @author Jack Ross
  */
 public class MenuModalEntity extends ModalEntity{
     private static final float MARGIN = 32;
     private final boolean back;
     private final MenuHandler menu;
+    private final double[] xPoints;
+    private final double[] yPoints;
 
     /**
      * Creates an entity at the specified position. All entities passed to this modal will be translated such that (0, 0) is
@@ -30,6 +33,8 @@ public class MenuModalEntity extends ModalEntity{
         super(x, y, w, h, entities);
         this.back = back;
         this.menu = menu;
+        xPoints = new double[]{x, x + w, x + w - 75, x}; // offset polygon by 75 pixels
+        yPoints = new double[]{y, y, y + h, y + h};
     }
 
     /**
@@ -42,9 +47,6 @@ public class MenuModalEntity extends ModalEntity{
      */
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-
-        double[] xPoints = new double[]{x, x + w, x + w - 75, x}; // offset polygon by 75 pixels
-        double[] yPoints = new double[]{y, y, y + h, y + h};
         g.setFill(Color.rgb(0, 0, 0, 0.4));
         g.fillPolygon(xPoints, yPoints, 4);
     }
@@ -56,5 +58,15 @@ public class MenuModalEntity extends ModalEntity{
         if (this.back) {
             parent.addEntity(new BackButtonEntity(x + MARGIN, y + MARGIN, menu));
         }
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        throw new IllegalStateException("MenuModalEntity cannot be moved");
+    }
+
+    @Override
+    public void translate(float x, float y) {
+        throw new IllegalStateException("MenuModalEntity cannot be moved");
     }
 }

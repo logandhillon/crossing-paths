@@ -62,7 +62,7 @@ public class LobbyGameContent implements MenuContent {
                 0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu, startButton, new PlayerIconEntity(48, 143, 0),
                 new PlayerIconEntity(215, 143, 1), //TODO: Make this join only when the other player is in lobby (have fun logan ;) )
                 new TextEntity.Builder(32, 66).setColor(Colors.ACTIVE)
-                                              .setText(roomName::toUpperCase)
+                                              .setText(roomName.toUpperCase())
                                               .setFont(HEADER_FONT)
                                               .setBaseline(VPos.TOP)
                                               .build());
@@ -81,7 +81,7 @@ public class LobbyGameContent implements MenuContent {
         LOG.info("Adding player \"{}\" with color {}", name, color.toString());
         var p = new TextEntity.Builder(0 + playerListDx +  32, 262)
                 .setColor(Colors.ACTIVE)
-                .setText(name::toUpperCase)
+                .setText(name.toUpperCase())
                 .setFontSize(18)
                 .setBaseline(VPos.TOP).build();
         playerListDx += ENTITY_GAP;

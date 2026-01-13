@@ -3,6 +3,7 @@ package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
+import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
 import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
@@ -31,7 +32,7 @@ public class CreditsMenuContent implements MenuContent {
                           .build();
 
         entities = new Entity[]{ new ModalEntity(349, 213, 583, 294,
-                                 new DarkMenuButton("BACK TO MENU", 16, 230, 551, 48, menu::goToMainMenu)),
+                                 new MenuButton("BACK TO MENU", 16, 230, 551, 48, menu::goToMainMenu)),
                                  text};
     }
 

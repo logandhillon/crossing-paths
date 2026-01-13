@@ -2,6 +2,7 @@ package com.logandhillon.fptgame.scene.component;
 
 import com.logandhillon.fptgame.entity.core.Entity;
 import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
+import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
 import com.logandhillon.fptgame.entity.ui.component.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
@@ -27,19 +28,19 @@ public class MenuAlertScene implements MenuContent {
 
         entities = new Entity[]{ new ModalEntity(
                 375, 229.5f, 530, 262,
-                new TextEntity.Builder(265, 16).setText(() -> t)
+                new TextEntity.Builder(265, 16).setText(t)
                                                .setFont(TITLE_FONT)
                                                .setColor(Colors.ACTIVE)
                                                .setAlign(TextAlignment.CENTER)
                                                .setBaseline(VPos.TOP)
                                                .build(),
-                new TextEntity.Builder(265, 74).setText(() -> msg)
+                new TextEntity.Builder(265, 74).setText(msg)
                                                .setFont(BODY_FONT)
                                                .setColor(Colors.ACTIVE)
                                                .setAlign(TextAlignment.CENTER)
                                                .setBaseline(VPos.TOP)
                                                .build(),
-                new DarkMenuButton("BACK TO MAIN MENU", 16, 198, 498, 48, menu::goToMainMenu))};
+                new MenuButton("BACK TO MAIN MENU", 16, 198, 498, 48, menu::goToMainMenu))};
     }
 
     @Override

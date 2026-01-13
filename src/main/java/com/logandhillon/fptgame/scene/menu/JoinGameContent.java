@@ -6,6 +6,7 @@ import com.logandhillon.fptgame.entity.ui.ServerEntryEntity;
 import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
+import com.logandhillon.logangamelib.entity.Renderable;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -29,8 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class JoinGameContent implements MenuContent {
     private static final Logger LOG       = LoggerContext.getContext().getLogger(JoinGameContent.class);
-    private static final Font HEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 32);
-    private static final String header    = "Join a Game";
+    private static final Font   HEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 32);
+    private static final String HEADER      = "Join a Game";
 
     private final Entity[] entities;
 
@@ -51,58 +52,35 @@ public class JoinGameContent implements MenuContent {
      */
     public JoinGameContent(MenuHandler menu, JoinGameHandler onJoin) {
         // rect in background for server list
-        Entity serverListRect = new Entity(32, 326) {
+        Renderable serverListRect = new Renderable(32, 326) {
             @Override
             protected void onRender(GraphicsContext g, float x, float y) {
                 g.setFill(Colors.BUTTON_NORMAL);
                 g.fillRoundRect(x, y, 459, 228, CORNER_DIAMETER, CORNER_DIAMETER);
             }
-
-            @Override
-            public void onUpdate(float dt) {
-            }
-
-            @Override
-            public void onDestroy() {
-            }
         };
 
         // label for server list
-        Entity serverListLabel = new Entity(32, 295) {
-            @Override
-            protected void onRender(GraphicsContext g, float x, float y) {
-                g.setTextAlign(TextAlignment.LEFT);
-                g.setTextBaseline(VPos.TOP);
-                g.setFont(LABEL_FONT);
-                g.setFill(Colors.ACTIVE);
-
-                // render label
-                g.fillText("OR, JOIN A DISCOVERED SERVER", x, y);
-            }
-
-            @Override
-            public void onUpdate(float dt) {
-
-            }
-
-            @Override
-            public void onDestroy() {
-
-            }
-        };
+        TextEntity serverListLabel = new TextEntity.Builder(32, 295)
+                .setText("OR, JOIN A DISCOVERED SERVER")
+                .setAlign(TextAlignment.LEFT)
+                .setBaseline(VPos.TOP)
+                .setFont(LABEL_FONT)
+                .setColor(Colors.ACTIVE)
+                .build();
 
         // join server input field
         InputBoxEntity joinServer = new InputBoxEntity(32, 193, 328, "ex. 192.168.0.1", "JOIN A SERVER DIRECTLY", 39);
 
         // join button (direct)
-        DarkMenuButton joinDirectButton = new DarkMenuButton(
+        MenuButton joinDirectButton = new MenuButton(
                 "JOIN", 368, 193, 139, 48, () -> {
             LOG.info("Attempting to join {} via manual input", joinServer.getInput());
             onJoin.handleJoin(joinServer.getInput());
         });
 
         // join button (discovery)
-        DarkMenuButton joinDiscoverButton = new DarkMenuButton(
+        MenuButton joinDiscoverButton = new MenuButton(
                 "JOIN", 32, 640, 459, 48, () -> {
             if (selectedServerAddr == null) {
                 LOG.warn("Tried to join discovered server, but no server was selected. Ignoring");
@@ -118,7 +96,7 @@ public class JoinGameContent implements MenuContent {
 
         // creates list of entities to be used by menu handler
         entities = new Entity[]{joinModal, new TextEntity.Builder(32, 66).setColor(Colors.ACTIVE)
-                                                                               .setText(header::toUpperCase)
+                                                                               .setText(HEADER.toUpperCase())
                                                                                .setFont(HEADER_FONT)
                                                                                .setBaseline(VPos.TOP)
                                                                                .build()};

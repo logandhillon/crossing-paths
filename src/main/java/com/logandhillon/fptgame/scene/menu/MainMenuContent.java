@@ -25,8 +25,8 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 public class MainMenuContent implements MenuContent {
     private final        Entity[] entities;
     private static final Font     HEADER_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 40);
-    private static final Font     CREDITS_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 14);
-    private static final String   header       = "Game Logo";
+    private static final Font   CREDITS_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 14);
+    private static final String HEADER       = "Game Logo";
 
     private final InputBoxEntity userInput;
 
@@ -51,10 +51,12 @@ public class MainMenuContent implements MenuContent {
                 new MenuButton(
                         "Join Game", x, y + dy, 256, 48, () -> menu.setContent(
                         new JoinGameContent(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
-                new MenuButton(
-                        "Level Creator", x, y + 2 * dy, 256, 48, () -> {
+                new MenuButton("Level Creator", x, y + 2 * dy, 256, 48, () -> {
+                            throw new IllegalStateException("Menu under construction");
                 }),
-                new MenuButton("", x, y + 3 * dy, 120, 48, () -> System.exit(0)),
+                new MenuButton("", x, y + 3 * dy, 120, 48, () -> {
+                    throw new IllegalStateException("Menu under construction");
+                }),
                 // TODO: Turn this into the settings menu
                 new MenuButton("", x + 136, y + 3 * dy, 120, 48, () -> System.exit(0))
         );
@@ -63,11 +65,11 @@ public class MainMenuContent implements MenuContent {
         entities = new Entity[]{
                 new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT, false, menu),
 
-                new ModalEntity(896, 79, 434, 131, userInput),
+                new ModalEntity(896, 79, 434, 131, 49, userInput),
 
                 new TextEntity.Builder(32, 32)
                         .setColor(Colors.ACTIVE)
-                        .setText(header::toUpperCase)
+                        .setText(HEADER::toUpperCase)
                         .setFont(HEADER_FONT)
                         .setBaseline(VPos.TOP).build(),
 
