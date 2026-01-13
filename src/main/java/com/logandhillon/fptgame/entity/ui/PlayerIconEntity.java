@@ -38,7 +38,7 @@ public class PlayerIconEntity extends Entity {
         g.arc(x + 33, y + 58, RADIUS, RADIUS, 0, 360);
         g.clip(); // crops in circle shape
 
-        g.setFill(Colors.ACTIVE_TRANS_2);
+        g.setFill(Colors.ACTIVE_TRANS_015);
         g.fillArc(x - 16, 153, DIAMETER, DIAMETER, 0, 360, ArcType.ROUND); // bg of icon
         Textures.PLAYER_IDLE.draw(g, 0, 0, x, y, 66, 132, Colors.PLAYER_SKINS.get(color)); // draw icon
 

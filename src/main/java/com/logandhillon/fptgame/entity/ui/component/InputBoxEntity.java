@@ -70,7 +70,7 @@ public class InputBoxEntity extends Clickable {
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        g.setFill(Colors.ACTIVE_TRANS_1);
+        g.setFill(Colors.ACTIVE_TRANS_50);
         g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
 
         g.setTextAlign(TextAlignment.LEFT);

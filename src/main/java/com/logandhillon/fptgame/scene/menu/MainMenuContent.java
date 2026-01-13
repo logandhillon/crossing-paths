@@ -81,8 +81,8 @@ public class MainMenuContent implements MenuContent {
             @Override
             protected void onRender(GraphicsContext g, float x, float y) {
                 g.setFont(CREDITS_FONT);
-                g.setFill(Colors.ACTIVE_TRANS_1);
-                g.setStroke(Colors.ACTIVE_TRANS_1);
+                g.setFill(Colors.ACTIVE_TRANS_50);
+                g.setStroke(Colors.ACTIVE_TRANS_50);
                 g.setLineWidth(1);
                 g.strokeLine(x, y + 21, x + 58, y + 21);
                 g.setTextAlign(TextAlignment.LEFT);
