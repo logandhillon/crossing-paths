@@ -51,10 +51,12 @@ public class PlayerEntity extends PhysicsEntity {
 
         if (moveDirection > 0) {
             x += MOVE_SPEED * dt;
-            setAnimation(AnimationState.WALK_LEFT);
+            setAnimation(AnimationState.WALK_RIGHT);
         } else if (moveDirection < 0) {
             x -= MOVE_SPEED * dt;
-            setAnimation(AnimationState.WALK_RIGHT);
+            setAnimation(AnimationState.WALK_LEFT);
+        } else {
+            setAnimation(AnimationState.IDLE);
         }
     }
 
@@ -89,7 +91,8 @@ public class PlayerEntity extends PhysicsEntity {
         switch (state) {
             case IDLE -> texture = Textures.ANIM_PLAYER_IDLE.instance();
             case JUMP -> texture = Textures.ANIM_PLAYER_JUMP.instance();
-            case WALK_LEFT, WALK_RIGHT -> texture = Textures.ANIM_PLAYER_WALK.instance();
+            case WALK_LEFT -> texture = Textures.ANIM_PLAYER_RUN_LEFT.instance();
+            case WALK_RIGHT -> texture = Textures.ANIM_PLAYER_RUN_RIGHT.instance();
         }
     }
 
