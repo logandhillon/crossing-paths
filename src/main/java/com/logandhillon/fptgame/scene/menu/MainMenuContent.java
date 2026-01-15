@@ -132,10 +132,10 @@ public class MainMenuContent implements MenuContent {
 
                     }
                 }, controller
-                , new Renderable(79.17f, 651.17f) {
+                , new Renderable(75.84f, 651.17f) {
             @Override
             protected void onRender(GraphicsContext g, float x, float y) {
-                g.drawImage(cog, x, y, 28, 28);
+                g.drawImage(cog, x, y, 25.67, 25.67);
             }
         }, new Renderable(218, 654) {
             @Override
