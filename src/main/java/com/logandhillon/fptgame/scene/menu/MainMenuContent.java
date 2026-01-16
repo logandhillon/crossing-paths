@@ -2,13 +2,21 @@ package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.engine.MenuController;
+import com.logandhillon.fptgame.entity.core.Clickable;
 import com.logandhillon.fptgame.entity.core.Entity;
-import com.logandhillon.fptgame.entity.ui.component.InputBoxEntity;
-import com.logandhillon.fptgame.entity.ui.component.MenuButton;
-import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
+import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
+import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.fptgame.resource.Fonts;
+import com.logandhillon.fptgame.resource.Textures;
+import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
-import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
+import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
 
 /**
  * The main menu allows the user to navigate to other submenus, play or quit the game, and view game branding.
@@ -16,7 +24,10 @@ import static com.logandhillon.fptgame.GameHandler.CANVAS_WIDTH;
  * @author Logan Dhillon, Jack Ross
  */
 public class MainMenuContent implements MenuContent {
-    private final Entity[] entities;
+    private final        Entity[] entities;
+    private static final Font     HEADER_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 40);
+    private static final Font     CREDITS_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 14);
+    private static final String   HEADER       = "Game Logo";
 
     private final InputBoxEntity userInput;
 
@@ -26,11 +37,11 @@ public class MainMenuContent implements MenuContent {
      * @param menu the main class that can switch scenes, manage connections, etc.
      */
     public MainMenuContent(MenuHandler menu) {
-        float x = (CANVAS_WIDTH - 652) / 2f;
+        float x = 30f;
         int dy = 48 + 16; // ∆y per button height
-        int y = 176;
+        int y = 448;
 
-        userInput = new InputBoxEntity(16, 47, 316, "YOUR NAME", "YOUR NAME", 20);
+        userInput = new InputBoxEntity(20, 57, 336, "Player1", "YOUR NAME", 9);
         userInput.setInput(GameHandler.getUserConfig().getName());
         userInput.setOnBlur(() -> GameHandler.updateUserConfig(
                 ConfigProto.UserConfig.newBuilder().setName(userInput.getInput()).buildPartial()));
@@ -38,16 +49,60 @@ public class MainMenuContent implements MenuContent {
         MenuController controller = new MenuController(
                 () -> !userInput.getIsActive(),
                 new MenuButton("Host Game", x, y, 256, 48, () -> menu.setContent(new HostGameContent(menu))),
-                new MenuButton("Join Game", x, y + dy, 256, 48, () -> menu.setContent(
+                new MenuButton(
+                        "Join Game", x, y + dy, 256, 48, () -> menu.setContent(
                         new JoinGameContent(menu, addr -> System.out.println("NOT IMPLEMENTED!")))),
-                new MenuButton("Settings", x, y + 2 * dy, 256, 48, () -> {
+                new MenuButton("Level Creator", x, y + 2 * dy, 256, 48, () -> {
+                    throw new IllegalStateException("Menu under construction");
                 }),
-                new MenuButton("Credits", x, y + 3 * dy, 256, 48, () -> menu.setContent(new CreditsMenuContent(menu))),
-                new MenuButton("Quit", x, y + 4 * dy, 256, 48, () -> System.exit(0))
+
+                new MenuButton(Textures.SETTINGS_ICON, x, y + 3 * dy, 120, 48, 75.84f, 651.17f, 28, 28, () -> {
+                    throw new IllegalStateException(
+                            "Menu under construction"); // TODO: Turn this into the settings menu
+                }),
+                new MenuButton(Textures.X_ICON, x + 136, y + 3 * dy, 120, 48, 218, 654, 20, 20, () -> System.exit(0))
         );
 
         // creates list of entities to be used by menu handler
-        entities = new Entity[]{ new ModalEntity(618, y, 348, 368 - dy, userInput), controller };
+        entities = new Entity[]{
+                new MenuModalEntity(0, 0, 442, CANVAS_HEIGHT, false, menu),
+
+                new ModalEntity(896, 79, 434, 131, 49, userInput),
+
+                new TextEntity.Builder(32, 32)
+                        .setColor(Colors.ACTIVE)
+                        .setText(HEADER.toUpperCase())
+                        .setFont(HEADER_FONT)
+                        .setBaseline(VPos.TOP).build(),
+
+                new Clickable(1209, 672, 59, 22) {
+
+                    @Override
+                    public void onClick(MouseEvent e) {
+                        menu.setContent(new CreditsMenuContent(menu));
+                    }
+
+                    @Override
+                    protected void onRender(GraphicsContext g, float x, float y) {
+                        g.setFont(CREDITS_FONT);
+                        g.setFill(Colors.ACTIVE_TRANS_50);
+                        g.setStroke(Colors.ACTIVE_TRANS_50);
+                        g.setLineWidth(1);
+                        g.strokeLine(x, y + 21, x + 58, y + 21);
+                        g.setTextAlign(TextAlignment.LEFT);
+                        g.fillText("LICENSE", x, y + 18);
+                    }
+
+                    @Override
+                    public void onUpdate(float dt) {
+
+                    }
+
+                    @Override
+                    public void onDestroy() {
+
+                    }
+                }, controller };
     }
 
     /**

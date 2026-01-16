@@ -63,7 +63,7 @@ public class GameHandler extends Application {
         stage.setMinWidth(CANVAS_WIDTH / 2f);
         stage.setMinHeight(CANVAS_HEIGHT / 2f);
 
-        setScene(new DebugGameScene());
+        setScene(new MenuHandler());
         stage.show();
     }
 
@@ -247,7 +247,8 @@ public class GameHandler extends Application {
      * Discards the current scene and shows a new {@link MenuAlertScene} with the provided alert details.
      */
     public void showAlert(String title, String message) {
-        setScene(new MenuAlertScene(title, message, this));
+        MenuHandler menu = getActiveScene(MenuHandler.class);
+        menu.setContent(new MenuAlertScene(title, message, menu));
     }
 
     /**

@@ -9,7 +9,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -29,12 +28,12 @@ public class InputBoxEntity extends Clickable {
     private static final Logger LOG = LoggerContext.getContext().getLogger(InputBoxEntity.class);
 
     private static final float  INPUT_FONT_SIZE  = 18.5f;
-    private static final int  INPUT_CHAR_WIDTH = 11;
-    private static final int  CORNER_RADIUS    = 16;
-    private static final int  MARGIN_X         = 16;
+    private static final int INPUT_CHAR_WIDTH = 11;
+    private static final int CORNER_DIAMETER  = 50;
+    private static final int MARGIN_X         = 16;
     private static final int  MARGIN_Y         = 12;
-    private static final Font INPUT_FONT       = Font.font(Fonts.DOGICA, INPUT_FONT_SIZE);
-    private static final Font LABEL_FONT       = Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20);
+    private static final Font INPUT_FONT       = Font.font(Fonts.TREMOLO, INPUT_FONT_SIZE);
+    private static final Font LABEL_FONT       = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20);
 
     private final   float  maxWidth;
     private final   String placeholder;
@@ -71,13 +70,13 @@ public class InputBoxEntity extends Clickable {
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        g.setFill(Colors.ACTIVE);
-        g.fillRoundRect(x, y, w, h, CORNER_RADIUS, CORNER_RADIUS);
+        g.setFill(Colors.ACTIVE_TRANS_50);
+        g.fillRoundRect(x, y, w, h, CORNER_DIAMETER, CORNER_DIAMETER);
 
         g.setTextAlign(TextAlignment.LEFT);
         g.setTextBaseline(VPos.TOP);
         g.setFont(LABEL_FONT);
-        g.setFill(Colors.FOREGROUND);
+        g.setFill(Colors.ACTIVE);
         g.fillText(label, x, y - 31);
 
         // when active, show a blinking cursor for 500 ms every 1000 ms
@@ -92,10 +91,12 @@ public class InputBoxEntity extends Clickable {
         g.setFont(INPUT_FONT);
         if (input.isEmpty()) {
             // render placeholder
-            g.setFill(Color.hsb(0, 0, 1, 0.2));
+            g.setTextAlign(TextAlignment.LEFT);
+            g.setFill(Colors.FOREGROUND_TRANS);
             g.fillText(placeholder, x + MARGIN_X, y + MARGIN_Y, maxWidth);
         } else {
             // render input (font is already white)
+            g.setFill(Colors.FOREGROUND);
             g.fillText(input.toString(), x + MARGIN_X, y + MARGIN_Y, maxWidth);
         }
     }
@@ -107,7 +108,7 @@ public class InputBoxEntity extends Clickable {
 
     @Override
     public void onDestroy() {
-
+        // TODO: Blur inputs when input box is destroyed
     }
 
     /**

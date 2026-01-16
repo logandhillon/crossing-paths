@@ -13,10 +13,9 @@ import javafx.scene.canvas.GraphicsContext;
  * @apiNote Do not attach entities inside this modal, just the modal itself.
  */
 public class ModalEntity extends Entity {
-    private static final int    CORNER_RADIUS = 16;
-
     protected final float w, h;
     private final Entity[] entities;
+    private final int cornerDiameter;
 
     private GameScene parent;
 
@@ -29,17 +28,33 @@ public class ModalEntity extends Entity {
      * @param w width of modal
      * @param h height of modal
      */
-    public ModalEntity(float x, float y, float w, float h, Entity... entities) {
+    public ModalEntity(float x, float y, float w, float h, int cornerRadius, Entity... entities) {
         super(x, y);
         this.w = w;
         this.h = h;
+        this.cornerDiameter = cornerRadius * 2;
         this.entities = entities;
+    }
+
+    /**
+     * Creates an entity at the specified position. All entities passed to this modal will be translated such that (0,
+     * 0) is the top-left corner of this modal.
+     * <p>
+     * Defines the corner radius as 25px (default)
+     *
+     * @param x x-position (from left)
+     * @param y y-position (from top)
+     * @param w width of modal
+     * @param h height of modal
+     */
+    public ModalEntity(float x, float y, float w, float h, Entity... entities) {
+        this(x, y, w, h, 25, entities);
     }
 
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
-        g.setFill(Colors.DEFAULT);
-        g.fillRoundRect(x, y, w, h, CORNER_RADIUS, CORNER_RADIUS);
+        g.setFill(Colors.FOREGROUND_TRANS);
+        g.fillRoundRect(x, y, w, h, cornerDiameter, cornerDiameter);
     }
 
     @Override

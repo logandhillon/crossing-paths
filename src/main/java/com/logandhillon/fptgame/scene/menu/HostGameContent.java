@@ -1,11 +1,13 @@
 package com.logandhillon.fptgame.scene.menu;
 
-
+import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.entity.core.Entity;
-import com.logandhillon.fptgame.entity.ui.component.DarkMenuButton;
-import com.logandhillon.fptgame.entity.ui.component.InputBoxEntity;
-import com.logandhillon.fptgame.entity.ui.component.LabeledModalEntity;
-
+import com.logandhillon.fptgame.entity.ui.component.*;
+import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.fptgame.resource.Fonts;
+import javafx.geometry.VPos;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  * The host game menu allows the user to input parameters needed for hosting a live server
@@ -14,8 +16,9 @@ import com.logandhillon.fptgame.entity.ui.component.LabeledModalEntity;
  */
 public class HostGameContent implements MenuContent {
     private static final String DEFAULT_ROOM_NAME = "My new room";
-    private static final int AJITESH_CONSTANT = 25;
-    private final Entity[] entities;
+    private static final String HEADER            = "Host a New Game";
+    private static final Font   HEADER_FONT       = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 32);
+    private final        Entity[] entities;
 
     private final InputBoxEntity nameInput;
 
@@ -25,13 +28,20 @@ public class HostGameContent implements MenuContent {
      * @param menu the {@link MenuHandler} responsible for switching active scenes.
      */
     public HostGameContent(MenuHandler menu) {
-        nameInput = new InputBoxEntity(16, 47, 530, DEFAULT_ROOM_NAME, "ROOM NAME", AJITESH_CONSTANT);
+        nameInput = new InputBoxEntity(32, 189, 327, DEFAULT_ROOM_NAME, "ROOM NAME", 16);
 
-        DarkMenuButton startButton = new DarkMenuButton("START GAME", 16, 337, 530, 50, () -> menu.createLobby(getRoomName()));
+        MenuButton startButton = new MenuButton(
+                "START GAME", 32, 640, 304, 48, () -> menu.createLobby(getRoomName()));
 
-
-        entities = new Entity[]{startButton, new LabeledModalEntity(359, 128, 562, 464, "HOST NEW GAME", menu, nameInput, startButton)};
-
+        entities = new Entity[]{ new MenuModalEntity(
+                0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu, nameInput, startButton),
+                                 new TextEntity.Builder(32, 66)
+                                         .setColor(Colors.ACTIVE)
+                                         .setText(HEADER.toUpperCase())
+                                         .setFont(HEADER_FONT)
+                                         .setBaseline(VPos.TOP)
+                                         .build()
+                , startButton };
     }
 
     /**

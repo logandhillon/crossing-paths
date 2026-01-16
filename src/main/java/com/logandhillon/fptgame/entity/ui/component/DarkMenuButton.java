@@ -15,9 +15,9 @@ import javafx.scene.text.TextAlignment;
  */
 public class DarkMenuButton extends DynamicButtonEntity {
     private static final ButtonEntity.Style DEFAULT_STYLE = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.ACTIVE, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 20));
+            Colors.FOREGROUND, Colors.BUTTON_NORMAL, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20));
     private static final ButtonEntity.Style ACTIVE_STYLE  = new ButtonEntity.Style(
-            Colors.FOREGROUND, Colors.PRIMARY, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.DOGICA, FontWeight.MEDIUM, 21));
+            Colors.FOREGROUND, Colors.BUTTON_HOVER, ButtonEntity.Variant.SOLID, true, Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 21));
 
     private final Runnable pressHandler;
 
@@ -28,7 +28,10 @@ public class DarkMenuButton extends DynamicButtonEntity {
      * @param w       width
      * @param h       height
      * @param onPress the action that should happen when this button is clicked
+     *
+     * @deprecated use {@link MenuButton} instead
      */
+    @Deprecated
     public DarkMenuButton(String label, float x, float y, float w, float h, Runnable onPress) {
         super(label.toUpperCase(), x, y, w, h, e -> onPress.run(), DEFAULT_STYLE, ACTIVE_STYLE);
         this.pressHandler = onPress;

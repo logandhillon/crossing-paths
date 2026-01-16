@@ -19,7 +19,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class ButtonEntity extends Clickable {
     private static final int STROKE          = 2;
-    private static final int ROUNDING_RADIUS = 16;
+    private static final int ROUNDING_DIAMETER = 50;
 
     private final String            label;
     private final MouseEventHandler clickHandler;
@@ -93,11 +93,11 @@ public class ButtonEntity extends Clickable {
             g.setLineWidth(STROKE);
             g.setLineDashes(0);
 
-            if (style.isRounded) g.strokeRoundRect(x, y, w, h, ROUNDING_RADIUS, ROUNDING_RADIUS);
+            if (style.isRounded) g.strokeRoundRect(x, y, w, h, ROUNDING_DIAMETER, ROUNDING_DIAMETER);
             else g.strokeRect(x, y, w, h);
         } else {
             g.setFill(style.buttonColor);
-            if (style.isRounded) g.fillRoundRect(x, y, w, h, ROUNDING_RADIUS, ROUNDING_RADIUS);
+            if (style.isRounded) g.fillRoundRect(x, y, w, h, ROUNDING_DIAMETER, ROUNDING_DIAMETER);
             else g.fillRect(x, y, w, h);
         }
 
