@@ -5,7 +5,7 @@ import com.logandhillon.fptgame.gfx.ParallaxBackground;
 import com.logandhillon.fptgame.resource.io.ImageResource;
 import javafx.scene.image.Image;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * References to static textures
@@ -53,23 +53,19 @@ public class Textures {
                 new ParallaxBackground.Layer("bg/ocean8/4.png", 80f));
     }
 
-    public static Image settingsIcon() {
-        ImageResource SETTINGS;
-        try {
-            SETTINGS = new ImageResource("menuicons/cog.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return SETTINGS.load();
-    }
+    public static final Image SETTINGS_ICON;
+    public static final Image X_ICON;
 
-    public static Image quitIcon() {
-        ImageResource QUIT;
-        try {
-            QUIT = new ImageResource("menuicons/X.png");
-        } catch (FileNotFoundException e) {
+    static {
+        try (var res = new ImageResource("menuicons/cog.png")) {
+            SETTINGS_ICON = res.load();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return QUIT.load();
+        try (var res = new ImageResource("menuicons/x.png")) {
+            X_ICON = res.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
