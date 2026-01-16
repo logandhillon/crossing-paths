@@ -8,9 +8,8 @@ module com.logandhillon.fptgame {
     requires javafx.controls;
 
     opens com.logandhillon.fptgame to javafx.fxml;
-    exports com.logandhillon.fptgame;
 
-    exports com.logandhillon.logangamelib.engine;
+    exports com.logandhillon.fptgame;
     exports com.logandhillon.fptgame.entity.ui;
     exports com.logandhillon.fptgame.scene;
     exports com.logandhillon.fptgame.networking.proto;
@@ -18,6 +17,7 @@ module com.logandhillon.fptgame {
     exports com.logandhillon.fptgame.scene.menu;
     exports com.logandhillon.fptgame.scene.component;
 
+    exports com.logandhillon.logangamelib.engine;
     exports com.logandhillon.logangamelib.entity.physics;
     exports com.logandhillon.logangamelib.entity;
     exports com.logandhillon.logangamelib.entity.ui;

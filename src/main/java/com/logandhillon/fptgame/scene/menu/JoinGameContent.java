@@ -54,13 +54,10 @@ public class JoinGameContent implements MenuContent {
      */
     public JoinGameContent(MenuHandler menu, JoinGameHandler onJoin) {
         // rect in background for server list
-        Renderable serverListRect = new Renderable(32, 326) {
-            @Override
-            protected void onRender(GraphicsContext g, float x, float y) {
-                g.setFill(Colors.BUTTON_NORMAL);
-                g.fillRoundRect(x, y, 459, 228, CORNER_DIAMETER, CORNER_DIAMETER);
-            }
-        };
+        Renderable serverListRect = new Renderable(32, 326, (g, x, y) -> {
+            g.setFill(Colors.BUTTON_NORMAL);
+            g.fillRoundRect(x, y, 459, 228, CORNER_DIAMETER, CORNER_DIAMETER);
+        });
 
         // label for server list
         TextEntity serverListLabel = new TextEntity.Builder(32, 295)
