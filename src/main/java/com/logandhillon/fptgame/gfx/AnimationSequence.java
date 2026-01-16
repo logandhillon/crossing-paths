@@ -32,10 +32,12 @@ public class AnimationSequence {
     }
 
     public AnimationSequence(TextureAtlas atlas, int fps, int... frames) {
-        this(atlas, 1f / fps, false, frames); // by default make anim sequences illegal and require instance() method
+        // by default make anim sequences illegal and require instance() method
+        this(atlas, fps == 0 ? 0 : 1f / fps, false, frames);
     }
 
     public void nextFrame() {
+        if (frameTime == 0) return; // don't do anything if fps==0
         if (!isInstance) throw new IllegalStateException("cannot set the frame of a static AnimationSequence. " +
                                                          "use instance() on the sequence to get a new instance.");
         if (frame < maxFrame) frame++;
@@ -55,6 +57,10 @@ public class AnimationSequence {
 
     public void draw(GraphicsContext g, float x, float y, float w, float h, Color color) {
         if (!isInstance) LOG.warn("Drawing recolored from STATIC AnimationSequence, this is likely a mistake");
+        drawFrame(g, this.frame, x, y, w, h, color);
+    }
+
+    public void drawFrame(GraphicsContext g, int frame, float x, float y, float w, float h, Color color) {
         atlas.draw(g, frames[frame * 2], frames[frame * 2 + 1], x, y, w, h, color);
     }
 

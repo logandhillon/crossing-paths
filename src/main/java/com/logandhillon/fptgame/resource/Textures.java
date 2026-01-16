@@ -13,10 +13,10 @@ import java.io.IOException;
  * @author Logan Dhillon
  */
 public class Textures {
-    public static final TextureAtlas PLAYER_IDLE = new TextureAtlas("player/idle.png");
-    public static final TextureAtlas PLAYER_WALK = new TextureAtlas("player/walk.png");
-    public static final TextureAtlas PLAYER_RUN  = new TextureAtlas("player/run.png");
-    public static final TextureAtlas PLAYER_JUMP = new TextureAtlas("player/jump.png");
+    public static final TextureAtlas PLAYER_IDLE      = new TextureAtlas("player/idle.png");
+    public static final TextureAtlas PLAYER_RUN_LEFT  = new TextureAtlas("player/run_left.png");
+    public static final TextureAtlas PLAYER_RUN_RIGHT = new TextureAtlas("player/run.png");
+    public static final TextureAtlas PLAYER_JUMP      = new TextureAtlas("player/jump.png");
 
     public static final AnimationSequence ANIM_PLAYER_IDLE = new AnimationSequence(PLAYER_IDLE, 2,
                                                                                    0, 0,
@@ -24,22 +24,25 @@ public class Textures {
                                                                                    2, 0,
                                                                                    1, 0);
 
-    // TODO: fine tune animations (i have no idea if these frames are correct lmao)
-    public static final AnimationSequence ANIM_PLAYER_WALK = new AnimationSequence(PLAYER_WALK, 6,
-                                                                                   0, 0,
-                                                                                   1, 0,
-                                                                                   2, 0,
+    public static final AnimationSequence ANIM_PLAYER_RUN_LEFT = new AnimationSequence(PLAYER_RUN_LEFT, 6,
+                                                                                       5, 2,
+                                                                                       4, 2,
+                                                                                       3, 2,
+                                                                                       2, 2,
+                                                                                       1, 2,
+                                                                                       0, 2);
+
+    public static final AnimationSequence ANIM_PLAYER_RUN_RIGHT = new AnimationSequence(PLAYER_RUN_RIGHT, 6,
+                                                                                        0, 2,
+                                                                                        1, 2,
+                                                                                        2, 2,
+                                                                                        3, 2,
+                                                                                        4, 2,
+                                                                                        5, 2);
+
+    public static final AnimationSequence ANIM_PLAYER_JUMP = new AnimationSequence(PLAYER_JUMP, 0,
                                                                                    3, 0);
-    public static final AnimationSequence ANIM_PLAYER_RUN  = new AnimationSequence(PLAYER_RUN, 6,
-                                                                                   0, 0,
-                                                                                   1, 0,
-                                                                                   2, 0,
-                                                                                   3, 0);
-    public static final AnimationSequence ANIM_PLAYER_JUMP = new AnimationSequence(PLAYER_JUMP, 6,
-                                                                                   0, 0,
-                                                                                   1, 0,
-                                                                                   2, 0,
-                                                                                   3, 0);
+    public static final int PLAYER_JUMP_FRAME = 0;
 
     /**
      * Generates a new instance of the ocean8 {@link ParallaxBackground}

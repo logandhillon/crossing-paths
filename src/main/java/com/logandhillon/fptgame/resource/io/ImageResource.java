@@ -76,6 +76,8 @@ public class ImageResource extends Resource<Image> {
         return output;
     }
 
+
+
     @Override
     public Image load() {
         assert this.stream != null;
