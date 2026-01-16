@@ -7,6 +7,8 @@ import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.logangamelib.entity.Renderable;
+import com.logandhillon.logangamelib.entity.ui.InputBoxEntity;
+import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;

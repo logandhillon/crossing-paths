@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.entity.ui.component;
+package com.logandhillon.logangamelib.entity.ui;
 
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.fptgame.resource.Colors;

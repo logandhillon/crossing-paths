@@ -2,8 +2,8 @@ package com.logandhillon.fptgame.scene.component;
 
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.fptgame.entity.ui.component.MenuButton;
-import com.logandhillon.fptgame.entity.ui.component.ModalEntity;
-import com.logandhillon.fptgame.entity.ui.component.TextEntity;
+import com.logandhillon.logangamelib.entity.ui.ModalEntity;
+import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.fptgame.scene.menu.MenuContent;

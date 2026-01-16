@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.entity.physics;
+package com.logandhillon.logangamelib.entity.physics;
 
 import com.logandhillon.logangamelib.entity.Entity;
 

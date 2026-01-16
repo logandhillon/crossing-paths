@@ -5,6 +5,8 @@ import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.fptgame.entity.ui.component.*;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
+import com.logandhillon.logangamelib.entity.ui.InputBoxEntity;
+import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;

@@ -1,7 +1,7 @@
 package com.logandhillon.fptgame.entity.ui;
 
-import com.logandhillon.fptgame.entity.ui.component.ButtonEntity;
-import com.logandhillon.fptgame.entity.ui.component.DynamicButtonEntity;
+import com.logandhillon.logangamelib.entity.ui.ButtonEntity;
+import com.logandhillon.logangamelib.entity.ui.DynamicButtonEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.fptgame.scene.menu.JoinGameContent;
