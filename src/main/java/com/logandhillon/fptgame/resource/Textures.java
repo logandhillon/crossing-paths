@@ -36,11 +36,9 @@ public class Textures {
                                                                                         4, 2,
                                                                                         5, 2);
 
-    public static final AnimationSequence ANIM_PLAYER_JUMP = new AnimationSequence(PLAYER_JUMP, 6,
-                                                                                   0, 0,
-                                                                                   1, 0,
-                                                                                   2, 0,
+    public static final AnimationSequence ANIM_PLAYER_JUMP = new AnimationSequence(PLAYER_JUMP, 0,
                                                                                    3, 0);
+    public static final int PLAYER_JUMP_FRAME = 0;
 
     /**
      * Generates a new instance of the ocean8 {@link ParallaxBackground}
