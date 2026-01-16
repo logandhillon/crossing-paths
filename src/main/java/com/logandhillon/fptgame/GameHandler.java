@@ -114,8 +114,7 @@ public class GameHandler extends Application {
         MenuHandler menu = getActiveScene(MenuHandler.class);
         var lobby = new LobbyGameContent(menu, roomName, true);
         menu.setContent(lobby); // set content first so we can populate lobby after
-        lobby.addPlayer(
-                GameHandler.getUserConfig().getName(), UserConfigManager.parseColor(GameHandler.getUserConfig()));
+        lobby.addPlayer(GameHandler.getUserConfig().getName(), true);
 
         if (server != null) throw new IllegalStateException("Server already exists, cannot establish connection");
 

@@ -2,8 +2,6 @@ package com.logandhillon.logangamelib.engine.disk;
 
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 import com.logandhillon.fptgame.networking.proto.ConfigProto.UserConfig;
-import com.logandhillon.fptgame.resource.Colors;
-import javafx.scene.paint.Color;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -85,25 +83,8 @@ public class UserConfigManager {
             builder.setName(partial.getName());
         }
 
-        // Only override if the field is explicitly set (non-default)
-        if (partial.hasColorIdx()) {
-            LOG.info("Setting color to index {}", partial.getColorIdx().getValue());
-            builder.setColorIdx(partial.getColorIdx());
-        }
-
         // Build and save
         UserConfig merged = builder.build();
         return save(merged);
-    }
-
-    /**
-     * Pure method to get the color index from user config and parse it into a {@link Color}
-     *
-     * @param config the user config to get the color idx from
-     *
-     * @return the javafx color
-     */
-    public static Color parseColor(UserConfig config) {
-        return Colors.PLAYER_SKINS.get(config.getColorIdx().getValue());
     }
 }

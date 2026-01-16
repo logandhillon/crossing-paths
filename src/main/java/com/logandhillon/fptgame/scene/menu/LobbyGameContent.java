@@ -9,7 +9,6 @@ import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +26,6 @@ public class LobbyGameContent implements MenuContent {
     private final Entity[] entities;
 
     private static final Font HEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 40);
-
 
     private static final float ENTITY_GAP = 167.5f;
 
@@ -60,7 +58,8 @@ public class LobbyGameContent implements MenuContent {
 
         lobbyModal = new MenuModalEntity(
                 0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu, startButton, new PlayerIconEntity(48, 143, 0),
-                new PlayerIconEntity(215, 143, 1), //TODO: Make this join only when the other player is in lobby (have fun logan ;) )
+                new PlayerIconEntity(215, 143, 1),
+                //TODO: Make this join only when the other player is in lobby (have fun logan ;) )
                 new TextEntity.Builder(32, 66).setColor(Colors.ACTIVE)
                                               .setText(roomName.toUpperCase())
                                               .setFont(HEADER_FONT)
@@ -74,12 +73,12 @@ public class LobbyGameContent implements MenuContent {
     /**
      * Adds a player to the list of players
      *
-     * @param name  player name
-     * @param color player skin's color
+     * @param name   player name
+     * @param isHost if the player is the host of this lobby
      */
-    public void addPlayer(String name, Color color) {
-        LOG.info("Adding player \"{}\" with color {}", name, color.toString());
-        var p = new TextEntity.Builder(0 + playerListDx +  32, 262)
+    public void addPlayer(String name, boolean isHost) {
+        LOG.info("Adding player \"{}\" (host={})", name, isHost);
+        var p = new TextEntity.Builder(0 + playerListDx + 32, 262)
                 .setColor(Colors.ACTIVE)
                 .setText(name.toUpperCase())
                 .setFontSize(18)
@@ -110,5 +109,4 @@ public class LobbyGameContent implements MenuContent {
     public String getRoomName() {
         return roomName;
     }
-
 }
