@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.resource.io;
+package com.logandhillon.logangamelib.resource;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;

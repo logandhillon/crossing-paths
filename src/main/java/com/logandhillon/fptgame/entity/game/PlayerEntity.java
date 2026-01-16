@@ -2,7 +2,7 @@ package com.logandhillon.fptgame.entity.game;
 
 import com.logandhillon.fptgame.engine.GameScene;
 import com.logandhillon.logangamelib.entity.physics.PhysicsEntity;
-import com.logandhillon.fptgame.gfx.AnimationSequence;
+import com.logandhillon.logangamelib.gfx.AnimationSequence;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Textures;
 import javafx.scene.canvas.GraphicsContext;

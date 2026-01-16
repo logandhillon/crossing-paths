@@ -1,7 +1,7 @@
-package com.logandhillon.fptgame.resource;
+package com.logandhillon.logangamelib.gfx;
 
-import com.logandhillon.fptgame.resource.io.ImageResource;
-import com.logandhillon.fptgame.resource.io.TextResource;
+import com.logandhillon.logangamelib.resource.ImageResource;
+import com.logandhillon.logangamelib.resource.TextResource;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;

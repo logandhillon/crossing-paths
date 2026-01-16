@@ -1,6 +1,5 @@
-package com.logandhillon.fptgame.gfx;
+package com.logandhillon.logangamelib.gfx;
 
-import com.logandhillon.fptgame.resource.TextureAtlas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.Logger;

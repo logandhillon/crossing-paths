@@ -1,8 +1,8 @@
-package com.logandhillon.fptgame.gfx;
+package com.logandhillon.logangamelib.gfx;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.logangamelib.entity.Entity;
-import com.logandhillon.fptgame.resource.io.ImageResource;
+import com.logandhillon.logangamelib.resource.ImageResource;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 

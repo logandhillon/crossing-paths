@@ -1,4 +1,4 @@
-package com.logandhillon.fptgame.resource.io;
+package com.logandhillon.logangamelib.resource;
 
 import javafx.scene.media.AudioClip;
 

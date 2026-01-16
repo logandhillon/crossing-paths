@@ -6,7 +6,7 @@ import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.logangamelib.entity.ui.ModalEntity;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import com.logandhillon.fptgame.resource.Colors;
-import com.logandhillon.fptgame.resource.io.TextResource;
+import com.logandhillon.logangamelib.resource.TextResource;
 import javafx.geometry.VPos;
 import javafx.scene.text.TextAlignment;
 
