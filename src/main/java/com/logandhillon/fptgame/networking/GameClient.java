@@ -146,7 +146,13 @@ public class GameClient {
                 this.close();
             }
             case SRV_GAME_STARTING -> {
+                LOG.info("Server has announced that the game is starting");
                 game.startGame();
+            }
+            case SRV_SHUTDOWN -> {
+                // going to the main menu will shut down the client
+                LOG.info("Server is shutting down, returning to main menu");
+                game.showAlert("SERVER CLOSED", "The server has shut down.");
             }
         }
     }
