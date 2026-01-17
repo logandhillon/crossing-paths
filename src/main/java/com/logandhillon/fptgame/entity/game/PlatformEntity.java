@@ -1,19 +1,28 @@
 package com.logandhillon.fptgame.entity.game;
 
+import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Textures;
 import com.logandhillon.logangamelib.entity.physics.CollisionEntity;
+import com.logandhillon.logangamelib.gfx.TextureAtlas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.w3c.dom.Text;
 
 /**
- * @author Logan Dhillon
+ * @author Logan Dhillon, Jack Ross
  */
 public class PlatformEntity extends CollisionEntity {
 
     private final int TEXTURE_SCALE = 40;
-    private final int SHADOW_OFFSET = 5;
+    private final int shadowOffset;
+    private final int row;
+    private final int col;
+    private final TextureAtlas theme;
+    private final TextureAtlas themebg;
+    private final int bgRow;
+    private final int bgCol;
+
     /**
      * Creates a collidable entity at the specified position with the specified hitbox
      *
@@ -21,31 +30,101 @@ public class PlatformEntity extends CollisionEntity {
      * @param y y-position (from top)
      * @param w width of hitbox
      * @param h height of hitbox
+     * @param row row of texture atlas
+     * @param col column of texture atlas
      */
-    public PlatformEntity(float x, float y, float w, float h) {
+    public PlatformEntity(TextureAtlas theme, float x, float y, float w, float h, int row, int col) {
         super(x, y, w, h);
 
         if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
             throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
         }
+        this.theme = theme;
+        this.themebg = null;
+        this.row = row;
+        this.col = col;
+        this.shadowOffset = 0;
+        this.bgRow = -1;
+        this.bgCol = -1;
     }
+
+    /**
+     * Collidable entity with shadow
+     * @param shadowOffset distance shadow is from platform
+     */
+    public PlatformEntity(TextureAtlas theme, float x, float y, float w, float h, int row, int col, int shadowOffset) {
+        super(x, y, w, h);
+
+        if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
+            throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
+        }
+
+        this.theme = theme;
+        this.themebg = null;
+        this.row = row;
+        this.col = col;
+        this.shadowOffset = shadowOffset;
+        this.bgRow = -1;
+        this.bgCol = -1;
+
+    }
+
+    /**
+     *
+     * Provides option to draw background with textures instead of a PNG
+     * @param bgRow - row of background texture
+     * @param bgCol - column of background texture
+     */
+    public PlatformEntity(TextureAtlas theme, TextureAtlas themebg, float x, float y, float w, float h, int row, int col, int bgRow, int bgCol) {
+        super(x, y, w, h);
+
+        if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
+            throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
+        }
+        this.theme = theme;
+        this.themebg = themebg;
+        this.row = row;
+        this.col = col;
+        this.shadowOffset = 0;
+        this.bgRow = bgRow;
+        this.bgCol = bgCol;
+    }
+
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
+        if(themebg != null){
+            int wide = GameHandler.CANVAS_WIDTH / TEXTURE_SCALE;
+            int tall = GameHandler.CANVAS_HEIGHT / TEXTURE_SCALE;
 
+            for(int i = 0; i < wide; i++){
+                for(int j = 0; j < tall; j++){
+                    themebg.draw(g, bgRow, bgCol, i * TEXTURE_SCALE, j * TEXTURE_SCALE, TEXTURE_SCALE, TEXTURE_SCALE);
+                }
+            }
+        }
         g.setFill(Colors.FOREGROUND_TRANS);
         int v;
         if(w > h) { // render right
             v = (int)(w / TEXTURE_SCALE);
-            for(int i = 0; i < v; i++) {
-                g.fillRect(x + (i * TEXTURE_SCALE) - SHADOW_OFFSET, y + SHADOW_OFFSET, TEXTURE_SCALE, TEXTURE_SCALE); // render shadow right
-                Textures.UNDERGROUND.draw(g, 13, 3, x + (i * TEXTURE_SCALE), y, TEXTURE_SCALE, TEXTURE_SCALE);
+            if(shadowOffset != 0) {
+                for (int i = 0; i < v; i++) {
+                    g.fillRect(x + (i * TEXTURE_SCALE) - shadowOffset, y + shadowOffset, TEXTURE_SCALE, TEXTURE_SCALE); // render shadow right
+                }
             }
+            for(int i = 0; i < v; i++) {
+                theme.draw(g, row, col, x + (i * TEXTURE_SCALE), y, TEXTURE_SCALE, TEXTURE_SCALE);
+            }
+
         }
         else { // render down
             v = (int)(h / TEXTURE_SCALE);
+            if(shadowOffset != 0) {
+                for(int i = 0; i < v; i++) {
+                    g.fillRect(x - shadowOffset, y + (i * TEXTURE_SCALE) + shadowOffset, TEXTURE_SCALE, TEXTURE_SCALE); //render shadow down
+                }
+            }
             for(int i = 0; i < v; i++) {
-                g.fillRect(x - SHADOW_OFFSET, y + (i * TEXTURE_SCALE) + SHADOW_OFFSET, TEXTURE_SCALE, TEXTURE_SCALE); //render shadow down
-                Textures.UNDERGROUND.draw(g, 13, 3, x, y + (i * TEXTURE_SCALE), TEXTURE_SCALE, TEXTURE_SCALE);
+                theme.draw(g, row, col, x, y + (i * TEXTURE_SCALE), TEXTURE_SCALE, TEXTURE_SCALE);
             }
         }
     }

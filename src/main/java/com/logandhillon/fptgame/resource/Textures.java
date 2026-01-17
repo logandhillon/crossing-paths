@@ -21,6 +21,9 @@ public class Textures {
 
     public static final TextureAtlas UNDERGROUND = new TextureAtlas("theme/underground/spritesheet.png");
 
+    public static final TextureAtlas PURPLE_DUNGEON = new TextureAtlas("theme/dungeon/spritesheet.png");
+    public static final TextureAtlas PURPLE_DUNGEON_DARK = new TextureAtlas("theme/dungeon/spritesheetdark.png");
+
     public static final AnimationSequence ANIM_PLAYER_IDLE = new AnimationSequence(PLAYER_IDLE, 2,
                                                                                    0, 0,
                                                                                    1, 0,
