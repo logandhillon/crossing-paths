@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * A texture atlas (commonly known as a tile-set) is an array of multiple textures stitched together in one large
@@ -18,15 +19,22 @@ import java.io.IOException;
  * @author Logan Dhillon
  */
 public class TextureAtlas {
+    /**
+     * Stores all loaded textures in runtime, so they can be accessed via the {@link TextureAtlas#path} at {@code O(1)}
+     * time.
+     */
+    private static final HashMap<String, TextureAtlas> LOADED_TEXTURES = new HashMap<>();
+
     protected final Image    image;
     protected final Metadata meta;
+    protected final String   path;
 
     /**
      * Creates a new texture atlas, loading the {@code gfx/{image.png}} and the {@code gfx/{image.png}.atlas} files.
      *
      * @param path the name of the image (and atlas file) in the gfx folder.
      */
-    public TextureAtlas(String path) {
+    private TextureAtlas(String path) {
         try (var img = new ImageResource(path);
              var meta = new TextResource("gfx/" + path + ".atlas")
         ) {
@@ -35,6 +43,20 @@ public class TextureAtlas {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.path = path;
+        LOADED_TEXTURES.put(path, this);
+    }
+
+    /**
+     * Tries to load the correct {@link TextureAtlas} from runtime memory, or creates a new one if it has not been
+     * created already.
+     *
+     * @param path the name of the image (and atlas file) in the gfx folder.
+     *
+     * @return loaded/created {@link TextureAtlas} pointer
+     */
+    public static TextureAtlas load(String path) {
+        return LOADED_TEXTURES.computeIfAbsent(path, TextureAtlas::new);
     }
 
     /**
@@ -124,5 +146,14 @@ public class TextureAtlas {
                         " be parsed as integers");
             }
         }
+    }
+
+    /**
+     * Gets the pathname for this {@link TextureAtlas}, which can be used to serialize & retrieve atlases from data.
+     *
+     * @return pathname, string
+     */
+    public String getPath() {
+        return path;
     }
 }

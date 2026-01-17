@@ -14,12 +14,12 @@ import java.io.IOException;
  * @author Logan Dhillon
  */
 public class Textures {
-    public static final TextureAtlas PLAYER_IDLE      = new TextureAtlas("player/idle.png");
-    public static final TextureAtlas PLAYER_RUN_LEFT  = new TextureAtlas("player/run_left.png");
-    public static final TextureAtlas PLAYER_RUN_RIGHT = new TextureAtlas("player/run.png");
-    public static final TextureAtlas PLAYER_JUMP      = new TextureAtlas("player/jump.png");
+    public static final TextureAtlas PLAYER_IDLE      = TextureAtlas.load("player/idle.png");
+    public static final TextureAtlas PLAYER_RUN_LEFT  = TextureAtlas.load("player/run_left.png");
+    public static final TextureAtlas PLAYER_RUN_RIGHT = TextureAtlas.load("player/run.png");
+    public static final TextureAtlas PLAYER_JUMP      = TextureAtlas.load("player/jump.png");
 
-    public static final TextureAtlas UNDERGROUND = new TextureAtlas("theme/underground/spritesheet.png");
+    public static final TextureAtlas UNDERGROUND = TextureAtlas.load("theme/underground/spritesheet.png");
 
     public static final AnimationSequence ANIM_PLAYER_IDLE = new AnimationSequence(PLAYER_IDLE, 2,
                                                                                    0, 0,
