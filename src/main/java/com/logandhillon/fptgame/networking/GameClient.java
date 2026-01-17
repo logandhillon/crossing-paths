@@ -1,7 +1,9 @@
 package com.logandhillon.fptgame.networking;
 
 import com.logandhillon.fptgame.GameHandler;
+import com.logandhillon.fptgame.networking.proto.LevelProto;
 import com.logandhillon.fptgame.networking.proto.PlayerProto;
+import com.logandhillon.fptgame.scene.DynamicLevelScene;
 import com.logandhillon.fptgame.scene.menu.LobbyGameContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.networking.PacketWriter;
@@ -148,7 +150,7 @@ public class GameClient {
             }
             case SRV_GAME_STARTING -> {
                 LOG.info("Server has announced that the game is starting");
-                game.startGame();
+                startGame(LevelProto.LevelData.parseFrom(packet.payload()));
             }
             case SRV_SHUTDOWN -> {
                 // going to the main menu will shut down the client
@@ -171,6 +173,16 @@ public class GameClient {
         if (out == null)
             throw new IllegalStateException("Cannot send packets from null PacketWriter; is the client connected?");
         out.send(pkt);
+    }
+
+    /**
+     * Starts the game for the client, showing the {@link DynamicLevelScene} with the correct level data.
+     *
+     * @param level provided level data from server
+     */
+    public void startGame(LevelProto.LevelData level) {
+        game.setInMenu(false);
+        Platform.runLater(() -> game.setScene(new DynamicLevelScene(level)));
     }
 
     /**

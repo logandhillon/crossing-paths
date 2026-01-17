@@ -1,11 +1,15 @@
 package com.logandhillon.fptgame.networking;
 
 import com.logandhillon.fptgame.GameHandler;
+import com.logandhillon.fptgame.networking.proto.LevelProto;
 import com.logandhillon.fptgame.networking.proto.PlayerProto;
+import com.logandhillon.fptgame.resource.Levels;
+import com.logandhillon.fptgame.scene.DynamicLevelScene;
 import com.logandhillon.fptgame.scene.menu.LobbyGameContent;
 import com.logandhillon.fptgame.scene.menu.MenuContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.networking.PacketWriter;
+import javafx.application.Platform;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -257,6 +261,18 @@ public class GameServer implements Runnable {
      */
     public void broadcast(GamePacket pkt) {
         if (guest != null) guest.out.send(pkt);
+    }
+
+    /**
+     * Starts the game for the server: broadcasts the level to connected client(s) and sets the
+     * {@link com.logandhillon.logangamelib.engine.GameScene}.
+     */
+    public void startGame() {
+        LevelProto.LevelData level = Levels.DEBUG_LEVEL; // XXX: hardcode level for server
+        broadcast(new GamePacket(GamePacket.Type.SRV_GAME_STARTING, level));
+        game.setInMenu(false);
+
+        Platform.runLater(() -> game.setScene(new DynamicLevelScene(level)));
     }
 
     /**

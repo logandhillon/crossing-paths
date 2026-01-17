@@ -5,6 +5,7 @@ import com.logandhillon.fptgame.networking.GamePacket;
 import com.logandhillon.fptgame.networking.GameServer;
 import com.logandhillon.fptgame.networking.ServerDiscoverer;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
+import com.logandhillon.fptgame.networking.proto.LevelProto;
 import com.logandhillon.fptgame.resource.Levels;
 import com.logandhillon.fptgame.scene.SingleplayerGameScene;
 import com.logandhillon.fptgame.scene.DynamicLevelScene;
@@ -137,28 +138,6 @@ public class GameHandler extends Application {
         } catch (IOException e) {
             LOG.error("Failed to start server", e);
         }
-    }
-
-    /**
-     * Handles a game start
-     *
-     * @throws IllegalStateException if there is no active server or client
-     */
-    public void startGame() {
-        if (server != null) {
-            // TODO: broadcast game start to clients via server
-            server.broadcast(new GamePacket(GamePacket.Type.SRV_GAME_STARTING));
-        } else if (client != null) {
-            // TODO: handle game scene setup from GameClient
-            // nothing to do for now !!
-        } else {
-            throw new IllegalStateException("You cannot start the game without an active server or client!");
-        }
-
-        isInMenu = false;
-
-        // TODO: dont load debug level here
-        Platform.runLater(() -> setScene(new DynamicLevelScene(Levels.DEBUG_LEVEL)));
     }
 
     public void showJoinGameMenu() {
