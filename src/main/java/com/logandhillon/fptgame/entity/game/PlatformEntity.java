@@ -2,19 +2,16 @@ package com.logandhillon.fptgame.entity.game;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.resource.Colors;
-import com.logandhillon.fptgame.resource.Textures;
 import com.logandhillon.logangamelib.entity.physics.CollisionEntity;
 import com.logandhillon.logangamelib.gfx.TextureAtlas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import org.w3c.dom.Text;
 
 /**
  * @author Logan Dhillon, Jack Ross
  */
 public class PlatformEntity extends CollisionEntity {
 
-    private final int TEXTURE_SCALE = 40;
+    private static final int TEXTURE_SCALE = 40;
     private final int shadowOffset;
     private final int row;
     private final int col;
@@ -37,7 +34,7 @@ public class PlatformEntity extends CollisionEntity {
         super(x, y, w, h);
 
         if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
-            throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
+            throw new IllegalArgumentException("Platform must have a width and height divisible by " + TEXTURE_SCALE);
         }
         this.theme = theme;
         this.themebg = null;
@@ -56,7 +53,7 @@ public class PlatformEntity extends CollisionEntity {
         super(x, y, w, h);
 
         if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
-            throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
+            throw new IllegalArgumentException("Platform must have a width and height divisible by " + TEXTURE_SCALE);
         }
 
         this.theme = theme;
@@ -79,7 +76,7 @@ public class PlatformEntity extends CollisionEntity {
         super(x, y, w, h);
 
         if(w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
-            throw new IllegalArgumentException("Platform must have a widths and heights divisible by " + TEXTURE_SCALE);
+            throw new IllegalArgumentException("Platform must have a width and height divisible by " + TEXTURE_SCALE);
         }
         this.theme = theme;
         this.themebg = themebg;
@@ -93,37 +90,34 @@ public class PlatformEntity extends CollisionEntity {
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
         if(themebg != null){
-            int wide = GameHandler.CANVAS_WIDTH / TEXTURE_SCALE;
-            int tall = GameHandler.CANVAS_HEIGHT / TEXTURE_SCALE;
-
-            for(int i = 0; i < wide; i++){
-                for(int j = 0; j < tall; j++){
+            for(int i = 0; i < GameHandler.CANVAS_WIDTH / TEXTURE_SCALE; i++){
+                for(int j = 0; j < GameHandler.CANVAS_HEIGHT / TEXTURE_SCALE; j++){
                     themebg.draw(g, bgRow, bgCol, i * TEXTURE_SCALE, j * TEXTURE_SCALE, TEXTURE_SCALE, TEXTURE_SCALE);
                 }
             }
         }
         g.setFill(Colors.FOREGROUND_TRANS_40);
-        int v;
+        int tiles;
         if(w > h) { // render right
-            v = (int)(w / TEXTURE_SCALE);
+            tiles = (int)(w / TEXTURE_SCALE);
             if(shadowOffset != 0) {
-                for (int i = 0; i < v; i++) {
+                for (int i = 0; i < tiles; i++) {
                     g.fillRect(x + (i * TEXTURE_SCALE) - shadowOffset, y + shadowOffset, TEXTURE_SCALE, TEXTURE_SCALE); // render shadow right
                 }
             }
-            for(int i = 0; i < v; i++) {
+            for(int i = 0; i < tiles; i++) {
                 theme.draw(g, row, col, x + (i * TEXTURE_SCALE), y, TEXTURE_SCALE, TEXTURE_SCALE);
             }
 
         }
         else { // render down
-            v = (int)(h / TEXTURE_SCALE);
+            tiles = (int)(h / TEXTURE_SCALE);
             if(shadowOffset != 0) {
-                for(int i = 0; i < v; i++) {
+                for(int i = 0; i < tiles; i++) {
                     g.fillRect(x - shadowOffset, y + (i * TEXTURE_SCALE) + shadowOffset, TEXTURE_SCALE, TEXTURE_SCALE); //render shadow down
                 }
             }
-            for(int i = 0; i < v; i++) {
+            for(int i = 0; i < tiles; i++) {
                 theme.draw(g, row, col, x, y + (i * TEXTURE_SCALE), TEXTURE_SCALE, TEXTURE_SCALE);
             }
         }
