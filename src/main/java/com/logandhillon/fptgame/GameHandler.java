@@ -108,6 +108,7 @@ public class GameHandler extends Application {
         setInMenu(true);
         terminateClient();
         terminateServer();
+        terminateDiscoverer();
     }
 
     /**
