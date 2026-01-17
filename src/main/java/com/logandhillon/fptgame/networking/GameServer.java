@@ -240,13 +240,14 @@ public class GameServer implements Runnable {
         if (guest != null) lobby.addPlayer(guest.name, false); // guest
 
         // get the players on each team and send them to the client
-        broadcast(new GamePacket(
-                GamePacket.Type.SRV_UPDATE_PLAYERLIST,
-                PlayerProto.Lobby.newBuilder()
-                                 .setName(lobby.getRoomName())
-                                 .setHost(ProtoBuilder.player(GameHandler.getUserConfig().getName()))
-                                 .setGuest(ProtoBuilder.player(guest.name))
-                                 .build()));
+        var dat = PlayerProto.Lobby.newBuilder()
+                                   .setName(lobby.getRoomName())
+                                   .setHost(ProtoBuilder.player(GameHandler.getUserConfig().getName()));
+
+        // only set guest if it exists
+        if (guest != null) dat.setGuest(ProtoBuilder.player(guest.name));
+
+        broadcast(new GamePacket(GamePacket.Type.SRV_UPDATE_PLAYERLIST, dat.build()));
     }
 
     /**
