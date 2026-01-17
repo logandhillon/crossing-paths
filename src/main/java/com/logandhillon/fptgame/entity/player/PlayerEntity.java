@@ -33,11 +33,8 @@ public class PlayerEntity extends PhysicsEntity {
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
         // render the active texture
-        if (state == AnimationState.JUMP)
-            texture.drawFrame(g, Textures.PLAYER_JUMP_FRAME, x, y - Y_OFFSET, w, h + Y_OFFSET,
-                              Colors.PLAYER_SKINS.getFirst());
-        else
-            texture.draw(g, x, y - Y_OFFSET, w, h + Y_OFFSET, color);
+        if (state == AnimationState.JUMP) texture.drawFrame(g, 0, x, y - Y_OFFSET, w, h + Y_OFFSET, color);
+        else texture.draw(g, x, y - Y_OFFSET, w, h + Y_OFFSET, color);
     }
 
     @Override
