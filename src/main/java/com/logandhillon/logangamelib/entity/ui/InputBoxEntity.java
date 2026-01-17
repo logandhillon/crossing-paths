@@ -88,7 +88,7 @@ public class InputBoxEntity extends Clickable {
         if (input.isEmpty()) {
             // render placeholder
             g.setTextAlign(TextAlignment.LEFT);
-            g.setFill(Colors.FOREGROUND_TRANS);
+            g.setFill(Colors.FOREGROUND_TRANS_40);
             g.fillText(placeholder, x + MARGIN_X, y + MARGIN_Y, maxWidth);
         } else {
             // render input (font is already white)
