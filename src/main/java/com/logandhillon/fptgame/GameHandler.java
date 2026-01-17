@@ -64,7 +64,10 @@ public class GameHandler extends Application {
         stage.setMinWidth(CANVAS_WIDTH / 2f);
         stage.setMinHeight(CANVAS_HEIGHT / 2f);
 
-        setScene(new MenuHandler());
+        String debugMode = System.getenv("LGL_DEBUG_MODE");
+        setScene(debugMode != null && debugMode.equalsIgnoreCase("true")
+                 ? new DebugGameScene() // debug scene if LGL_DEBUG_MODE is true
+                 : new MenuHandler());
         stage.show();
     }
 
@@ -283,7 +286,7 @@ public class GameHandler extends Application {
      *
      * @return SERVER, CLIENT, or NONE
      */
-    public NetworkRole getNetworkRole() {
+    public static NetworkRole getNetworkRole() {
         if (server != null) return NetworkRole.SERVER;
         else if (client != null) return NetworkRole.CLIENT;
         return NetworkRole.NONE;
@@ -326,5 +329,13 @@ public class GameHandler extends Application {
      */
     public static void updateUserConfig(ConfigProto.UserConfig partial) {
         userConfig = UserConfigManager.update(userConfig, partial);
+    }
+
+    public static GameServer getServer() {
+        return server;
+    }
+
+    public static GameClient getClient() {
+        return client;
     }
 }
