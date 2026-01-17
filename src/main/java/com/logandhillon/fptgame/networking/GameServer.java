@@ -237,7 +237,7 @@ public class GameServer implements Runnable {
         lobby.clearPlayers();
 
         lobby.addPlayer(GameHandler.getUserConfig().getName(), true); // host
-        lobby.addPlayer(guest.name, false); // guest
+        if (guest != null) lobby.addPlayer(guest.name, false); // guest
 
         // get the players on each team and send them to the client
         broadcast(new GamePacket(

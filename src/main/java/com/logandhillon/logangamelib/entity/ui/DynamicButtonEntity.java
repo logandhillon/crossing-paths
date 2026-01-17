@@ -1,6 +1,8 @@
 package com.logandhillon.logangamelib.entity.ui;
 
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 
 /**
  * A dynamic button is the same as a regular {@link ButtonEntity}, except that it has TWO styles: the default style, and
@@ -9,6 +11,8 @@ import javafx.scene.input.MouseEvent;
  * @author Logan Dhillon
  */
 public class DynamicButtonEntity extends ButtonEntity {
+    private static final Logger LOG = LoggerContext.getContext().getLogger(DynamicButtonEntity.class);
+
     private final Style defaultStyle;
     private final Style activeStyle;
 
@@ -52,6 +56,7 @@ public class DynamicButtonEntity extends ButtonEntity {
     }
 
     public void setLocked(boolean locked) {
+        LOG.info("{}ing button: {}", locked ? "Lock" : "Unlock", this);
         this.locked = locked;
     }
 
