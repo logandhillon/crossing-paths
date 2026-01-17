@@ -8,7 +8,7 @@ import com.logandhillon.logangamelib.gfx.AtlasTile;
 
 import java.util.List;
 
-import static com.logandhillon.fptgame.resource.Textures.TEXTURE_SCALE;
+import static com.logandhillon.fptgame.resource.Textures.OBJ_SCALE;
 
 /**
  * @author Logan Dhillon
@@ -37,9 +37,9 @@ public class LevelFactory {
         if (!data.hasBackground()) return null;
         AtlasTile tile = AtlasTile.load(data.getBackground());
         return new Renderable(0, 0, (g, x, y) -> {
-            for (int i = 0; i < GameHandler.CANVAS_WIDTH / TEXTURE_SCALE; i++) {
-                for (int j = 0; j < GameHandler.CANVAS_HEIGHT / TEXTURE_SCALE; j++) {
-                    tile.draw(g, i * TEXTURE_SCALE, j * TEXTURE_SCALE, TEXTURE_SCALE, TEXTURE_SCALE);
+            for (int i = 0; i < GameHandler.CANVAS_WIDTH / OBJ_SCALE; i++) {
+                for (int j = 0; j < GameHandler.CANVAS_HEIGHT / OBJ_SCALE; j++) {
+                    tile.draw(g, i * OBJ_SCALE, j * OBJ_SCALE, OBJ_SCALE, OBJ_SCALE);
                 }
             }
         });

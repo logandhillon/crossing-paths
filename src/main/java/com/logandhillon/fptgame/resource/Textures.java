@@ -15,7 +15,7 @@ import java.io.IOException;
  * @author Logan Dhillon
  */
 public class Textures {
-    public static final int TEXTURE_SCALE = 40;
+    public static final int OBJ_SCALE = 40;
 
     public static final TextureAtlas PLAYER_IDLE      = TextureAtlas.load("player/idle.png");
     public static final TextureAtlas PLAYER_RUN_LEFT  = TextureAtlas.load("player/run_left.png");

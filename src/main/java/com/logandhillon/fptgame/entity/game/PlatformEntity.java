@@ -6,14 +6,17 @@ import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.logangamelib.gfx.AtlasTile;
 import javafx.scene.canvas.GraphicsContext;
 
-import static com.logandhillon.fptgame.resource.Textures.TEXTURE_SCALE;
+import static com.logandhillon.fptgame.resource.Textures.OBJ_SCALE;
 
 /**
- * @author Logan Dhillon, Jack Ross
+ * A platform entity is a static {@link com.logandhillon.logangamelib.entity.physics.CollisionEntity} that is available
+ * in {@link com.logandhillon.fptgame.networking.proto.LevelProto.LevelData} and can be added to levels dynamically.
+ *
+ * @author Logan Dhillon
  */
 public class PlatformEntity extends LevelObject {
-    private final        int shadowOffset;
-    private final        AtlasTile texture;
+    private final int       shadowOffset;
+    private final AtlasTile texture;
 
     /**
      * Creates a collidable entity at the specified position with the specified hitbox
@@ -26,62 +29,26 @@ public class PlatformEntity extends LevelObject {
     public PlatformEntity(AtlasTile texture, float x, float y, float w, float h) {
         super(x, y, w, h);
 
-        if (w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
-            throw new IllegalArgumentException("Platform must have a width and height divisible by " + TEXTURE_SCALE);
-        }
+        if (w % OBJ_SCALE != 0 || h % OBJ_SCALE != 0)
+            throw new IllegalArgumentException("Platform must have a width and height divisible by " + OBJ_SCALE);
         this.texture = texture;
         this.shadowOffset = 0;
     }
 
-//    /**
-//     * Collidable entity with shadow
-//     *
-//     * @param shadowOffset distance shadow is from platform
-//     */
-//    public PlatformEntity(TextureAtlas theme, float x, float y, float w, float h, int row, int col, int
-//    shadowOffset) {
-//        super(x, y, w, h);
-//
-//        if (w % TEXTURE_SCALE != 0 || h % TEXTURE_SCALE != 0) {
-//            throw new IllegalArgumentException("Platform must have a width and height divisible by " + TEXTURE_SCALE);
-//        }
-//
-//        this.theme = theme;
-//        this.themebg = null;
-//        this.row = row;
-//        this.col = col;
-//        this.shadowOffset = shadowOffset;
-//        this.bgRow = -1;
-//        this.bgCol = -1;
-//    }
-
     @Override
     protected void onRender(GraphicsContext g, float x, float y) {
         g.setFill(Colors.FOREGROUND_TRANS_40);
-        int tiles;
         if (w > h) { // render right
-            tiles = (int)(w / TEXTURE_SCALE);
-            if (shadowOffset != 0) {
-                for (int i = 0; i < tiles; i++) {
-                    g.fillRect(
-                            x + (i * TEXTURE_SCALE) - shadowOffset, y + shadowOffset, TEXTURE_SCALE,
-                            TEXTURE_SCALE); // render shadow right
-                }
-            }
-            for (int i = 0; i < tiles; i++) {
-                texture.draw(g, x + (i * TEXTURE_SCALE), y, TEXTURE_SCALE, TEXTURE_SCALE);
+            for (int i = 0; i < w / OBJ_SCALE; i++) {
+                if (shadowOffset != 0) // render shadow right
+                    g.fillRect(x + (i * OBJ_SCALE) - shadowOffset, y + shadowOffset, OBJ_SCALE, OBJ_SCALE);
+                texture.draw(g, x + (i * OBJ_SCALE), y, OBJ_SCALE, OBJ_SCALE);
             }
         } else { // render down
-            tiles = (int)(h / TEXTURE_SCALE);
-            if (shadowOffset != 0) {
-                for (int i = 0; i < tiles; i++) {
-                    g.fillRect(
-                            x - shadowOffset, y + (i * TEXTURE_SCALE) + shadowOffset, TEXTURE_SCALE,
-                            TEXTURE_SCALE); //render shadow down
-                }
-            }
-            for (int i = 0; i < tiles; i++) {
-                texture.draw(g, x, y + (i * TEXTURE_SCALE), TEXTURE_SCALE, TEXTURE_SCALE);
+            for (int i = 0; i < h / OBJ_SCALE; i++) {
+                if (shadowOffset != 0) // render shadow down
+                    g.fillRect(x - shadowOffset, y + (i * OBJ_SCALE) + shadowOffset, OBJ_SCALE, OBJ_SCALE);
+                texture.draw(g, x, y + (i * OBJ_SCALE), OBJ_SCALE, OBJ_SCALE);
             }
         }
     }
