@@ -18,16 +18,18 @@ public class PlayerEntity extends PhysicsEntity {
     private static final float MOVE_SPEED = 6f * PX_PER_METER; // m/s
     private static final int   Y_OFFSET   = 12;
 
-    private final Color color;
+    private final Color                  color;
+    private final PlayerMovementListener listener;
 
     private AnimationSequence texture = Textures.ANIM_PLAYER_IDLE.instance();
     private AnimationState    state   = AnimationState.IDLE;
 
     private int moveDirection = 0; // left=-1, 0=none, 1=right
 
-    public PlayerEntity(float x, float y, int color) {
+    public PlayerEntity(float x, float y, int color, PlayerMovementListener listener) {
         super(x, y, 42, 72);
         this.color = Colors.PLAYER_SKINS.get(color);
+        this.listener = listener;
     }
 
     @Override
@@ -62,7 +64,10 @@ public class PlayerEntity extends PhysicsEntity {
      * Makes this player jump, only works if touching the ground
      */
     public void jump() {
-        if (this.isGrounded()) this.vy = -JUMP_POWER;
+        if (this.isGrounded()) {
+            this.vy = -JUMP_POWER;
+            if (listener != null) listener.onJump();
+        }
     }
 
     /**
@@ -72,6 +77,7 @@ public class PlayerEntity extends PhysicsEntity {
      */
     public void setMoveDirection(int dir) {
         moveDirection = dir;
+        if (listener != null) listener.onMove(dir);
     }
 
     /**
@@ -107,5 +113,11 @@ public class PlayerEntity extends PhysicsEntity {
      */
     protected enum AnimationState {
         IDLE, JUMP, WALK_LEFT, WALK_RIGHT
+    }
+
+    public interface PlayerMovementListener {
+        void onJump();
+
+        void onMove(int direction);
     }
 }

@@ -14,8 +14,8 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class ControllablePlayerEntity extends PlayerEntity {
     private static final Logger LOG = LoggerContext.getContext().getLogger(PlayerEntity.class);
 
-    public ControllablePlayerEntity(float x, float y, int color) {
-        super(x, y, color);
+    public ControllablePlayerEntity(float x, float y, int color, PlayerMovementListener listener) {
+        super(x, y, color, listener);
     }
 
     @Override

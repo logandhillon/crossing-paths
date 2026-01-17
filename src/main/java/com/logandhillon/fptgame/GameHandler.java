@@ -286,7 +286,7 @@ public class GameHandler extends Application {
      *
      * @return SERVER, CLIENT, or NONE
      */
-    public NetworkRole getNetworkRole() {
+    public static NetworkRole getNetworkRole() {
         if (server != null) return NetworkRole.SERVER;
         else if (client != null) return NetworkRole.CLIENT;
         return NetworkRole.NONE;
@@ -329,5 +329,13 @@ public class GameHandler extends Application {
      */
     public static void updateUserConfig(ConfigProto.UserConfig partial) {
         userConfig = UserConfigManager.update(userConfig, partial);
+    }
+
+    public static GameServer getServer() {
+        return server;
+    }
+
+    public static GameClient getClient() {
+        return client;
     }
 }

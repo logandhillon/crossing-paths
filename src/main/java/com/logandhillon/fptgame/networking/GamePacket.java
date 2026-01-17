@@ -47,6 +47,9 @@ public record GamePacket(Type type, byte[] payload) {
 
         // client-side types
         CLT_REQ_CONN, // used to request registration upon joining a server
+        CLT_JUMP,
+        CLT_MOVE_L,
+        CLT_MOVE_R
     }
 
     /**
