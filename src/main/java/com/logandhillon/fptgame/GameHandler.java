@@ -76,6 +76,9 @@ public class GameHandler extends Application {
      * @see GameHandler#start(Stage)
      */
     public static void main(String[] args) throws IOException {
+        String lglSaveFile = System.getenv("LGL_SAVE_FILE");
+        if (lglSaveFile != null) UserConfigManager.setManagedFile(lglSaveFile);
+
         // load user config first
         userConfig = UserConfigManager.load();
 
