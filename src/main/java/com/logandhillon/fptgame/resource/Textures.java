@@ -21,7 +21,7 @@ public class Textures {
     public static final TextureAtlas PLAYER_JUMP      = TextureAtlas.load("player/jump.png");
 
     public static final TextureAtlas UNDERGROUND        = TextureAtlas.load("theme/underground/spritesheet.png");
-    public static final AtlasTile    UNDERGROUND_BRICKS = new AtlasTile(UNDERGROUND, 3, 5);
+    public static final AtlasTile    UNDERGROUND_BRICKS = new AtlasTile(UNDERGROUND, 5, 1);
 
     public static final AnimationSequence ANIM_PLAYER_IDLE = new AnimationSequence(PLAYER_IDLE, 2,
                                                                                    0, 0,

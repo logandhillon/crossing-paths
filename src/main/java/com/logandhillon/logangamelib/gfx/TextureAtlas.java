@@ -5,9 +5,13 @@ import com.logandhillon.logangamelib.resource.TextResource;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A texture atlas (commonly known as a tile-set) is an array of multiple textures stitched together in one large
@@ -19,11 +23,13 @@ import java.util.HashMap;
  * @author Logan Dhillon
  */
 public class TextureAtlas {
+    private static final Logger LOG = LoggerContext.getContext().getLogger(TextureAtlas.class);
+
     /**
      * Stores all loaded textures in runtime, so they can be accessed via the {@link TextureAtlas#path} at {@code O(1)}
      * time.
      */
-    private static final HashMap<String, TextureAtlas> LOADED_TEXTURES = new HashMap<>();
+    private static final Map<String, TextureAtlas> LOADED_TEXTURES = new HashMap<>();
 
     protected final Image    image;
     protected final Metadata meta;
@@ -35,6 +41,7 @@ public class TextureAtlas {
      * @param path the name of the image (and atlas file) in the gfx folder.
      */
     private TextureAtlas(String path) {
+        LOG.info("Computing new texture atlas for '{}'", path);
         try (var img = new ImageResource(path);
              var meta = new TextResource("gfx/" + path + ".atlas")
         ) {
@@ -44,7 +51,6 @@ public class TextureAtlas {
             throw new RuntimeException(e);
         }
         this.path = path;
-        LOADED_TEXTURES.put(path, this);
     }
 
     /**

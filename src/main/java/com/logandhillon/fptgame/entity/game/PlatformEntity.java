@@ -134,14 +134,17 @@ public class PlatformEntity extends LevelObject {
 
     @Override
     public LevelProto.LevelObject serialize() {
-        return LevelProto.LevelObject.newBuilder()
-                                     .setX(x)
-                                     .setY(y)
-                                     .setPlatform(LevelProto.Platform.newBuilder()
-                                                                     .setH(h)
-                                                                     .setW(w)
-                                                                     .build())
-                                     .build();
+        return LevelProto.LevelObject
+                .newBuilder()
+                .setX(x)
+                .setY(y)
+                .setPlatform(LevelProto.Platform
+                                     .newBuilder()
+                                     .setH(h)
+                                     .setW(w)
+                                     .setTexture(texture.serialize())
+                                     .build())
+                .build();
     }
 
     public static PlatformEntity load(LevelProto.LevelObject msg) {
