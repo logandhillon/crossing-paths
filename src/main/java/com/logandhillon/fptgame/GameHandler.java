@@ -64,7 +64,10 @@ public class GameHandler extends Application {
         stage.setMinWidth(CANVAS_WIDTH / 2f);
         stage.setMinHeight(CANVAS_HEIGHT / 2f);
 
-        setScene(new MenuHandler());
+        String debugMode = System.getenv("LGL_DEBUG_MODE");
+        setScene(debugMode != null && debugMode.equalsIgnoreCase("true")
+                 ? new DebugGameScene() // debug scene if LGL_DEBUG_MODE is true
+                 : new MenuHandler());
         stage.show();
     }
 

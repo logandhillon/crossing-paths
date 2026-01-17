@@ -1,7 +1,7 @@
 package com.logandhillon.fptgame.scene;
 
 import com.logandhillon.fptgame.entity.game.PlatformEntity;
-import com.logandhillon.fptgame.entity.game.PlayerEntity;
+import com.logandhillon.fptgame.entity.player.ControllablePlayerEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Textures;
 import com.logandhillon.logangamelib.engine.GameScene;
@@ -29,7 +29,7 @@ public class DebugGameScene extends GameScene {
         addEntity(new PlatformEntity(700, 100, 40, 300));
         addEntity(new PlatformEntity(1100, 200, 40, 300));
 
-        var player = new PlayerEntity(1280 / 2f, 200);
+        var player = new ControllablePlayerEntity(1280 / 2f, 200);
         addEntity(player);
 
         addEntity(new TextEntity.Builder(10, 30)
