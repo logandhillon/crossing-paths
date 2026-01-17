@@ -59,14 +59,22 @@ public class UserConfigManager {
             return DEFAULT_CONFIG;
         }
 
+        UserConfig c;
         try (FileInputStream file = new FileInputStream(UserConfigManager.file)) {
-            var c = UserConfig.parseFrom(file);
+            c = UserConfig.parseFrom(file);
             LOG.info("Successfully loaded user config for '{}' from disk", c.getName());
-            return c;
         } catch (IOException e) {
             LOG.error("Failed to load user configuration from {}", file.getAbsolutePath(), e);
             return DEFAULT_CONFIG;
         }
+
+        if (c.getName().isBlank()) {
+            LOG.warn("Loaded name is blank, setting name to default (Player)");
+            c.toBuilder().setName("Player");
+            save(c);
+        }
+
+        return c;
     }
 
     /**
