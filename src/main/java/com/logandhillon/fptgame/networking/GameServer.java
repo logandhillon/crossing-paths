@@ -194,6 +194,12 @@ public class GameServer implements Runnable {
                     }
                     level.get().syncMovement(PlayerProto.PlayerMovementData.parseFrom(packet.payload()));
                 }
+
+                case CLT_DISCONNECT -> {
+                    // going to the main menu will shut down the server
+                    LOG.info("Client disconnected, returning to main menu");
+                    Platform.runLater(() -> game.showAlert("PARTNER DISCONNECTED", "Your partner has left the game."));
+                }
             }
         } catch (IOException e) {
             LOG.error("Failed to close client at {}", client.getInetAddress(), e);

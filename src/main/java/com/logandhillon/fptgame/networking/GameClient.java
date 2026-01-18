@@ -210,6 +210,11 @@ public class GameClient {
      */
     public void close() throws IOException {
         if (socket != null) {
+            if (out != null) {
+                LOG.info("Active connection to peer, sending CLT_DISCONNECT");
+                sendServer(new GamePacket(GamePacket.Type.CLT_DISCONNECT));
+            }
+
             LOG.info("Closing connection to server");
             socket.close();
         }
