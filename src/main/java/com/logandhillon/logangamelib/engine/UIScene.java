@@ -171,6 +171,20 @@ public abstract class UIScene extends GameScene {
         }
     }
 
+    /**
+     * Runs when the mouse is dragged (clicked and moved) in a JavaFX {@link Scene}.
+     * <p>
+     * This method goes through all attached clickables and, if it is within the clickable's hitbox, runs the
+     * {@link Clickable#onDrag(MouseEvent)} handler
+     *
+     * @param e details about the mouse click event. this can be used to get the mouse button pressed, x/y position,
+     *          etc.
+     *
+     * @see MouseEvent
+     * @see UIScene#onMouseRelease(MouseEvent)
+     * @see Clickable#onDrag(MouseEvent)
+     * @see Clickable#onDrop(MouseEvent)
+     */
     protected void onMouseDragged(MouseEvent e) {
         for(Clickable c: cachedClickables) {
             ClickableFlags flags = clickables.get(c);
@@ -183,8 +197,20 @@ public abstract class UIScene extends GameScene {
             }
         }
     }
-
-
+    /**
+     * Runs when the mouse is released in a JavaFX {@link Scene}.
+     * <p>
+     * Opposite to its counterpart {@link UIScene#onMouseDragged(MouseEvent)}, this method goes through all attached
+     * clickables and, if it is within the clickable's hitbox, runs the{@link Clickable#onDrop(MouseEvent)} handler
+     *
+     * @param e details about the mouse click event. this can be used to get the mouse button pressed, x/y position,
+     *          etc.
+     *
+     * @see MouseEvent
+     * @see UIScene#onMouseDragged(MouseEvent)
+     * @see Clickable#onDrag(MouseEvent)
+     * @see Clickable#onDrop(MouseEvent)
+     */
     protected void onMouseRelease(MouseEvent e) {
         for (Clickable c: cachedClickables) {
             ClickableFlags flags = clickables.get(c);

@@ -10,7 +10,6 @@ public class SliderEntity extends Clickable {
     private final int BACKBONE_DIAMETER = 6;
     private final int CIRCLE_DIAMETER = 20;
     private float cx;
-    private float startx;
     private boolean stopDrag;
 
     /**

@@ -56,6 +56,15 @@ public class MenuHandler extends UIScene {
         content.onShow();
     }
 
+    public void addContent(MenuContent content) {
+        for (Entity e: content.getEntities()) addEntity(e);
+        content.onShow();
+    }
+
+    public void removeContent(MenuContent content){
+        for (Entity e: content.getEntities()) removeEntity(e);
+        content.onDestroy();
+    }
     /**
      * Renders the constants for all menus
      *
@@ -84,4 +93,6 @@ public class MenuHandler extends UIScene {
     public MenuContent getContent() {
         return content;
     }
+
+
 }

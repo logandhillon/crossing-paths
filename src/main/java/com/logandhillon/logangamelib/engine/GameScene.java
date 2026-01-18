@@ -220,6 +220,11 @@ public abstract class GameScene {
         e.onAttach(this);
     }
 
+    public void removeEntity(Entity e){
+        entities.remove(e);
+        e.onDestroy();
+    }
+
     /**
      * Removes all entities from this modal that match the predicate
      *

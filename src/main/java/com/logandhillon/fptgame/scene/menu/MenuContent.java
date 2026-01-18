@@ -19,5 +19,7 @@ public interface MenuContent {
      * Runs when this menu content is displayed by its parent {@link MenuHandler}
      */
     default void onShow() {}
+
+    default void onDestroy(){}
 }
 
