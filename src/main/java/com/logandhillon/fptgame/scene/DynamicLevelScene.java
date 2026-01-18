@@ -85,13 +85,12 @@ public class DynamicLevelScene extends GameScene {
         if (hasSelfTarget && self.isGrounded()) {
             float alpha = 1f - (float)Math.exp(-SYNC_LERP * dt);
             float nx = self.getX() + (selfTx - self.getX()) * alpha;
-            float ny = self.getY() + (selfTy - self.getY()) * alpha;
-            self.setPosition(nx, ny);
+            // Y is authoritative, snap immediately
+            self.setPosition(nx, selfTy);
 
             // stop correcting when close enough
             float dx = selfTx - nx;
-            float dy = selfTy - ny;
-            if (dx * dx + dy * dy < SYNC_THRESHOLD) {
+            if (dx * dx < SYNC_THRESHOLD) {
                 self.setPosition(selfTx, selfTy);
                 hasSelfTarget = false;
             }
@@ -146,8 +145,5 @@ public class DynamicLevelScene extends GameScene {
         selfTx = update.getGuest().getX();
         selfTy = update.getGuest().getY();
         hasSelfTarget = true;
-
-//        self.vx = update.getGuest().getVx();
-//        self.vy = update.getGuest().getVy();
     }
 }
