@@ -134,7 +134,7 @@ public class DynamicLevelScene extends GameScene {
             );
         } else {
             // not moving, hard snap to authoritative position
-            self.setPosition(tx, ty);
+//            self.setPosition(tx, ty);
         }
 
         self.vx = update.getGuest().getVx();
