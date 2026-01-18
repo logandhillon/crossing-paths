@@ -24,7 +24,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class DynamicLevelScene extends GameScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(DynamicLevelScene.class);
 
-    private static final float VALID_POS_TOLERANCE = 48f * 48f;
+    private static final float VALID_POS_TOLERANCE = 0;
 
     private final PlayerEntity self;
     private final PlayerEntity other;
@@ -120,7 +120,7 @@ public class DynamicLevelScene extends GameScene {
         float dx = update.getGuest().getX() - self.getX();
         float dy = update.getGuest().getY() - self.getY();
 
-        if (dx*dx+dy*dy > VALID_POS_TOLERANCE) {
+        if (dx * dx + dy * dy > VALID_POS_TOLERANCE) {
             LOG.debug("Exceeded valid position tolerance, synchronizing to remote");
             self.setPosition(update.getGuest().getX(), update.getGuest().getY());
         }
