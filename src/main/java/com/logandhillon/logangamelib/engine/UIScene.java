@@ -215,7 +215,7 @@ public abstract class UIScene extends GameScene {
         for (Clickable c: cachedClickables) {
             ClickableFlags flags = clickables.get(c);
 
-            if (checkHitbox(e, c) && flags.isDragging) {
+            if (flags.isDragging) {
                 c.onDrop(e);
                 flags.isDragging = false;
             }

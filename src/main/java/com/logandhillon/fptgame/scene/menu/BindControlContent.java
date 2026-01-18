@@ -43,7 +43,6 @@ public class BindControlContent implements MenuContent{
                         .setAlign(TextAlignment.CENTER)
                         .setBaseline(VPos.CENTER)
                         .build()};
-        menu.addHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);
     }
 
     /**
@@ -61,12 +60,6 @@ public class BindControlContent implements MenuContent{
         //TODO: Set binding here when framework is in place
     }
 
-    private void onKeyPressed(KeyEvent e){
-        //FIX: This isn't working for some reason
-        if (!(e.getCode().isLetterKey())) return;
-        result = e.getCode();
-        menu.removeContent(this);
-    }
 
     private KeyCode getResult(){
         return result;

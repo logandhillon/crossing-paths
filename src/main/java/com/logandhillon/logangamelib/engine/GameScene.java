@@ -220,11 +220,6 @@ public abstract class GameScene {
         e.onAttach(this);
     }
 
-    public void removeEntity(Entity e){
-        entities.remove(e);
-        e.onDestroy();
-    }
-
     /**
      * Removes all entities from this modal that match the predicate
      *
@@ -339,7 +334,6 @@ public abstract class GameScene {
         }
         return null; // no collision found
     }
-
     /**
      * Registers an event handler that will be attached to the scene when it is built.
      *
@@ -349,6 +343,13 @@ public abstract class GameScene {
     public <T extends Event> void addHandler(EventType<T> type, EventHandler<? super T> handler) {
         handlers.add(new HandlerRef<>(type, handler));
     }
+
+
+    public <T extends Event> void bindHandler(EventType<T> type, EventHandler<? super T> handler) {
+        this.addHandler(type, handler);
+        scene.addEventHandler(type, handler);
+    }
+
 
     /**
      * Safely unregister and delete all handlers

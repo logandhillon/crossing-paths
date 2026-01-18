@@ -10,9 +10,12 @@ import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.logangamelib.entity.Renderable;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 /**
  * The settings menu allows users to customize audio and gameplay settings
@@ -25,8 +28,11 @@ public class SettingsMenuContent implements MenuContent{
     private static final Font     HEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 32);
     private static final Font     SUBHEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 24);
     private static final Font     CONTROLS_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 19);
+    private static final Font    INSTRUCTION_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20);
 
+    private final        MenuHandler menu;
     private final        Entity[] entities;
+    private              Controls currentKeyBind;
     private              KeyCode  moveLeft;
     private              KeyCode  moveRight;
     private              KeyCode  jump;
@@ -37,8 +43,9 @@ public class SettingsMenuContent implements MenuContent{
      *
      * @param menu the {@link MenuHandler} responsible for switching active scenes.
      */
-    public SettingsMenuContent(MenuHandler menu){
+    public SettingsMenuContent(MenuHandler menu) {
 
+        this.menu = menu;
         // volume sliders
         SliderEntity master = new SliderEntity(32, 227, 327, 6, 190);
 
@@ -122,26 +129,42 @@ public class SettingsMenuContent implements MenuContent{
                         .build(),
 
                 // underlines
-                new Renderable(32, 168, (g, x, y) -> {
+                new Renderable(
+                        32, 168, (g, x, y) -> {
                     g.setStroke(Colors.ACTIVE);
                     g.setLineWidth(2);
                     g.strokeLine(x, y, x + 70, y);
                 }),
 
-                new Renderable(32, 439, (g, x, y) -> {
+                new Renderable(
+                        32, 439, (g, x, y) -> {
                     g.setStroke(Colors.ACTIVE);
                     g.setLineWidth(2);
                     g.strokeLine(x, y, x + 113, y);
                 }),
 
                 // control buttons
-                new MenuButton("A", 279, 457, 80, 40, () -> menu.addContent(new BindControlContent(menu))),
 
-                new MenuButton("D", 279, 513, 80, 40, () -> menu.addContent(new BindControlContent(menu))),
+                //TODO: Implement default values via protobuf
+                new MenuButton(
+                        "A", 279, 457, 80, 40, () -> {
+                    currentKeyBind = Controls.LEFT;
+                }),
 
-                new MenuButton("SPACE", 279, 569, 80, 40, () -> menu.addContent(new BindControlContent(menu))),
+                new MenuButton(
+                        "D", 279, 513, 80, 40, () -> {
+                    currentKeyBind = Controls.RIGHT;
+                }),
 
-                new MenuButton("E", 279, 625, 80, 40, () -> menu.addContent(new BindControlContent(menu))),
+                new MenuButton(
+                        "SPACE", 279, 569, 80, 40, () -> {
+                    currentKeyBind = Controls.JUMP;
+                }),
+
+                new MenuButton(
+                        "E", 279, 625, 80, 40, () -> {
+                    currentKeyBind = Controls.INTERACT;
+                }),
 
                 master, music, sfx };
     }
@@ -156,35 +179,66 @@ public class SettingsMenuContent implements MenuContent{
         return entities;
     }
 
-    public KeyCode getMoveLeft() {
-        return moveLeft;
+    @Override
+    public void onShow() {
+        menu.bindHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);
     }
 
-    public void setMoveLeft(KeyCode key) {
-        moveLeft = key;
+    @Override
+    public void onRender(GraphicsContext g) {
+        if (currentKeyBind != null) {
+            g.setFill(Colors.FOREGROUND_TRANS_40);
+            g.fillRect(0 ,0, GameHandler.CANVAS_WIDTH, GameHandler.CANVAS_HEIGHT);
+
+            g.setFill(Colors.ACTIVE);
+            g.setFont(INSTRUCTION_FONT);
+            g.setTextAlign(TextAlignment.CENTER);
+            g.setTextBaseline(VPos.CENTER);
+            g.fillText("PRESS ANY BUTTON", GameHandler.CANVAS_WIDTH / 2f,GameHandler.CANVAS_HEIGHT / 2f);
+        }
+    }
+
+    private enum Controls {
+        LEFT, RIGHT, JUMP, INTERACT
+    }
+
+    private void onKeyPressed(KeyEvent e){
+        if (!(e.getCode().isLetterKey())) return;
+
+        switch (currentKeyBind) {
+            case LEFT -> {
+                moveLeft = e.getCode();
+                currentKeyBind = null;
+            }
+            case RIGHT -> {
+                moveRight = e.getCode();
+                currentKeyBind = null;
+            }
+            case JUMP-> {
+                jump = e.getCode();
+                currentKeyBind = null;
+            }
+            case INTERACT -> {
+                interact = e.getCode();
+                currentKeyBind = null;
+            }
+        }
+    }
+
+
+    public KeyCode getMoveLeft() {
+        return moveLeft;
     }
 
     public KeyCode getMoveRight() {
         return moveRight;
     }
 
-    public void setMoveRight(KeyCode key) {
-        moveRight = key;
-    }
-
     public KeyCode getJump() {
         return jump;
     }
 
-    public void setJump(KeyCode key) {
-        jump = key;
-    }
-
     public KeyCode getInteract() {
         return interact;
-    }
-
-    public void setInteract(KeyCode key) {
-        interact = key;
     }
 }
