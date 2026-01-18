@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 
 /**
@@ -127,15 +128,19 @@ public class GameClient {
 
                 var data = PlayerProto.Lobby.parseFrom(packet.payload());
 
-                MenuHandler menu = game.getActiveScene(MenuHandler.class);
-                var lobby = new LobbyGameContent(menu, data.getName(), false);
+                Optional<MenuHandler> menu = game.getActiveScene(MenuHandler.class);
+                if (menu.isEmpty()) {
+                    LOG.error("Illegal operation: attempted to update player list; not in MenuHandler");
+                    return;
+                }
+                var lobby = new LobbyGameContent(menu.get(), data.getName(), false);
                 lobby.clearPlayers();
 
                 game.setInMenu(true);
 
                 // run setContent on the FX thread
                 Platform.runLater(() -> {
-                    menu.setContent(lobby);
+                    menu.get().setContent(lobby);
                     // set lobby players on FX thread, since the content must exist before setting players
                     lobby.addPlayer(data.getHost().getName(), true);
                     lobby.addPlayer(data.getGuest().getName(), false);

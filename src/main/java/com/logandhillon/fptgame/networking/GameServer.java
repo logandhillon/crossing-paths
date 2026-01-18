@@ -129,9 +129,9 @@ public class GameServer implements Runnable {
                         if (guest.socket == client) guest = null;
                         clients.remove(client);
 
-                        MenuHandler menu = game.getActiveScene(MenuHandler.class);
-                        if (menu != null) {
-                            MenuContent content = menu.getContent();
+                        Optional<MenuHandler> menu = game.getActiveScene(MenuHandler.class);
+                        if (menu.isPresent()) {
+                            MenuContent content = menu.get().getContent();
                             if (content instanceof LobbyGameContent lobby) {
                                 propagateLobbyUpdate(lobby);
                             }
@@ -206,8 +206,8 @@ public class GameServer implements Runnable {
             }
 
             // get the lobby in advance, so it can get null if we shouldn't do this
-            var menu = game.getActiveScene(MenuHandler.class);
-            if (menu == null || !(menu.getContent() instanceof LobbyGameContent lobby)) {
+            Optional<MenuHandler> menu = game.getActiveScene(MenuHandler.class);
+            if (menu.isEmpty() || !(menu.get().getContent() instanceof LobbyGameContent lobby)) {
                 // if lobby IS null, then just throw a warn and return early ;)
                 LOG.warn(
                         "Server got a registration request, but was not ready for it. Closing client at {}.",
@@ -289,8 +289,8 @@ public class GameServer implements Runnable {
                 while (running) {
                     // only listen in lobby
                     if (game.isInGame()) continue;
-                    var menu = game.getActiveScene(MenuHandler.class);
-                    if (!(menu.getContent() instanceof LobbyGameContent lobby)) {
+                    Optional<MenuHandler> menu = game.getActiveScene(MenuHandler.class);
+                    if (menu.isEmpty() || !(menu.get().getContent() instanceof LobbyGameContent lobby)) {
                         LOG.warn("Supposed to be in lobby, but lobby was null. Will not advertise this frame.");
                         return;
                     }

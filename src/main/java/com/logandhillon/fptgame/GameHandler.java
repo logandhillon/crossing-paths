@@ -21,6 +21,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Optional;
 
 public class GameHandler extends Application {
     private static final Logger LOG               = LoggerContext.getContext().getLogger(GameHandler.class);
@@ -119,9 +120,9 @@ public class GameHandler extends Application {
     }
 
     public void goToMainMenu() {
-        var menu = this.getActiveScene(MenuHandler.class);
-        if (menu == null) this.setScene(new MenuHandler());
-        else menu.setContent(new MainMenuContent(menu));
+        Optional<MenuHandler> menu = this.getActiveScene(MenuHandler.class);
+        if (menu.isEmpty()) this.setScene(new MenuHandler());
+        else menu.get().setContent(new MainMenuContent(menu.get()));
         setInMenu(true);
         terminateClient();
         terminateServer();
@@ -135,9 +136,11 @@ public class GameHandler extends Application {
      */
     public void createLobby(String roomName) {
         LOG.info("Creating lobby named {}", roomName);
-        MenuHandler menu = getActiveScene(MenuHandler.class);
-        var lobby = new LobbyGameContent(menu, roomName, true);
-        menu.setContent(lobby); // set content first so we can populate lobby after
+        Optional<MenuHandler> menu = getActiveScene(MenuHandler.class);
+        if (menu.isEmpty()) throw new IllegalStateException("Cannot create lobby without active MenuHandler");
+
+        var lobby = new LobbyGameContent(menu.get(), roomName, true);
+        menu.get().setContent(lobby); // set content first so we can populate lobby after
         lobby.addPlayer(GameHandler.getUserConfig().getName(), true);
 
         if (server != null) throw new IllegalStateException("Server already exists, cannot establish connection");
@@ -154,8 +157,9 @@ public class GameHandler extends Application {
     public void showJoinGameMenu() {
         discoverer = new ServerDiscoverer(this);
         discoverer.start();
-        MenuHandler menu = getActiveScene(MenuHandler.class);
-        menu.setContent(new JoinGameContent(menu, this::joinGame));
+        Optional<MenuHandler> menu = getActiveScene(MenuHandler.class);
+        if (menu.isEmpty()) throw new IllegalStateException("Cannot show game menu without active MenuHandler");
+        menu.get().setContent(new JoinGameContent(menu.orElse(null), this::joinGame));
     }
 
     /**
@@ -256,12 +260,12 @@ public class GameHandler extends Application {
      */
     public void showAlert(String title, String message) {
         LOG.info("Showing alert {}: {}", title, message);
-        MenuHandler menu = getActiveScene(MenuHandler.class);
-        if (menu == null) {
+        MenuHandler menu = getActiveScene(MenuHandler.class).orElseGet(() -> {
             LOG.debug("No MenuHandler active, creating new one");
-            menu = new MenuHandler();
-            setScene(menu);
-        }
+            MenuHandler scene = new MenuHandler();
+            setScene(scene);
+            return scene;
+        });
         menu.setContent(new MenuAlertScene(title, message, menu));
     }
 
@@ -273,11 +277,11 @@ public class GameHandler extends Application {
      *
      * @return the active {@link GameScene} if it is the right type, or null if it's not
      */
-    public <T extends GameScene> T getActiveScene(Class<T> type) {
+    public <T extends GameScene> Optional<T> getActiveScene(Class<T> type) {
         if (!type.isInstance(activeScene))
-            return null;
+            return Optional.empty();
 
-        return type.cast(activeScene);
+        return Optional.of(type.cast(activeScene));
     }
 
     /**
