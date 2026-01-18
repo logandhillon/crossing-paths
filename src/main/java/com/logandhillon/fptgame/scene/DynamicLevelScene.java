@@ -83,24 +83,17 @@ public class DynamicLevelScene extends GameScene {
 
         // continuous lerp for local player
         if (hasSelfTarget && self.isGrounded()) {
-            // if not moving, move directly to target
-            if (self.getMoveDirection() == 0) {
+            float alpha = 1f - (float)Math.exp(-SYNC_LERP * dt);
+            float nx = self.getX() + (selfTx - self.getX()) * alpha;
+            float ny = self.getY() + (selfTy - self.getY()) * alpha;
+            self.setPosition(nx, ny);
+
+            // stop correcting when close enough
+            float dx = selfTx - nx;
+            float dy = selfTy - ny;
+            if (dx * dx + dy * dy < SYNC_THRESHOLD) {
                 self.setPosition(selfTx, selfTy);
                 hasSelfTarget = false;
-            } else {
-                // otherwise lerp towards it
-                float alpha = 1f - (float)Math.exp(-SYNC_LERP * dt);
-                float nx = self.getX() + (selfTx - self.getX()) * alpha;
-                float ny = self.getY() + (selfTy - self.getY()) * alpha;
-                self.setPosition(nx, ny);
-
-                // stop correcting when close enough
-                float dx = selfTx - nx;
-                float dy = selfTy - ny;
-                if (dx * dx + dy * dy < SYNC_THRESHOLD) {
-                    self.setPosition(selfTx, selfTy);
-                    hasSelfTarget = false;
-                }
             }
         }
     }
@@ -154,7 +147,7 @@ public class DynamicLevelScene extends GameScene {
         selfTy = update.getGuest().getY();
         hasSelfTarget = true;
 
-        self.vx = update.getGuest().getVx();
-        self.vy = update.getGuest().getVy();
+//        self.vx = update.getGuest().getVx();
+//        self.vy = update.getGuest().getVy();
     }
 }
