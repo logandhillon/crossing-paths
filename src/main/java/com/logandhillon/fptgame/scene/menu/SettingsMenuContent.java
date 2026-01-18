@@ -16,6 +16,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+
+import java.util.HashMap;
 
 /**
  * The settings menu allows users to customize audio and gameplay settings
@@ -23,15 +27,17 @@ import javafx.scene.text.TextAlignment;
  * @author Jack Ross
  */
 public class SettingsMenuContent implements MenuContent {
-    private final        String HEADER           = "SETTINGS";
+    private static final Logger LOG              = LoggerContext.getContext().getLogger(SettingsMenuContent.class);
     private static final Font   HEADER_FONT      = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 32);
     private static final Font   SUBHEADER_FONT   = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 24);
     private static final Font   CONTROLS_FONT    = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 19);
     private static final Font   INSTRUCTION_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20);
 
-    private final MenuHandler menu;
-    private final Entity[]    entities;
-    private       Controls    currentKeyBind;
+    private final MenuHandler                  menu;
+    private final Entity[]                     entities;
+    private final HashMap<KeyBind, MenuButton> KEY_BIND_BUTTONS = new HashMap<>();
+
+    private KeyBind currentKeyBind;
 
     /**
      * Creates content for settings menu
@@ -43,19 +49,38 @@ public class SettingsMenuContent implements MenuContent {
         this.menu = menu;
         // volume sliders
         SliderEntity master = new SliderEntity(32, 227, 327, 6, 190);
-
         SliderEntity music = new SliderEntity(32, 296, 327, 6, 190);
-
         SliderEntity sfx = new SliderEntity(32, 365, 327, 6, 190);
 
+        // key bind buttons
+        KEY_BIND_BUTTONS.put(
+                KeyBind.LEFT,
+                new MenuButton(GameHandler.getUserConfig().getKeyMoveLeft(),
+                               279, 457, 80, 40,
+                               () -> currentKeyBind = KeyBind.LEFT));
+        KEY_BIND_BUTTONS.put(
+                KeyBind.RIGHT,
+                new MenuButton(GameHandler.getUserConfig().getKeyMoveRight(),
+                               279, 513, 80, 40,
+                               () -> currentKeyBind = KeyBind.RIGHT));
+        KEY_BIND_BUTTONS.put(
+                KeyBind.JUMP,
+                new MenuButton(GameHandler.getUserConfig().getKeyMoveJump(),
+                               279, 569, 80, 40,
+                               () -> currentKeyBind = KeyBind.JUMP));
+        KEY_BIND_BUTTONS.put(
+                KeyBind.INTERACT,
+                new MenuButton(GameHandler.getUserConfig().getKeyMoveInteract(),
+                               279, 625, 80, 40,
+                               () -> currentKeyBind = KeyBind.INTERACT));
+
         entities = new Entity[]{
-                new MenuModalEntity(
-                        0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu),
+                new MenuModalEntity(0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu),
 
                 // labels/menu headers
                 new TextEntity.Builder(32, 66)
                         .setColor(Colors.ACTIVE)
-                        .setText(HEADER.toUpperCase())
+                        .setText("SETTINGS")
                         .setFont(HEADER_FONT)
                         .setBaseline(VPos.TOP)
                         .build(),
@@ -124,36 +149,23 @@ public class SettingsMenuContent implements MenuContent {
                         .build(),
 
                 // underlines
-                new Renderable(
-                        32, 168, (g, x, y) -> {
+                new Renderable(32, 168, (g, x, y) -> {
                     g.setStroke(Colors.ACTIVE);
                     g.setLineWidth(2);
                     g.strokeLine(x, y, x + 70, y);
                 }),
 
-                new Renderable(
-                        32, 439, (g, x, y) -> {
+                new Renderable(32, 439, (g, x, y) -> {
                     g.setStroke(Colors.ACTIVE);
                     g.setLineWidth(2);
                     g.strokeLine(x, y, x + 113, y);
                 }),
 
                 // control buttons
-                new MenuButton(GameHandler.getUserConfig().getKeyMoveLeft(),
-                               279, 457, 80, 40,
-                               () -> currentKeyBind = Controls.LEFT),
-
-                new MenuButton(GameHandler.getUserConfig().getKeyMoveRight(),
-                               279, 513, 80, 40,
-                               () -> currentKeyBind = Controls.RIGHT),
-
-                new MenuButton(GameHandler.getUserConfig().getKeyMoveJump(),
-                               279, 569, 80, 40,
-                               () -> currentKeyBind = Controls.JUMP),
-
-                new MenuButton(GameHandler.getUserConfig().getKeyMoveInteract(),
-                               279, 625, 80, 40,
-                               () -> currentKeyBind = Controls.INTERACT),
+                KEY_BIND_BUTTONS.get(KeyBind.LEFT),
+                KEY_BIND_BUTTONS.get(KeyBind.RIGHT),
+                KEY_BIND_BUTTONS.get(KeyBind.JUMP),
+                KEY_BIND_BUTTONS.get(KeyBind.INTERACT),
 
                 master, music, sfx };
     }
@@ -187,46 +199,40 @@ public class SettingsMenuContent implements MenuContent {
         }
     }
 
-    private enum Controls {
+    private enum KeyBind {
         LEFT, RIGHT, JUMP, INTERACT
     }
 
     private void onKeyPressed(KeyEvent e) {
-        if (!(e.getCode().isLetterKey())) return; //  TODO: use any non-duplicate
+        if (currentKeyBind == null) return;
+        // TODO: ignore duplicate keys
+
+        LOG.info("Setting {} to {}", currentKeyBind, e.getCode().name());
 
         switch (currentKeyBind) {
-            case LEFT -> {
-                GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig
-                                .newBuilder()
-                                .setKeyMoveLeft(e.getCode().name())
-                                .buildPartial());
-                currentKeyBind = null;
-            }
-            case RIGHT -> {
-                GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig
-                                .newBuilder()
-                                .setKeyMoveRight(e.getCode().name())
-                                .buildPartial());
-                currentKeyBind = null;
-            }
-            case JUMP -> {
-                GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig
-                                .newBuilder()
-                                .setKeyMoveJump(e.getCode().name())
-                                .buildPartial());
-                currentKeyBind = null;
-            }
-            case INTERACT -> {
-                GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig
-                                .newBuilder()
-                                .setKeyMoveInteract(e.getCode().name())
-                                .buildPartial());
-                currentKeyBind = null;
-            }
+            case LEFT -> GameHandler.updateUserConfig(
+                    ConfigProto.UserConfig
+                            .newBuilder()
+                            .setKeyMoveLeft(e.getCode().name())
+                            .buildPartial());
+            case RIGHT -> GameHandler.updateUserConfig(
+                    ConfigProto.UserConfig
+                            .newBuilder()
+                            .setKeyMoveRight(e.getCode().name())
+                            .buildPartial());
+            case JUMP -> GameHandler.updateUserConfig(
+                    ConfigProto.UserConfig
+                            .newBuilder()
+                            .setKeyMoveJump(e.getCode().name())
+                            .buildPartial());
+            case INTERACT -> GameHandler.updateUserConfig(
+                    ConfigProto.UserConfig
+                            .newBuilder()
+                            .setKeyMoveInteract(e.getCode().name())
+                            .buildPartial());
         }
+
+        KEY_BIND_BUTTONS.get(currentKeyBind).setText(e.getCode().name()); // update btn text
+        currentKeyBind = null;
     }
 }
