@@ -110,6 +110,10 @@ public class DynamicLevelScene extends GameScene {
         other.vx = update.getHost().getVx();
         other.vy = update.getHost().getVy();
 
+        if (!self.isGrounded()) {
+            LOG.debug("Ignoring sync request as we are not grounded");
+            return;
+        }
         self.setPosition(update.getGuest().getX(), update.getGuest().getY());
         self.vx = update.getGuest().getVx();
         self.vy = update.getGuest().getVy();

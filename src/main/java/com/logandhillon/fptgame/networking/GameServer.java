@@ -180,7 +180,17 @@ public class GameServer implements Runnable {
             // finally, parse the request
             switch (packet.type()) {
                 // if peer is trying to move, add instruction to queue
-                case COM_JUMP, COM_MOVE_L, COM_MOVE_R, COM_STOP_MOVING -> queuedPeerMovements.add(packet.type());
+                case COM_JUMP, COM_MOVE_L, COM_MOVE_R, COM_STOP_MOVING -> {
+                    queuedPeerMovements.add(packet.type());
+
+                    if (packet.type() == GamePacket.Type.COM_JUMP) return;
+                    Optional<DynamicLevelScene> level = game.getActiveScene(DynamicLevelScene.class);
+                    if (level.isEmpty()) {
+                        LOG.warn("Tried to sync movement, but was not in DynamicLevelScene; skipping message");
+                        return;
+                    }
+                    broadcast(new GamePacket(GamePacket.Type.SRV_SYNC_MOVEMENT, level.get().buildMovementSyncMsg()));
+                }
             }
         } catch (IOException e) {
             LOG.error("Failed to close client at {}", client.getInetAddress(), e);

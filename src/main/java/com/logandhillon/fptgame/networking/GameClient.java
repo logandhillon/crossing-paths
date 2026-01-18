@@ -164,6 +164,15 @@ public class GameClient {
             }
             // if peer is trying to move, add instruction to queue
             case COM_JUMP, COM_MOVE_L, COM_MOVE_R, COM_STOP_MOVING -> queuedPeerMovements.add(packet.type());
+
+            case SRV_SYNC_MOVEMENT -> {
+                Optional<DynamicLevelScene> level = game.getActiveScene(DynamicLevelScene.class);
+                if (level.isEmpty()) {
+                    LOG.warn("Tried to sync movement, but was not in DynamicLevelScene; skipping message");
+                    return;
+                }
+                level.get().syncMovement(PlayerProto.PlayerPositionSync.parseFrom(packet.payload()));
+            }
         }
     }
 
