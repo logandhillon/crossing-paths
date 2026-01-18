@@ -24,7 +24,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class DynamicLevelScene extends GameScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(DynamicLevelScene.class);
 
-    private static final float SYNC_LERP      = 0.15f; // how aggressively we correct per second
+    private static final float SYNC_LERP      = 0.5f; // how aggressively we correct per second
     private static final float SYNC_THRESHOLD = 0.25f; // sq px to consider a position "valid"
 
     // our real position as per the server
@@ -83,17 +83,23 @@ public class DynamicLevelScene extends GameScene {
 
         // continuous lerp for local player
         if (hasSelfTarget && self.isGrounded()) {
-            float alpha = 1f - (float)Math.exp(-SYNC_LERP * dt);
-            float nx = self.getX() + (selfTx - self.getX()) * alpha;
-            float ny = self.getY() + (selfTy - self.getY()) * alpha;
-            self.setPosition(nx, ny);
-
-            // stop correcting when close enough
-            float dx = selfTx - nx;
-            float dy = selfTy - ny;
-            if (dx * dx + dy * dy < SYNC_THRESHOLD) {
+            // if not moving, move directly to target
+            if (self.getMoveDirection() == 0) {
                 self.setPosition(selfTx, selfTy);
-                hasSelfTarget = false;
+            } else {
+                // otherwise lerp towards it
+                float alpha = 1f - (float)Math.exp(-SYNC_LERP * dt);
+                float nx = self.getX() + (selfTx - self.getX()) * alpha;
+                float ny = self.getY() + (selfTy - self.getY()) * alpha;
+                self.setPosition(nx, ny);
+
+                // stop correcting when close enough
+                float dx = selfTx - nx;
+                float dy = selfTy - ny;
+                if (dx * dx + dy * dy < SYNC_THRESHOLD) {
+                    self.setPosition(selfTx, selfTy);
+                    hasSelfTarget = false;
+                }
             }
         }
     }
