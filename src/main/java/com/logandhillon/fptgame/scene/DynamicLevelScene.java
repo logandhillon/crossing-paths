@@ -24,6 +24,8 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class DynamicLevelScene extends GameScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(DynamicLevelScene.class);
 
+    private static final float SYNC_LERP = 0.15f; // how aggressively we correct
+
     private final PlayerEntity self;
     private final PlayerEntity other;
     private final PeerMovementPoller movePoller;
@@ -106,16 +108,25 @@ public class DynamicLevelScene extends GameScene {
      */
     public void syncMovement(PlayerProto.PlayerPositionSync update) {
         LOG.debug("Updating movement from remote");
-        other.setPosition(update.getHost().getX(), update.getHost().getY());
+
+        // remote player is always authoritative
+        other.setPosition(
+                other.getX() + (update.getHost().getX() - other.getX()) * SYNC_LERP,
+                other.getY() + (update.getHost().getY() - other.getY()) * SYNC_LERP
+        );
         other.vx = update.getHost().getVx();
         other.vy = update.getHost().getVy();
 
-        if (!self.isGrounded()) {
-            LOG.debug("Ignoring sync request as we are not grounded");
-            return;
+        // our position is an estimate, we are the authoritative answer; therefore lerp our position
+        if (self.isGrounded()) {
+            // grounded: gently correct position
+            self.setPosition(
+                    self.getX() + (update.getGuest().getX() - self.getX()) * SYNC_LERP,
+                    self.getY() + (update.getGuest().getY() - self.getY()) * SYNC_LERP
+            );
+            self.vx = update.getGuest().getVx();
+            self.vy = update.getGuest().getVy();
         }
-        self.setPosition(update.getGuest().getX(), update.getGuest().getY());
-        self.vx = update.getGuest().getVx();
-        self.vy = update.getGuest().getVy();
+        // airborne: ignore position, keep local prediction
     }
 }
