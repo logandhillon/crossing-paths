@@ -32,4 +32,5 @@ message LevelObject {
 message LevelData {
   repeated LevelObject objects = 1;
   AtlasTile background = 2;
+  optional LevelData nextLevel = 3;
 }

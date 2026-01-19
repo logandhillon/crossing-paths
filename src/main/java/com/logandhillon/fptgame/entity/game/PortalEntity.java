@@ -46,6 +46,10 @@ public class PortalEntity extends LevelObject {
 
     }
 
+    public boolean isRed() {
+        return isRed;
+    }
+
     @Override
     public LevelProto.LevelObject serialize() {
         return LevelProto.LevelObject

@@ -299,6 +299,24 @@ public abstract class GameScene {
     }
 
     /**
+     * Checks if an entity is colliding with ANY other entity, given a predicate
+     *
+     * @param caller    entity to check collisions for
+     * @param predicate when to consider a collision valid
+     *
+     * @return entity that caller is colliding with, or null
+     *
+     * @see GameScene#checkCollision(CollisionEntity, CollisionEntity)
+     */
+    public CollisionEntity getEntityCollision(CollisionEntity caller, Predicate<CollisionEntity> predicate) {
+        for (CollisionEntity e: collisionEntities) {
+            if (e == caller) continue; // skip the caller
+            if (predicate.test(e) && checkCollision(caller, e)) return e; // return if collision is found
+        }
+        return null; // no collision found
+    }
+
+    /**
      * Checks a given (x,y) and size for collisions and returns the entity if there is one
      *
      * @param caller the entity that is checking for collisions (can be null)
@@ -334,6 +352,7 @@ public abstract class GameScene {
         }
         return null; // no collision found
     }
+
     /**
      * Registers an event handler that will be attached to the scene when it is built.
      *
@@ -346,6 +365,7 @@ public abstract class GameScene {
 
     /**
      * Binds an event handler to the scene when the scene is built
+     *
      * @param type    the type of event to fire on
      * @param handler the event handler itself (the method that will run)
      */
@@ -354,7 +374,6 @@ public abstract class GameScene {
         this.addHandler(type, handler);
         scene.addEventHandler(type, handler);
     }
-
 
     /**
      * Safely unregister and delete all handlers
