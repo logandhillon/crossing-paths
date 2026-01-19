@@ -1,5 +1,8 @@
 package com.logandhillon.logangamelib.resource;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -9,6 +12,8 @@ import java.lang.reflect.InvocationTargetException;
  * @author Logan Dhillon
  */
 public class ResourceLoader {
+    private static final Logger LOG = LoggerContext.getContext().getLogger(ResourceLoader.class);
+
     /**
      * Safely loads an {@link IResource} and returns the type of resource, catching the potential {@link IOException}
      * and throwing a runtime {@link ResourceLoaderException} instead.
@@ -20,6 +25,7 @@ public class ResourceLoader {
      */
     public static <T> T loadSafe(Class<? extends Resource<T>> resource, String pathname) {
         try (var res = resource.getDeclaredConstructor(String.class).newInstance(pathname)) {
+            LOG.info("Loaded {} from {}", resource.getSimpleName(), pathname);
             return res.load();
         } catch (IOException e) {
             throw new ResourceLoaderException(e);

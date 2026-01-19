@@ -2,6 +2,7 @@ package com.logandhillon.fptgame.entity.ui.component;
 
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
+import com.logandhillon.fptgame.resource.Sounds;
 import com.logandhillon.logangamelib.entity.ui.DynamicButtonEntity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -16,9 +17,11 @@ import javafx.scene.text.TextAlignment;
  */
 public class MenuButton extends DynamicButtonEntity {
     private static final Style DEFAULT_STYLE = new Style(
-            Colors.FOREGROUND, Colors.BUTTON_NORMAL, Variant.SOLID, true, Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20));
+            Colors.FOREGROUND, Colors.BUTTON_NORMAL, Variant.SOLID, true,
+            Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 20));
     private static final Style ACTIVE_STYLE  = new Style(
-            Colors.FOREGROUND, Colors.BUTTON_HOVER, Variant.SOLID, true, Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 21));
+            Colors.FOREGROUND, Colors.BUTTON_HOVER, Variant.SOLID, true,
+            Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 21));
 
     private final Runnable pressHandler;
 
@@ -27,6 +30,24 @@ public class MenuButton extends DynamicButtonEntity {
     private final float iy;
     private final float iw;
     private final float ih;
+
+    private MenuButton(String label, Image icon, float x, float y, float w, float h, float ix, float iy, float iw,
+                       float ih, Runnable onPress) {
+        super(label, x, y, w, h, e -> {
+                  Sounds.playSfx(Sounds.MENU_CLICK);
+                  onPress.run();
+              },
+              DEFAULT_STYLE, ACTIVE_STYLE);
+        this.pressHandler = () -> {
+            Sounds.playSfx(Sounds.MENU_CLICK);
+            onPress.run();
+        };
+        this.icon = icon;
+        this.ix = ix;
+        this.iy = iy;
+        this.iw = iw;
+        this.ih = ih;
+    }
 
     /**
      * Creates a new dynamic button entity using the preset styles for menu buttons.
@@ -37,13 +58,7 @@ public class MenuButton extends DynamicButtonEntity {
      * @param onPress the action that should happen when this button is clicked
      */
     public MenuButton(String label, float x, float y, float w, float h, Runnable onPress) {
-        super(label.toUpperCase(), x, y, w, h, e -> onPress.run(), DEFAULT_STYLE, ACTIVE_STYLE);
-        this.pressHandler = onPress;
-        icon = null;
-        ix = -1;
-        iy = -1;
-        iw = -1;
-        ih = -1;
+        this(label.toUpperCase(), null, x, y, w, h, -1, -1, -1, -1, onPress);
     }
 
     /**
@@ -51,15 +66,11 @@ public class MenuButton extends DynamicButtonEntity {
      *
      * @param icon the text to show on the button
      */
-    public MenuButton(Image icon, float x, float y, float w, float h, float ix, float iy, float iw, float ih, Runnable onPress) {
-        super(null, x, y, w, h, e -> onPress.run(), DEFAULT_STYLE, ACTIVE_STYLE);
-        this.pressHandler = onPress;
-        this.icon = icon;
-        this.ix = ix;
-        this.iy = iy;
-        this.iw = iw;
-        this.ih = ih;
+    public MenuButton(Image icon, float x, float y, float w, float h, float ix, float iy, float iw, float ih,
+                      Runnable onPress) {
+        this(null, icon, x, y, w, h, ix, iy, iw, ih, onPress);
     }
+
     /**
      * Runs the {@code onPress} press handler.
      */
@@ -72,7 +83,7 @@ public class MenuButton extends DynamicButtonEntity {
         super.onRender(g, x, y);
         // assuming the fill and font have already been set from super#onRender
 
-        if(icon != null) {
+        if (icon != null) {
             g.setImageSmoothing(false);
             g.drawImage(icon, ix, iy, iw, ih);
         }
