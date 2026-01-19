@@ -3,7 +3,7 @@ package com.logandhillon.logangamelib.engine;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.entity.Clickable;
 import com.logandhillon.logangamelib.entity.Entity;
-import com.logandhillon.logangamelib.entity.ui.UIObserverEntity;
+import com.logandhillon.logangamelib.entity.ui.Draggable;
 import javafx.geometry.Point3D;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -49,9 +49,11 @@ public abstract class UIScene extends GameScene {
      *              errors. Ensure safety before calling this.
      */
     public void addMouseEvents(boolean force) {
+        this.addHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
         this.addHandler(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
         this.addHandler(MouseEvent.MOUSE_MOVED, this::onMouseMoved);
         this.addHandler(MouseEvent.MOUSE_RELEASED, this::onMouseRelease);
+        this.addHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
         if (force) {
             this.bindAllEvents();
         }
@@ -139,6 +141,19 @@ public abstract class UIScene extends GameScene {
     }
 
     /**
+     * Handles mouse pressed events and passes them to the {@link Clickable}
+     *
+     * @param e javafx mouse event
+     *
+     * @see MouseEvent#MOUSE_PRESSED
+     */
+    protected void onMousePressed(MouseEvent e) {
+        for (Clickable c: cachedClickables) {
+            if (checkHitbox(e, c)) c.onMouseDown(e);
+        }
+    }
+
+    /**
      * Runs when the mouse is moved within the JavaFX {@link Scene}.
      * <p>
      * This method goes through all attached clickables and, if it is within the clickable's hitbox, runs the
@@ -151,7 +166,6 @@ public abstract class UIScene extends GameScene {
      * @see MouseEvent
      * @see Clickable#onMouseEnter(MouseEvent)
      * @see Clickable#onMouseLeave(MouseEvent)
-     * @see UIObserverEntity#onMouseMove(MouseEvent)
      */
     protected void onMouseMoved(MouseEvent e) {
         for (Clickable c: cachedClickables) {
@@ -168,26 +182,33 @@ public abstract class UIScene extends GameScene {
                 c.onMouseLeave(e);
                 flags.isHovering = false; // mark as not active
             }
-
-            if (c instanceof UIObserverEntity o) o.onRelease(e);
         }
+    }
+
+    /**
+     * Similar to {@link UIScene#onMouseMoved(MouseEvent)}, but for when the mouse is DOWN, instead of UP.
+     *
+     * @param e jfx mouse event
+     */
+    protected void onMouseDragged(MouseEvent e) {
+        for (Clickable c: cachedClickables) if (c instanceof Draggable o) o.onMouseDragged(e);
     }
 
     /**
      * Runs when the mouse is released in a JavaFX {@link Scene}.
      * <p>
      * This method goes through all attached clickables and, if it is within the clickable's hitbox, runs
-     * the{@link UIObserverEntity#onRelease(MouseEvent)} handler
+     * the{@link Draggable#onMouseUp(MouseEvent)} handler
      *
      * @param e details about the mouse click event. this can be used to get the mouse button pressed, x/y position,
      *          etc.
      *
-     * @apiNote this event is only used by {@link UIObserverEntity}
+     * @apiNote this event is only used by {@link Draggable}
      * @see MouseEvent
-     * @see UIObserverEntity#onRelease(MouseEvent)
+     * @see Draggable#onMouseUp(MouseEvent)
      */
     protected void onMouseRelease(MouseEvent e) {
-        for (Clickable c: cachedClickables) if (c instanceof UIObserverEntity o) o.onRelease(e);
+        for (Clickable c: cachedClickables) if (c instanceof Draggable o) o.onMouseUp(e);
     }
 
     /**

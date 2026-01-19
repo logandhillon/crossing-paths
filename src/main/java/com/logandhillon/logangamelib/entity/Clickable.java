@@ -42,6 +42,14 @@ public abstract class Clickable extends BoundEntity<UIScene> {
     public void onBlur() {}
 
     /**
+     * Called when the mouse is pressed (not clicked) on this Clickable.
+     *
+     * @param e javafx mouse event
+     * @see MouseEvent#MOUSE_PRESSED
+     */
+    public void onMouseDown(MouseEvent e) {}
+
+    /**
      * Runs the mouse enter handler if it was set.
      *
      * @param e the mouse event provided by JavaFX

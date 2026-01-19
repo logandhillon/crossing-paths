@@ -4,7 +4,7 @@ import com.logandhillon.logangamelib.entity.Clickable;
 import javafx.scene.input.MouseEvent;
 
 /**
- * A {@link UIObserverEntity} is a type of UI entity that extends {@link Clickable}, but subscribes to ALL events in the
+ * A {@link Draggable} is a type of UI entity that extends {@link Clickable}, but subscribes to ALL events in the
  * {@link com.logandhillon.logangamelib.engine.UIScene}.
  * <p>
  * This entity has access to general mouse movement events, mouse release anywhere on the screen, etc.
@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
  * @author Logan Dhillon
  * @apiNote as this entity subscribes to ALL UI events, it should be used sparingly.
  */
-public abstract class UIObserverEntity extends Clickable {
+public abstract class Draggable extends Clickable {
     /**
      * Creates an entity at the specified position.
      *
@@ -21,7 +21,7 @@ public abstract class UIObserverEntity extends Clickable {
      * @param w width of this element's hitbox
      * @param h width of this element's hitbox
      */
-    public UIObserverEntity(float x, float y, float w, float h) {
+    public Draggable(float x, float y, float w, float h) {
         super(x, y, w, h);
     }
 
@@ -30,12 +30,12 @@ public abstract class UIObserverEntity extends Clickable {
      *
      * @param e the mouse event provided by JavaFX
      */
-    public void onRelease(MouseEvent e) {}
+    public void onMouseUp(MouseEvent e) {}
 
     /**
-     * Called when the mouse moves anywhere on the screen
+     * Called when the mouse is dragged (moved whilst mouse down) anywhere on the screen
      *
      * @param e the mouse event provided by JavaFX
      */
-    public void onMouseMove(MouseEvent e) {}
+    public void onMouseDragged(MouseEvent e) {}
 }
