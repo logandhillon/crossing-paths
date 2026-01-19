@@ -74,6 +74,7 @@ public class Levels {
             .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 440, 160, 40, 160).serialize())
             .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 800, 160, 40, 160).serialize())
             .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 1080, 0, 40, 440).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 1280, 0, 40, 440).serialize())
 
             .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 360, 560, 40, 120, LevelProto.Color.RED).serialize())
             .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 320, 160, 120, 40, LevelProto.Color.RED).serialize())
