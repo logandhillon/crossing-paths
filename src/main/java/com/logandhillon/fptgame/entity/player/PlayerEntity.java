@@ -22,7 +22,7 @@ import java.util.function.Predicate;
  * @see ControllablePlayerEntity
  */
 public class PlayerEntity extends PhysicsEntity {
-    private static final float JUMP_POWER    = 12f * PX_PER_METER; // m/s
+    private static final float JUMP_POWER    = 13.5f * PX_PER_METER; // m/s
     private static final float MOVE_SPEED    = 6f * PX_PER_METER; // m/s
     private static final int   Y_OFFSET      = 12;
     private static final float STRIDE_LENGTH = 60f; // px per footstep
