@@ -26,7 +26,7 @@ import java.util.Optional;
 
 public class GameHandler extends Application {
     private static final Logger LOG               = LoggerContext.getContext().getLogger(GameHandler.class);
-    public static final  String GAME_NAME         = "FPT GAME";
+    public static final  String GAME_NAME         = "CROSSING PATHS";
     public static final  int    CANVAS_WIDTH      = 1280; // the width of the rendered canvas
     public static final  int    CANVAS_HEIGHT     = 720; // the height of the rendered canvas
     public static final  float  ASPECT_RATIO      = (float)CANVAS_WIDTH / CANVAS_HEIGHT;

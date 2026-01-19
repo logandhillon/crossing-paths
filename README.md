@@ -1,6 +1,6 @@
-# FPT GAME
+# Crossing Paths
 
-FPT GAME is a **2D online multiplayer puzzle‑platformer** built around tight cooperation, asymmetric level design, and
+Crossing Paths is a **2D online multiplayer puzzle‑platformer** built around tight cooperation, asymmetric level design, and
 precision movement.
 
 The game is designed for **exactly two players**. Each player has a distinct role, route, and set of constraints,
@@ -27,7 +27,7 @@ Mistakes by one player can block or trap the other, increasing difficulty and te
 
 ## Networking Model
 
-FPT GAME uses a **custom authoritative networking model**:
+Crossing Paths uses a **custom authoritative networking model**:
 
 - **Client‑side prediction** with server reconciliation
 
@@ -49,7 +49,7 @@ This system was built specifically for this game rather than relying on third‑
 
 ## Engine
 
-The game is built on **logangamelib**, a custom Java game engine developed specifically for FPT GAME.
+The game is built on **logangamelib**, a custom Java game engine developed specifically for Crossing Paths.
 
 logangamelib (lgl) provides:
 
@@ -113,7 +113,7 @@ Both players must be running compatible builds.
 
 ## Project Status
 
-FPT GAME is an actively developed project focused on:
+Crossing Paths is an actively developed project focused on:
 
 - Tight movement feel
 
