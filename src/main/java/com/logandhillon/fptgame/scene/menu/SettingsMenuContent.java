@@ -46,6 +46,7 @@ public class SettingsMenuContent implements MenuContent {
     private final HashMap<KeyBind, String>     USED_KEY_BINDS   = new HashMap<>();
 
     private KeyBind currentKeyBind;
+    private String  updateKeyBindStatus = "";
 
     /**
      * Creates content for settings menu
@@ -207,6 +208,9 @@ public class SettingsMenuContent implements MenuContent {
             g.setTextAlign(TextAlignment.CENTER);
             g.setTextBaseline(VPos.CENTER);
             g.fillText("PRESS ANY BUTTON", GameHandler.CANVAS_WIDTH / 2f, GameHandler.CANVAS_HEIGHT / 2f);
+
+            if (!updateKeyBindStatus.isEmpty())
+                g.fillText(updateKeyBindStatus, GameHandler.CANVAS_WIDTH / 2f, GameHandler.CANVAS_HEIGHT / 2f + 30);
         }
     }
 
@@ -215,36 +219,30 @@ public class SettingsMenuContent implements MenuContent {
     }
 
     private void onKeyPressed(KeyEvent e) {
-        // ignore duplicate keys
-        if (currentKeyBind == null || USED_KEY_BINDS.containsValue(e.getCode().name())) return;
+        if (currentKeyBind == null) return;
 
-        LOG.info("Setting {} to {}", currentKeyBind, e.getCode().name());
+        // ignore duplicate keys
+        var code = e.getCode().name();
+        if (USED_KEY_BINDS.containsValue(code)) {
+            updateKeyBindStatus = String.format("'%s' is in-use", code);
+            return;
+        }
+
+        LOG.info("Setting {} to {}", currentKeyBind, code);
 
         switch (currentKeyBind) {
             case LEFT -> GameHandler.updateUserConfig(
-                    ConfigProto.UserConfig
-                            .newBuilder()
-                            .setKeyMoveLeft(e.getCode().name())
-                            .buildPartial());
+                    ConfigProto.UserConfig.newBuilder().setKeyMoveLeft(code).buildPartial());
             case RIGHT -> GameHandler.updateUserConfig(
-                    ConfigProto.UserConfig
-                            .newBuilder()
-                            .setKeyMoveRight(e.getCode().name())
-                            .buildPartial());
+                    ConfigProto.UserConfig.newBuilder().setKeyMoveRight(code).buildPartial());
             case JUMP -> GameHandler.updateUserConfig(
-                    ConfigProto.UserConfig
-                            .newBuilder()
-                            .setKeyMoveJump(e.getCode().name())
-                            .buildPartial());
+                    ConfigProto.UserConfig.newBuilder().setKeyMoveJump(code).buildPartial());
             case INTERACT -> GameHandler.updateUserConfig(
-                    ConfigProto.UserConfig
-                            .newBuilder()
-                            .setKeyMoveInteract(e.getCode().name())
-                            .buildPartial());
+                    ConfigProto.UserConfig.newBuilder().setKeyMoveInteract(code).buildPartial());
         }
 
-        USED_KEY_BINDS.put(currentKeyBind, e.getCode().name()); // update map to check duplicates against
-        KEY_BIND_BUTTONS.get(currentKeyBind).setText(e.getCode().name()); // update btn text
+        USED_KEY_BINDS.put(currentKeyBind, code); // update map to check duplicates against
+        KEY_BIND_BUTTONS.get(currentKeyBind).setText(code); // update btn text
         currentKeyBind = null;
     }
 }
