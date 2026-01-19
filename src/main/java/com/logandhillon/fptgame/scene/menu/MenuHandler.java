@@ -30,7 +30,7 @@ public class MenuHandler extends UIScene {
      * Creates a new menu handler that has default content of {@link MainMenuContent}
      */
     public MenuHandler() {
-        this.content = new MainMenuContent(this);
+        this.content = new LobbyGameContent(this, "room name", true);
     }
 
     /**

@@ -7,6 +7,7 @@ import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.logangamelib.entity.Entity;
+import com.logandhillon.logangamelib.entity.ui.ModalEntity;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
 import javafx.scene.text.Font;
@@ -23,6 +24,9 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class LobbyGameContent implements MenuContent {
     private static final Logger LOG         = LoggerContext.getContext().getLogger(LobbyGameContent.class);
     private static final Font   HEADER_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 40);
+    private static final Font   SELECTED_LEVEL_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 19);
+    private static final Font   LEVEL_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 19);
+    private static final Font   DIFFICULTY_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 16);
 
     private static final int[][] PLAYER_ICON_ARGS = new int[][]{
             // iconX, iconY, colorIdx, textX, textY
@@ -61,6 +65,9 @@ public class LobbyGameContent implements MenuContent {
             isStartingAllowed = false;
         }
 
+        MenuButton icon = new MenuButton("2", 32, 374, 64, 64, true, false, () -> {}); //TODO: Change label when level is selected
+
+        icon.setFlags(true, true);
         lobbyModal = new MenuModalEntity(
                 0, 0, 442, GameHandler.CANVAS_HEIGHT, true, menu,
                 startButton,
@@ -68,7 +75,30 @@ public class LobbyGameContent implements MenuContent {
                                               .setText(roomName.toUpperCase())
                                               .setFont(HEADER_FONT)
                                               .setBaseline(VPos.TOP)
-                                              .build());
+                                              .build(),
+
+                new TextEntity.Builder(32, 333)
+                        .setColor(Colors.ACTIVE)
+                        .setText("SELECTED LEVEL:")
+                        .setFont(SELECTED_LEVEL_FONT)
+                        .setBaseline(VPos.TOP)
+                        .build(),
+
+                new TextEntity.Builder(120, 380)
+                        .setColor(Colors.ACTIVE)
+                        .setText("Level Name") //TODO: Change this when level is selected
+                        .setFont(LEVEL_FONT)
+                        .setBaseline(VPos.TOP)
+                        .build(),
+
+                new TextEntity.Builder(120, 410)
+                        .setColor(Colors.ACTIVE_TRANS_50)
+                        .setText("Easy") //TODO: Change this when level is selected
+                        .setFont(DIFFICULTY_FONT)
+                        .setBaseline(VPos.TOP)
+                        .build(),
+                icon
+        );
 
         // creates list of entities to be used by menu handler
         entities = new Entity[]{ lobbyModal };
