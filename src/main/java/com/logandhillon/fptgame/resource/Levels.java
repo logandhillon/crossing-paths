@@ -14,6 +14,11 @@ import com.logandhillon.fptgame.networking.proto.LevelProto;
  * @author Logan Dhillon, Jack Ross
  */
 public class Levels {
+    /**
+     * Test levels used for debugging the game, contains every aspect of the game that may need to be debugged/tested.
+     *
+     * @author Logan Dhillon
+     */
     public static class Debug {
         public static final LevelProto.LevelData DEBUG_LEVEL_2 = LevelProto.LevelData
                 .newBuilder()
