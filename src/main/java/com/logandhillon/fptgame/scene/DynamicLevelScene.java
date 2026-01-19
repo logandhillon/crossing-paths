@@ -62,15 +62,18 @@ public class DynamicLevelScene extends GameScene {
 
         // poll our peer's move and apply it to our instance.
         GamePacket.Type move = movePoller.poll();
-        if (move == null) return;
-        LOG.debug("Processing peer movement '{}'", move);
-        switch (move) {
-            case COM_JUMP -> other.jump();
-            case COM_MOVE_L -> other.setMoveDirection(-1);
-            case COM_MOVE_R -> other.setMoveDirection(1);
-            case COM_STOP_MOVING -> other.setMoveDirection(0);
+        if (move != null) {
+            LOG.debug("Processing peer movement '{}'", move);
+            switch (move) {
+                case COM_JUMP -> other.jump();
+                case COM_MOVE_L -> other.setMoveDirection(-1);
+                case COM_MOVE_R -> other.setMoveDirection(1);
+                case COM_STOP_MOVING -> other.setMoveDirection(0);
+            }
         }
     }
+
+
 
     /**
      * Takes in the {@link PlayerProto.PlayerMovementData} from the partner/other, and "synchronizes" their

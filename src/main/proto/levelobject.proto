@@ -15,12 +15,17 @@ message Platform {
   AtlasTile texture = 3;
 }
 
+message Portal {
+  bool isRed = 1;
+}
+
 message LevelObject {
   float x = 1;
   float y = 2;
 
   oneof data {
     Platform platform = 3;
+    Portal portal = 4;
   }
 }
 

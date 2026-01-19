@@ -6,6 +6,7 @@ module com.logandhillon.fptgame {
     requires org.apache.logging.log4j.core;
     requires com.google.protobuf;
     requires javafx.controls;
+    requires java.desktop;
 
     opens com.logandhillon.fptgame to javafx.fxml;
 
