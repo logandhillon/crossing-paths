@@ -52,6 +52,11 @@ public class Textures {
     public static final AnimationSequence ANIM_PLAYER_JUMP = new AnimationSequence(PLAYER_JUMP, 0, 3, 0);
 
     /**
+     * no-op to force the class to load
+     */
+    public static void init() {}
+
+    /**
      * Generates a new instance of the ocean8 {@link ParallaxBackground}
      */
     public static ParallaxBackground ocean8() {
