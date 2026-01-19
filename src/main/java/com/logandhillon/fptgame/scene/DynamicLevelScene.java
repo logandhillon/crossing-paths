@@ -54,9 +54,7 @@ public class DynamicLevelScene extends LevelScene {
 
     @Override
     public void restartLevel() {
-        if (isServer) {
-            super.restartLevel();
-        }
+        if (isServer) super.restartLevel();
         else LOG.warn("Client cannot restart level!");
     }
 

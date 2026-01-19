@@ -32,8 +32,15 @@ public abstract class LevelScene extends GameScene {
     private final ArrayList<MovingPlatformEntity> movingPlatforms = new ArrayList<>();
     private final ArrayList<PlatformEntity>       platforms       = new ArrayList<>();
 
+    /**
+     * if true, this should not attempt to switch levels anymore.
+     */
+    private boolean isSwitchingLevels;
+
     public LevelScene(LevelProto.LevelData level) {
         this.level = level;
+        this.isSwitchingLevels = false;
+
         // show the background or a black bg if no background
         Renderable bg = LevelFactory.buildBgOrNull(level);
         if (bg != null) addEntity(bg);
@@ -66,8 +73,7 @@ public abstract class LevelScene extends GameScene {
     public void nextLevel() {
         if (level.hasNextLevel()) {
             LOG.info("Going to next level");
-            getParent().setScene(this.build(level.getNextLevel()));
-            broadcastLevel(level.getNextLevel());
+            setLevel(level.getNextLevel());
         } else {
             LOG.info("No next level in this level, going to main menu");
             getParent().setScene(new MenuHandler());
@@ -76,6 +82,13 @@ public abstract class LevelScene extends GameScene {
 
     public void restartLevel() {
         LOG.info("Restarting level");
+        setLevel(level);
+    }
+
+    private void setLevel(LevelProto.LevelData level) {
+        if (isSwitchingLevels) return;
+        isSwitchingLevels = true;
+
         Sounds.playSfx(Sounds.GAME_START_LEVEL);
         getParent().setScene(this.build(level));
         broadcastLevel(level);
