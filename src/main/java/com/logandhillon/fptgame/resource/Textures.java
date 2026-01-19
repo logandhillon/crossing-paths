@@ -27,6 +27,15 @@ public class Textures {
     public static final AtlasTile    UNDERGROUND_PIPE   = new AtlasTile(UNDERGROUND, 15, 7);
     public static final AtlasTile    UNDERGROUND_BG     = new AtlasTile(UNDERGROUND, 11, 11);
 
+    public static final TextureAtlas      PORTAL      = TextureAtlas.load("portal.png");
+    public static final AnimationSequence PORTAL_ANIM = new AnimationSequence(PORTAL, 4,
+                                                                              0, 0,
+                                                                              1, 0,
+                                                                              2, 0,
+                                                                              0, 1,
+                                                                              1, 1,
+                                                                              2, 1);
+
     public static final AnimationSequence ANIM_PLAYER_IDLE = new AnimationSequence(PLAYER_IDLE, 2,
                                                                                    0, 0,
                                                                                    1, 0,

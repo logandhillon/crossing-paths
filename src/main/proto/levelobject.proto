@@ -3,6 +3,12 @@ syntax = "proto3";
 option java_package = "com.logandhillon.fptgame.networking.proto";
 option java_outer_classname = "LevelProto";
 
+enum Color {
+  NONE = 0;
+  RED = 1;
+  BLUE = 2;
+}
+
 message AtlasTile {
   string atlas_path = 1;
   uint32 row = 2;
@@ -13,6 +19,30 @@ message Platform {
   float w = 1;
   float h = 2;
   AtlasTile texture = 3;
+
+  optional Color color = 4;
+}
+
+message MovingPlatform {
+  float w = 1;
+  float h = 2;
+  AtlasTile texture = 3;
+
+  optional Color color = 4;
+
+  // position the platform will move to
+  float dest_x = 5;
+  float dest_y = 6;
+  float speed = 7; // speed of platform in m/s
+
+  bool going_towards_dest = 8;
+}
+
+message Portal {
+  bool is_red = 1;
+}
+
+message LevelButton {
 }
 
 message LevelObject {
@@ -21,10 +51,19 @@ message LevelObject {
 
   oneof data {
     Platform platform = 3;
+    Portal portal = 4;
+    MovingPlatform moving_platform = 5;
+    LevelButton level_button = 6;
   }
 }
 
 message LevelData {
   repeated LevelObject objects = 1;
   AtlasTile background = 2;
+  optional LevelData next_level = 3;
+
+  float player1_spawn_x = 4;
+  float player1_spawn_y = 5;
+  float player2_spawn_x = 6;
+  float player2_spawn_y = 7;
 }

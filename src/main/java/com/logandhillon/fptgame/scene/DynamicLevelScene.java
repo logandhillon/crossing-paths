@@ -1,18 +1,15 @@
 package com.logandhillon.fptgame.scene;
 
 import com.logandhillon.fptgame.GameHandler;
+import com.logandhillon.fptgame.entity.game.PortalEntity;
 import com.logandhillon.fptgame.entity.player.ControllablePlayerEntity;
 import com.logandhillon.fptgame.entity.player.PlayerEntity;
 import com.logandhillon.fptgame.entity.player.PlayerInputSender;
-import com.logandhillon.fptgame.level.LevelFactory;
-import com.logandhillon.fptgame.level.LevelObject;
 import com.logandhillon.fptgame.networking.GamePacket;
 import com.logandhillon.fptgame.networking.PeerMovementPoller;
 import com.logandhillon.fptgame.networking.proto.LevelProto;
 import com.logandhillon.fptgame.networking.proto.PlayerProto;
 import com.logandhillon.logangamelib.engine.GameScene;
-import com.logandhillon.logangamelib.entity.Renderable;
-import javafx.scene.paint.Color;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -21,21 +18,16 @@ import org.apache.logging.log4j.core.LoggerContext;
  *
  * @author Logan Dhillon
  */
-public class DynamicLevelScene extends GameScene {
+public class DynamicLevelScene extends LevelScene {
     private static final Logger LOG = LoggerContext.getContext().getLogger(DynamicLevelScene.class);
 
-    private final PlayerEntity other;
+    private final PlayerEntity       other;
+    private final PlayerEntity       self;
+    private final boolean            isServer;
     private final PeerMovementPoller movePoller;
 
     public DynamicLevelScene(LevelProto.LevelData level) {
-        // show the background or a black bg if no background
-        Renderable bg = LevelFactory.buildBgOrNull(level);
-        if (bg != null) addEntity(bg);
-        else addEntity(new Renderable(0, 0, (g, x, y) -> {
-            g.setFill(Color.BLACK);
-            g.fillRect(0, 0, GameHandler.CANVAS_WIDTH, GameHandler.CANVAS_HEIGHT);
-        }));
-
+        super(level);
         GameHandler.NetworkRole role = GameHandler.getNetworkRole();
         if (role == GameHandler.NetworkRole.SERVER) {
             movePoller = GameHandler.getServer().queuedPeerMovements::poll;
@@ -45,15 +37,24 @@ public class DynamicLevelScene extends GameScene {
             throw new IllegalStateException("GameHandler is neither SERVER nor CLIENT, cannot poll peer");
         }
 
-        for (LevelObject obj: LevelFactory.load(level)) addEntity(obj);
+        isServer = role == GameHandler.NetworkRole.SERVER;
+        // dynamically get spawn positions, given server is player 1 and client is player 2
+        float[][] spawns = isServer ? new float[][]{ { level.getPlayer1SpawnX(), level.getPlayer1SpawnY() },
+                                                     { level.getPlayer2SpawnX(), level.getPlayer2SpawnY() } }
+                                    : new float[][]{ { level.getPlayer2SpawnX(), level.getPlayer2SpawnY() },
+                                                     { level.getPlayer1SpawnX(), level.getPlayer1SpawnY() } };
 
-        other = new PlayerEntity(0, 0, role == GameHandler.NetworkRole.SERVER ? 1 : 0, null);
+        // other player has inverted colors compared to us
+        other = new PlayerEntity(spawns[0][0], spawns[0][1], isServer ? 1 : 0, null);
         addEntity(other);
 
-        PlayerEntity self = new ControllablePlayerEntity(0, 0,
-                                                         role == GameHandler.NetworkRole.SERVER ? 0 : 1,
-                                                         new PlayerInputSender());
+        self = new ControllablePlayerEntity(spawns[1][0], spawns[1][1], isServer ? 0 : 1, new PlayerInputSender());
         addEntity(self); // render self on top of other, we should always be visible first.
+    }
+
+    @Override
+    protected LevelScene createNext(LevelProto.LevelData level) {
+        return new DynamicLevelScene(level);
     }
 
     @Override
@@ -62,19 +63,27 @@ public class DynamicLevelScene extends GameScene {
 
         // poll our peer's move and apply it to our instance.
         GamePacket.Type move = movePoller.poll();
-        if (move == null) return;
-        LOG.debug("Processing peer movement '{}'", move);
-        switch (move) {
-            case COM_JUMP -> other.jump();
-            case COM_MOVE_L -> other.setMoveDirection(-1);
-            case COM_MOVE_R -> other.setMoveDirection(1);
-            case COM_STOP_MOVING -> other.setMoveDirection(0);
+        if (move != null) {
+            LOG.debug("Processing peer movement '{}'", move);
+            switch (move) {
+                case COM_JUMP -> other.jump();
+                case COM_MOVE_L -> other.setMoveDirection(-1);
+                case COM_MOVE_R -> other.setMoveDirection(1);
+                case COM_STOP_MOVING -> other.setMoveDirection(0);
+            }
+        }
+
+        // isServer also == isRed
+        if (isServer) {
+            PortalEntity selfColl = (PortalEntity)getEntityCollision(self, PortalEntity.class::isInstance);
+            PortalEntity otherColl = (PortalEntity)getEntityCollision(other, PortalEntity.class::isInstance);
+            if (selfColl != null && selfColl.isRed() && otherColl != null && !otherColl.isRed()) nextLevel();
         }
     }
 
     /**
-     * Takes in the {@link PlayerProto.PlayerMovementData} from the partner/other, and "synchronizes" their
-     * position to the incoming update message.
+     * Takes in the {@link PlayerProto.PlayerMovementData} from the partner/other, and "synchronizes" their position to
+     * the incoming update message.
      *
      * @param update the incoming {@link PlayerProto.PlayerMovementData} update message
      */
