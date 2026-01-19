@@ -10,19 +10,20 @@ public class SliderEntity extends Draggable {
     private static final int BACKBONE_DIAMETER = 6;
     private static final int CIRCLE_DIAMETER   = 20;
 
-    private float cx;
+    private float value;
 
     private boolean active;
 
     /**
      * Creates slider at the specified position.
      *
-     * @param x x-position (from left)
-     * @param y y-position (from top)
+     * @param x            x-position (from left)
+     * @param y            y-position (from top)
+     * @param defaultValue default value of the slider (0.0-1.0)
      */
-    public SliderEntity(float x, float y, float w, float h, float cx) {
+    public SliderEntity(float x, float y, float w, float h, float defaultValue) {
         super(x, y, w, h);
-        this.cx = cx;
+        this.value = Math.clamp(defaultValue * w, 0, w);
     }
 
     @Override
@@ -33,11 +34,11 @@ public class SliderEntity extends Draggable {
 
         // backbone filled part
         g.setFill(Colors.BUTTON_HOVER);
-        g.fillRoundRect(x, y, cx - x + 5, h, BACKBONE_DIAMETER, BACKBONE_DIAMETER);
+        g.fillRoundRect(x, y, value + 5, h, BACKBONE_DIAMETER, BACKBONE_DIAMETER);
 
         // slider knob
         g.setFill(active ? Colors.SLIDER_HEAD_ACTIVE : Colors.SLIDER_HEAD);
-        g.fillArc(cx, y - BACKBONE_DIAMETER, CIRCLE_DIAMETER, CIRCLE_DIAMETER, 0, 360, ArcType.ROUND);
+        g.fillArc(value + x, y - BACKBONE_DIAMETER, CIRCLE_DIAMETER, CIRCLE_DIAMETER, 0, 360, ArcType.ROUND);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class SliderEntity extends Draggable {
     @Override
     public void onMouseDown(MouseEvent e) {
         active = true;
-        cx = (float)e.getX();
+        updateValue((float)e.getX());
     }
 
     @Override
@@ -63,10 +64,22 @@ public class SliderEntity extends Draggable {
     @Override
     public void onMouseDragged(MouseEvent e) {
         if (!this.active) return;
-        cx = (float)e.getX();
+        updateValue((float)e.getX());
     }
 
+    /**
+     * Sets the value based on the x position of the mouse.
+     */
+    private void updateValue(float mouseX) {
+        this.value = Math.clamp(mouseX, 0, w);
+    }
+
+    /**
+     * Gets the value on a percentage scale.
+     *
+     * @return value of slider (0.0-1.0)
+     */
     public float getValue() {
-        return (cx - x + (CIRCLE_DIAMETER / 2f)) / w;
+        return value / w;
     }
 }
