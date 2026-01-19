@@ -6,9 +6,12 @@ import com.logandhillon.fptgame.entity.game.PlatformEntity;
 import com.logandhillon.fptgame.level.LevelFactory;
 import com.logandhillon.fptgame.level.LevelObject;
 import com.logandhillon.fptgame.networking.proto.LevelProto;
+import com.logandhillon.fptgame.resource.Sounds;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.engine.GameScene;
 import com.logandhillon.logangamelib.entity.Renderable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -44,9 +47,16 @@ public abstract class LevelScene extends GameScene {
             if (obj instanceof PlatformEntity e) platforms.add(e);
             if (obj instanceof MovingPlatformEntity e) movingPlatforms.add(e);
         }
+
+        // restart on R pressed
+        addHandler(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.R) restartLevel();
+        });
     }
 
-    protected abstract LevelScene createNext(LevelProto.LevelData level);
+    protected abstract LevelScene build(LevelProto.LevelData level);
+
+    protected void broadcastLevel(LevelProto.LevelData level) {}
 
     /**
      * Goes to the next level if there is a next level present in the
@@ -56,11 +66,19 @@ public abstract class LevelScene extends GameScene {
     public void nextLevel() {
         if (level.hasNextLevel()) {
             LOG.info("Going to next level");
-            getParent().setScene(this.createNext(level.getNextLevel()));
+            getParent().setScene(this.build(level.getNextLevel()));
+            broadcastLevel(level.getNextLevel());
         } else {
             LOG.info("No next level in this level, going to main menu");
             getParent().setScene(new MenuHandler());
         }
+    }
+
+    public void restartLevel() {
+        LOG.info("Restarting level");
+        Sounds.playSfx(Sounds.GAME_START_LEVEL);
+        getParent().setScene(this.build(level));
+        broadcastLevel(level);
     }
 
     /**

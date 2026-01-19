@@ -45,7 +45,7 @@ public class SingleplayerGameScene extends LevelScene {
     }
 
     @Override
-    protected LevelScene createNext(LevelProto.LevelData level) {
+    protected LevelScene build(LevelProto.LevelData level) {
         return new SingleplayerGameScene(level);
     }
 }

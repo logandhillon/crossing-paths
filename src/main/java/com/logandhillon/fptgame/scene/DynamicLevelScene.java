@@ -53,8 +53,24 @@ public class DynamicLevelScene extends LevelScene {
     }
 
     @Override
-    protected LevelScene createNext(LevelProto.LevelData level) {
+    public void restartLevel() {
+        if (isServer) {
+            super.restartLevel();
+        }
+        else LOG.warn("Client cannot restart level!");
+    }
+
+    @Override
+    protected LevelScene build(LevelProto.LevelData level) {
         return new DynamicLevelScene(level);
+    }
+
+    @Override
+    protected void broadcastLevel(LevelProto.LevelData level) {
+        if (isServer) {
+            LOG.info("Broadcasting level to peer(s)");
+            GameHandler.getServer().broadcast(new GamePacket(GamePacket.Type.SRV_GAME_STARTING, level));
+        }
     }
 
     @Override
