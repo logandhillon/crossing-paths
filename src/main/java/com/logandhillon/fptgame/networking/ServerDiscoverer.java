@@ -93,6 +93,7 @@ public class ServerDiscoverer {
                 // only update 4s after the last update
                 if (lastUpdateMillis + 4000 > System.currentTimeMillis()) {
                     try {
+                        //noinspection BusyWait
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -104,6 +105,7 @@ public class ServerDiscoverer {
                 updateJoinGameScene();
 
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     LOG.warn("Sleep interrupted, attempting to kill this thread");
