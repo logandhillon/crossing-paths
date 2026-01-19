@@ -25,6 +25,9 @@ public class UserConfigManager {
             .setKeyMoveRight(KeyCode.D.name())
             .setKeyMoveJump(KeyCode.SPACE.name())
             .setKeyMoveInteract(KeyCode.E.name())
+            .setMasterVolume(1f)
+            .setMusicVolume(1f)
+            .setSfxVolume(1f)
             .build();
 
     private static File file = new File("logangamelib.dat");

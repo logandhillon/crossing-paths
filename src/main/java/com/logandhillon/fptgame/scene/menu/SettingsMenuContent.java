@@ -64,9 +64,21 @@ public class SettingsMenuContent implements MenuContent {
         USED_KEY_BINDS.put(KeyBind.INTERACT, config.getKeyMoveInteract());
 
         // volume sliders
-        SliderEntity master = new SliderEntity(32, 227, 327, 6, 1, System.out::println);
-        SliderEntity music = new SliderEntity(32, 296, 327, 6, 1, System.out::println);
-        SliderEntity sfx = new SliderEntity(32, 365, 327, 6, 1, System.out::println);
+        SliderEntity master = new SliderEntity(
+                32, 227, 327, 6,
+                config.getMasterVolume(),
+                v -> GameHandler.updateUserConfig(
+                        ConfigProto.UserConfig.newBuilder().setMasterVolume(v).buildPartial()));
+        SliderEntity music = new SliderEntity(
+                32, 296, 327, 6,
+                config.getMusicVolume(),
+                v -> GameHandler.updateUserConfig(
+                        ConfigProto.UserConfig.newBuilder().setMusicVolume(v).buildPartial()));
+        SliderEntity sfx = new SliderEntity(
+                32, 365, 327, 6,
+                config.getSfxVolume(),
+                v -> GameHandler.updateUserConfig(
+                        ConfigProto.UserConfig.newBuilder().setSfxVolume(v).buildPartial()));
 
         // key bind buttons
         KEY_BIND_BUTTONS.put(
