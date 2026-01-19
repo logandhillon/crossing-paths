@@ -31,4 +31,9 @@ public final class Colors {
      * The color of the player skin, indexed by the order they appear on the main menu.
      */
     public static final List<Color> PLAYER_SKINS = List.of(PLAYER_RED, PLAYER_BLUE);
+
+    /**
+     * no-op to force the class to load
+     */
+    public static void init() {}
 }

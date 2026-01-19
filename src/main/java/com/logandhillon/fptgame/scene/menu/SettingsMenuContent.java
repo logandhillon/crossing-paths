@@ -7,6 +7,7 @@ import com.logandhillon.fptgame.entity.ui.component.SliderEntity;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
+import com.logandhillon.fptgame.resource.Sounds;
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.logangamelib.entity.Renderable;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
@@ -67,18 +68,27 @@ public class SettingsMenuContent implements MenuContent {
         SliderEntity master = new SliderEntity(
                 32, 227, 327, 6,
                 config.getMasterVolume(),
-                v -> GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig.newBuilder().setMasterVolume(v).buildPartial()));
+                v -> {
+                    GameHandler.updateUserConfig(
+                            ConfigProto.UserConfig.newBuilder().setMasterVolume(v).buildPartial());
+                    Sounds.calcVolume();
+                });
         SliderEntity music = new SliderEntity(
                 32, 296, 327, 6,
                 config.getMusicVolume(),
-                v -> GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig.newBuilder().setMusicVolume(v).buildPartial()));
+                v -> {
+                    GameHandler.updateUserConfig(
+                            ConfigProto.UserConfig.newBuilder().setMusicVolume(v).buildPartial());
+                    Sounds.calcVolume();
+                });
         SliderEntity sfx = new SliderEntity(
                 32, 365, 327, 6,
                 config.getSfxVolume(),
-                v -> GameHandler.updateUserConfig(
-                        ConfigProto.UserConfig.newBuilder().setSfxVolume(v).buildPartial()));
+                v -> {
+                    GameHandler.updateUserConfig(
+                            ConfigProto.UserConfig.newBuilder().setSfxVolume(v).buildPartial());
+                    Sounds.calcVolume();
+                });
 
         // key bind buttons
         KEY_BIND_BUTTONS.put(
@@ -237,6 +247,7 @@ public class SettingsMenuContent implements MenuContent {
         var code = e.getCode().name();
         if (USED_KEY_BINDS.containsValue(code)) {
             updateKeyBindStatus = String.format("'%s' is in-use", code);
+            Sounds.playSfx(Sounds.UI_FAIL);
             return;
         }
 
@@ -253,8 +264,10 @@ public class SettingsMenuContent implements MenuContent {
                     ConfigProto.UserConfig.newBuilder().setKeyMoveInteract(code).buildPartial());
         }
 
+        Sounds.playSfx(Sounds.UI_CLICK);
         USED_KEY_BINDS.put(currentKeyBind, code); // update map to check duplicates against
         KEY_BIND_BUTTONS.get(currentKeyBind).setText(code); // update btn text
         currentKeyBind = null;
+        updateKeyBindStatus = "";
     }
 }

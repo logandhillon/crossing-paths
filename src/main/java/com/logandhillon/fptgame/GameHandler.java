@@ -4,7 +4,7 @@ import com.logandhillon.fptgame.networking.GameClient;
 import com.logandhillon.fptgame.networking.GameServer;
 import com.logandhillon.fptgame.networking.ServerDiscoverer;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
-import com.logandhillon.fptgame.resource.Levels;
+import com.logandhillon.fptgame.resource.*;
 import com.logandhillon.fptgame.scene.SingleplayerGameScene;
 import com.logandhillon.fptgame.scene.component.MenuAlertScene;
 import com.logandhillon.fptgame.scene.menu.JoinGameContent;
@@ -70,6 +70,12 @@ public class GameHandler extends Application {
             shutdown();
             Platform.exit();
         });
+
+        // initialize resources so they are loaded in memory
+        Colors.init();
+        Fonts.init();
+        Sounds.calcVolume();
+        Textures.init();
 
         String debugMode = System.getenv("LGL_DEBUG_MODE");
         setScene(debugMode != null && debugMode.equalsIgnoreCase("true")
