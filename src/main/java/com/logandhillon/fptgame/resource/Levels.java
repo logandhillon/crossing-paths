@@ -55,10 +55,46 @@ public class Levels {
                 .build();
     }
 
+    public static final LevelProto.LevelData LEVEL_7 = LevelProto.LevelData
+            .newBuilder()
+            .setLevelName("Maze")
+            .setLevelDifficulty("Medium")
+            .setBackground(Textures.UNDERGROUND_BG.serialize())
+
+            .setPlayer1SpawnX(280).setPlayer1SpawnY(408)
+            .setPlayer2SpawnX(120).setPlayer2SpawnY(88)
+
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 0, 720 - 40, 1280, 40).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 0, 160, 1120, 40).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 1120, 160, 40, 320).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 120, 480, 1040, 40).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 120, 320, 40, 160).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 160, 320, 640, 40).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 940, 380, 80, 40).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 0, 160, 1120, 40).serialize())
+
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 580, 0, 40, 160, LevelProto.Color.BLUE).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 580, 360, 40, 120, LevelProto.Color.RED).serialize())
+            .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 580, 520, 40, 160, LevelProto.Color.RED).serialize())
+
+            .addObjects(new MovingPlatformEntity(Textures.UNDERGROUND_PIPE, 20, 320, 80, 40, 20, 620, 0.15f,
+                                                 false, LevelProto.Color.NONE).serialize())
+            .addObjects(new MovingPlatformEntity(Textures.UNDERGROUND_PIPE, 1180, 620, 80, 40, 1180, 160, 0.15f,
+                                                 false, LevelProto.Color.NONE).serialize())
+
+            .addObjects(new LevelButtonEntity(410, 460).serialize())
+
+            .addObjects(new PortalEntity(192, 380, true).serialize())
+            .addObjects(new PortalEntity(32, 60, false).serialize())
+
+            .build();
+
+
     public static final LevelProto.LevelData LEVEL_6 = LevelProto.LevelData
             .newBuilder()
             .setLevelName("Village")
             .setLevelDifficulty("Medium")
+            .setNextLevel(LEVEL_7)
             .setBackground(Textures.UNDERGROUND_BG.serialize())
 
             .setPlayer1SpawnX(42).setPlayer1SpawnY(328)
@@ -113,8 +149,8 @@ public class Levels {
             .addObjects(new LevelButtonEntity(808, 140).serialize())
             .addObjects(new LevelButtonEntity(646, 660).serialize())
 
-            .addObjects(new PortalEntity(32, 580, false).serialize())
             .addObjects(new PortalEntity(95, 580, true).serialize())
+            .addObjects(new PortalEntity(32, 580, false).serialize())
 
             .build();
 
