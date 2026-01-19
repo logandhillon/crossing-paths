@@ -6,12 +6,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.ArcType;
 
+import java.util.function.Consumer;
+
 public class SliderEntity extends Draggable {
     private static final int BACKBONE_DIAMETER = 6;
     private static final int CIRCLE_DIAMETER   = 20;
 
-    private float value;
+    private final Consumer<Float> updater;
 
+    private float   value;
     private boolean active;
 
     /**
@@ -20,9 +23,11 @@ public class SliderEntity extends Draggable {
      * @param x            x-position (from left)
      * @param y            y-position (from top)
      * @param defaultValue default value of the slider (0.0-1.0)
+     * @param onUpdate     consumer called when the value is changed
      */
-    public SliderEntity(float x, float y, float w, float h, float defaultValue) {
+    public SliderEntity(float x, float y, float w, float h, float defaultValue, Consumer<Float> onUpdate) {
         super(x, y, w, h);
+        this.updater = onUpdate;
         this.value = Math.clamp(defaultValue * w, 0, w);
     }
 
@@ -58,7 +63,11 @@ public class SliderEntity extends Draggable {
 
     @Override
     public void onMouseUp(MouseEvent e) {
-        if (active) active = false;
+        if (active) {
+            active = false;
+            // officially "update" this value only when the mouse is released
+            updater.accept(getValue());
+        }
     }
 
     @Override
@@ -71,7 +80,7 @@ public class SliderEntity extends Draggable {
      * Sets the value based on the x position of the mouse.
      */
     private void updateValue(float mouseX) {
-        this.value = Math.clamp(mouseX, 0, w);
+        this.value = Math.clamp(mouseX - x, 0, w);
     }
 
     /**
