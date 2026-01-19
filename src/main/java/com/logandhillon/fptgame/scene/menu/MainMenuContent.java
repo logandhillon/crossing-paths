@@ -21,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 import static com.logandhillon.fptgame.GameHandler.CANVAS_HEIGHT;
+import static com.logandhillon.fptgame.GameHandler.GAME_NAME;
 
 /**
  * The main menu allows the user to navigate to other submenus, play or quit the game, and view game branding.
@@ -31,7 +32,6 @@ public class MainMenuContent implements MenuContent {
     private final        Entity[] entities;
     private static final Font     HEADER_FONT  = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 40);
     private static final Font     CREDITS_FONT = Font.font(Fonts.TREMOLO, FontWeight.MEDIUM, 14);
-    private static final String   HEADER       = "Game Logo";
 
     private final InputBoxEntity userInput;
 
@@ -60,11 +60,11 @@ public class MainMenuContent implements MenuContent {
                     throw new IllegalStateException("Level creator does not exist");
                 }),
 
-                new MenuButton(Textures.SETTINGS_ICON, x, y + 3 * dy, 120, 48, 75.84f, 651.17f, 28, 28, () -> {
-                    menu.setContent(new SettingsMenuContent(menu));
-                }),
+                new MenuButton(Textures.SETTINGS_ICON, x, y + 3 * dy, 120, 48, 75.84f, 651.17f, 28, 28,
+                               () -> menu.setContent(new SettingsMenuContent(menu))),
 
-                new MenuButton(Textures.X_ICON, x + 136, y + 3 * dy, 120, 48, 218, 654, 20, 20, () -> System.exit(0))
+                new MenuButton(Textures.X_ICON, x + 136, y + 3 * dy, 120, 48, 218, 654, 20, 20,
+                               () -> System.exit(0))
         );
 
         // creates list of entities to be used by menu handler
@@ -75,7 +75,7 @@ public class MainMenuContent implements MenuContent {
 
                 new TextEntity.Builder(32, 32)
                         .setColor(Colors.ACTIVE)
-                        .setText(HEADER.toUpperCase())
+                        .setText(GAME_NAME.toUpperCase())
                         .setFont(HEADER_FONT)
                         .setBaseline(VPos.TOP).build(),
 
