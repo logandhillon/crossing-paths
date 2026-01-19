@@ -18,8 +18,9 @@ public class ResourceLoader {
      * Safely loads an {@link IResource} and returns the type of resource, catching the potential {@link IOException}
      * and throwing a runtime {@link ResourceLoaderException} instead.
      *
-     * @param res resource loader
-     * @param <T> type of resource
+     * @param resource resource loader class
+     * @param pathname path to resource
+     * @param <T>      type of resource
      *
      * @return the loaded resource
      */
