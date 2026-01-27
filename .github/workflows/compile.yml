@@ -4,7 +4,7 @@
 name: compile for all platforms
 
 permissions:
-  contents: read
+  contents: write
   packages: write
   actions: read
 
