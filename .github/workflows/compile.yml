@@ -94,16 +94,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: list files
-        run: ls -R
-
       - name: upload release assets
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          files: |
-            crossing-paths-${{ github.event.release.tag_name }}-ubuntu.zip
-            crossing-paths-${{ github.event.release.tag_name }}-windows.zip
-            crossing-paths-${{ github.event.release.tag_name }}-macos.zip
+          files: artifacts/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
