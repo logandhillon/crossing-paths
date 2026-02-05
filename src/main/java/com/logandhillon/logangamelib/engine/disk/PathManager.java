@@ -6,8 +6,10 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * Contains helper methods for generating platform {@link Path} objects
@@ -17,7 +19,6 @@ import java.nio.file.Paths;
 @SuppressWarnings("ClassCanBeRecord")
 public class PathManager {
     private static final Logger LOG      = LoggerContext.getContext().getLogger(PathManager.class);
-    private static final String PLATFORM = System.getProperty("os.name").toLowerCase();
 
     private final Path base;
 
@@ -25,28 +26,14 @@ public class PathManager {
      * Creates a new path manager given a specified game handler
      *
      * @param game game handler
+     *
+     * @apiNote sys:LGL_BASE_PATH (system property) must be set!
      */
     public PathManager(LGLGameHandler game) {
-        Path path;
+        Path path = tryCreatePath(System.getProperty("LGL_BASE_PATH")).orElseThrow(
+                () -> new IllegalStateException("LGL_BASE_PATH is not set!"));
 
-        String devMode = System.getenv("LGL_DEV_MODE");
-        if (devMode != null && devMode.equalsIgnoreCase("true")) {
-            path = Paths.get("run");
-            LOG.info("Starting in dev mode, base path will resolve to {}", path);
-        } else if (PLATFORM.contains("win")) {
-            // app data or user home if not found
-            String appData = System.getenv("APPDATA");
-            path = Paths.get(appData != null ? appData : System.getProperty("user.home"));
-        } else if (PLATFORM.contains("mac")) {
-            // logs folder in user home
-            path = Paths.get(System.getProperty("user.home"), "Library", "Application Support");
-        } else {
-            // linux...
-            String xdg = System.getenv("XDG_CONFIG_HOME");
-            path = Paths.get(xdg != null ? xdg : Paths.get(System.getProperty("user.home"), ".config").toString());
-        }
-
-        LOG.info("Computed path as {}", path);
+        LOG.info("Read LGL base path as {}", path);
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
@@ -83,5 +70,29 @@ public class PathManager {
      */
     public Path resolve(String other) {
         return base.resolve(other);
+    }
+
+    /**
+     * Checks whether a string represents a syntactically valid path and ensures the path exists.
+     * <p>
+     * If the path does not already exist, this method will attempt to create it (including any missing parent
+     * directories).
+     * </p>
+     *
+     * @param path The path string to validate and create if necessary.
+     *
+     * @return an {@link Optional} {@link Path} if the path is valid and exists (or was successfully created);
+     * {@link Optional#empty()} if the path is invalid or cannot be created due to permission or access errors.
+     */
+    public static Optional<Path> tryCreatePath(String path) {
+        if (path == null || path.isEmpty()) return Optional.empty();
+
+        try {
+            Path p = Paths.get(path);
+            Files.createDirectories(p);
+            return Optional.of(p);
+        } catch (InvalidPathException | IOException e) {
+            return Optional.empty();
+        }
     }
 }

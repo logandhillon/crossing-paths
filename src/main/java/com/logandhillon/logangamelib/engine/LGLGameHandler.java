@@ -4,7 +4,10 @@ import com.logandhillon.logangamelib.engine.disk.PathManager;
 import javafx.application.Application;
 
 /**
+ * Abstract game handler for the logangamelib game engine.
+ *
  * @author Logan Dhillon
+ * @implNote this class shall be the entrypoint of your game, handling all primary logic.
  */
 public abstract class LGLGameHandler extends Application {
     private final LGLGameHandler instance;
@@ -13,15 +16,12 @@ public abstract class LGLGameHandler extends Application {
 
     /**
      * @param gameId all lowercase, snake_case game id
-     *
-     * @apiNote sets sys:LGL_BASE_PATH (system property) variable to the computed path
      */
     public LGLGameHandler(String gameId) {
         if (getInstance() != null) throw new IllegalStateException("(singleton) game handler already instantiated!");
 
         this.gameId = gameId;
         this.pathMgr = new PathManager(this);
-        System.setProperty("LGL_BASE_PATH", this.pathMgr.base().toString());
         instance = this;
     }
 
