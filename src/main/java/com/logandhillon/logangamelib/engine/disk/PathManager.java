@@ -31,17 +31,30 @@ public class PathManager {
      * @apiNote sys:LGL_BASE_PATH (system property) must be set!
      */
     public PathManager(LGLGameHandler game) {
-        Path path = tryCreatePath(System.getProperty("LGL_BASE_PATH")).orElseThrow(
-                () -> new IllegalStateException("LGL_BASE_PATH is not set!"));
+        String rawPath = System.getProperty("LGL_BASE_PATH");
+        if (rawPath == null || rawPath.isBlank()) {
+            throw new IllegalStateException("LGL_BASE_PATH is not set!");
+        }
+
+        // Expand ${user.home} and trim quotes/spaces
+        String expandedPath = rawPath.replace("${user.home}", System.getProperty("user.home"))
+                                     .replace("\"", "")
+                                     .trim();
+
+        Path path = tryCreatePath(expandedPath).orElseThrow(
+                () -> new IllegalStateException("Failed to create or access LGL_BASE_PATH: " + expandedPath));
 
         LOG.info("Read LGL base path as {}", path);
+
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
             LOG.fatal("Failed to create logangamelib base directories");
             throw new RuntimeException(e);
         }
-        base = path.resolve(Path.of("logangamelib", game.getGameId()));
+
+        // Safe base path per game
+        base = path.resolve(Paths.get("logangamelib", game.getGameId()));
     }
 
     /**
