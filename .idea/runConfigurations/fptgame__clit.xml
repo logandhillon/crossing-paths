@@ -3,12 +3,14 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
+          <entry key="LGL_DEV_MDOE" value="true" />
           <entry key="LGL_SAVE_FILE" value="logangamelib.client.dat" />
         </map>
       </option>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
+      <option name="passParentEnvs" value="false" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
         <list />
@@ -22,8 +24,11 @@
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+    <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
     <DebugAllEnabled>false</DebugAllEnabled>
     <RunAsTest>false</RunAsTest>
+    <GradleProfilingDisabled>false</GradleProfilingDisabled>
+    <GradleCoverageDisabled>false</GradleCoverageDisabled>
     <method v="2" />
   </configuration>
 </component>

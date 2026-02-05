@@ -20,6 +20,7 @@ module com.logandhillon.fptgame {
     exports com.logandhillon.fptgame.scene.component;
 
     exports com.logandhillon.logangamelib.engine;
+    exports com.logandhillon.logangamelib.engine.disk;
     exports com.logandhillon.logangamelib.entity.physics;
     exports com.logandhillon.logangamelib.entity;
     exports com.logandhillon.logangamelib.entity.ui;
