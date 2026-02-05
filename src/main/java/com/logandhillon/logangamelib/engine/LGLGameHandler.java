@@ -18,7 +18,9 @@ public abstract class LGLGameHandler extends Application {
      * @param gameId all lowercase, snake_case game id
      */
     public LGLGameHandler(String gameId) {
-        if (getInstance() != null) throw new IllegalStateException("(singleton) game handler already instantiated!");
+        if (getInstance() != null)
+            throw new LGLInitializationException(
+                    "LGL game handler already instantiated! There may only be ONE instance of the game handler.");
 
         this.gameId = gameId;
         this.pathMgr = new PathManager(this);
@@ -38,5 +40,21 @@ public abstract class LGLGameHandler extends Application {
 
     public PathManager getPathManager() {
         return pathMgr;
+    }
+
+    static {
+        // throw errors if required sys properties aren't set, requires further checks as these are just null checks
+        if (System.getProperty("LGL_BASE_PATH") == null)
+            throw LGLInitializationException.missingProperty("LGL_BASE_PATH");
+    }
+
+    public static class LGLInitializationException extends RuntimeException {
+        public LGLInitializationException(String msg) {
+            super(msg);
+        }
+
+        public static LGLInitializationException missingProperty(String property) {
+            return new LGLInitializationException("Required system property '" + property + "' is not set!");
+        }
     }
 }
