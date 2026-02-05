@@ -4,6 +4,7 @@ import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -18,7 +19,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("ClassCanBeRecord")
 public class PathManager {
-    private static final Logger LOG      = LoggerContext.getContext().getLogger(PathManager.class);
+    private static final Logger LOG = LoggerContext.getContext().getLogger(PathManager.class);
 
     private final Path base;
 
@@ -94,5 +95,17 @@ public class PathManager {
         } catch (InvalidPathException | IOException e) {
             return Optional.empty();
         }
+    }
+
+    /**
+     * resolves a path in the base path of this game as a {@link File}
+     *
+     * @param pathname name of file to get
+     *
+     * @return {@link File} object with a valid path
+     * @see PathManager#resolve(String)
+     */
+    public File getFile(String pathname) {
+        return this.resolve(pathname).toFile();
     }
 }

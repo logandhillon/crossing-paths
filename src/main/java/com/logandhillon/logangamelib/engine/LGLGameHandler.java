@@ -10,9 +10,10 @@ import javafx.application.Application;
  * @implNote this class shall be the entrypoint of your game, handling all primary logic.
  */
 public abstract class LGLGameHandler extends Application {
-    private final LGLGameHandler instance;
-    private final PathManager    pathMgr;
-    private final String         gameId;
+    private static LGLGameHandler instance;
+
+    private final PathManager pathMgr;
+    private final String      gameId;
 
     /**
      * @param gameId all lowercase, snake_case game id
@@ -34,7 +35,7 @@ public abstract class LGLGameHandler extends Application {
         return gameId;
     }
 
-    public LGLGameHandler getInstance() {
+    public static LGLGameHandler getInstance() {
         return instance;
     }
 

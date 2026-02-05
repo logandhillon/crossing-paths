@@ -1,5 +1,6 @@
 package com.logandhillon.logangamelib.engine.disk;
 
+import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 import com.logandhillon.fptgame.networking.proto.ConfigProto.UserConfig;
 import javafx.scene.input.KeyCode;
@@ -30,7 +31,7 @@ public class UserConfigManager {
             .setSfxVolume(1f)
             .build();
 
-    private static File file = new File("logangamelib.dat");
+    private static File file = GameHandler.getInstance().getPathManager().getFile("logangamelib.dat");
 
     /**
      * Saves the provided {@link UserConfig} to the disk.
@@ -40,7 +41,7 @@ public class UserConfigManager {
      * @throws RuntimeException if the user config cannot be saved to disk
      */
     public static UserConfig save(UserConfig config) {
-        try (FileOutputStream file = new FileOutputStream(UserConfigManager.file)) {
+        try (FileOutputStream fos = new FileOutputStream(UserConfigManager.file)) {
             if (UserConfigManager.file.getParent() != null) {
                 LOG.warn("Parent directory for user config file doesn't exist, creating folder(s).");
                 //noinspection ResultOfMethodCallIgnored
@@ -48,7 +49,7 @@ public class UserConfigManager {
             }
 
             LOG.info("Writing user configuration to {}", UserConfigManager.file.getAbsolutePath());
-            config.writeTo(file);
+            config.writeTo(fos);
             return config;
         } catch (IOException e) {
             LOG.error("Failed to save user configuration to {}", file.getAbsolutePath());
@@ -106,7 +107,7 @@ public class UserConfigManager {
      * @param filename name of file manage from this point on.
      */
     public static void setManagedFile(String filename) {
-        LOG.info("Setting managed file to {}", filename);
-        file = new File(filename);
+        file = GameHandler.getInstance().getPathManager().getFile(filename);
+        LOG.info("Set managed file to {}", file.getAbsolutePath());
     }
 }
