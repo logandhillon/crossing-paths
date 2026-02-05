@@ -1,3 +1,5 @@
+import java.time.Year
+
 plugins {
     id 'java'
     id 'application'
@@ -95,6 +97,24 @@ jlink {
         jvmArgs = [
                 "-DLGL_BASE_PATH=${lglBasePath}"
         ]
+    }
+
+
+    jpackage {
+        vendor = 'Logan Dhillon'
+        appVersion = project.version
+        installerOptions = ["--license-file", file("LICENSE").absolutePath]
+
+        installerName = {
+            switch (org.gradle.internal.os.OperatingSystem.current()) {
+                case { it.isMacOsX() }: return 'Crossing Paths' // put a space on OSX binaries
+                default: return 'CrossingPaths'
+            }
+        }()
+
+//        imageOptions = ['--icon', 'src/main/resources/icons/app.icns']  // macOS icon
+//        linux = ['--icon', 'src/main/resources/icons/app.png']          // Linux icon
+//        windows = ['--icon', 'src/main/resources/icons/app.ico']        // Windows icon
     }
 }
 
