@@ -54,7 +54,7 @@ public class FontResource implements IResource<String> {
         if (family == null) throw new FontNotFoundException(files); return family;
     }
 
-    private static class FontNotFoundException extends RuntimeException {
+    public static class FontNotFoundException extends RuntimeException {
         /**
          * Exception if an individual font resource could not be found
          *

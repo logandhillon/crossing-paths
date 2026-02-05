@@ -30,23 +30,24 @@ application {
     mainClass = 'com.logandhillon.fptgame.GameHandler'
 }
 
-tasks.register('runDev', JavaExec) {
+tasks.register('runDev') {
     group = 'application'
-    description = 'Run the game in dev mode with a local ./run base path'
+    description = 'Run the game in dev mode using ./run as the LGL base path'
 
-    classpath = sourceSets.main.runtimeClasspath
-    mainModule = application.mainModule
-    mainClass = application.mainClass
-
-    // dev-only base path: ./run relative to project root
+    // Ensure run/ exists
     def devBasePath = project.layout.projectDirectory.dir('run').asFile
     devBasePath.mkdirs()
 
-    jvmArgs = [
-        "-DLGL_BASE_PATH=${devBasePath.absolutePath}"
-    ]
+    // If runDev is in the task graph, configure run BEFORE it executes
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.hasTask(tasks.named('run').get())) {
+            tasks.named('run', JavaExec).configure {
+                jvmArgs += "-DLGL_BASE_PATH=${devBasePath.absolutePath}"
+            }
+        }
+    }
 
-    workingDir = project.projectDir
+    dependsOn tasks.named('run')
 }
 
 javafx {
