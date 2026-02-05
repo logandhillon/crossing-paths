@@ -44,6 +44,7 @@ public class GameHandler extends LGLGameHandler {
     private static GameClient       client;
     private static ServerDiscoverer discoverer;
 
+    private static UserConfigManager      ucm;
     private static ConfigProto.UserConfig userConfig;
 
     public GameHandler() {
@@ -51,7 +52,7 @@ public class GameHandler extends LGLGameHandler {
     }
 
     /**
-     * Handles communication with JavaFX when this program is signalled to start.
+     * Handles communication with JavaFX when this program is signaled to start.
      *
      * @param stage the primary stage for this application, provided by the JavaFX framework.
      */
@@ -96,12 +97,16 @@ public class GameHandler extends LGLGameHandler {
      *
      * @see GameHandler#start(Stage)
      */
+    @SuppressWarnings("unused") // for some reason, intellij thinks main isn't used
     public static void main(String[] args) {
         String lglSaveFile = System.getenv("LGL_SAVE_FILE");
-        if (lglSaveFile != null) UserConfigManager.setManagedFile(lglSaveFile);
+        new GameHandler(); // set the singleton instance of the handler
+        ucm = lglSaveFile == null
+                            ? new UserConfigManager(getInstance())
+                            : new UserConfigManager(getInstance(), lglSaveFile);
 
         // load user config first
-        userConfig = UserConfigManager.load();
+        userConfig = ucm.load();
 
         // register shutdown hook (handles SIGTERM/crashes)
         Runtime.getRuntime().addShutdownHook(new Thread(GameHandler::shutdown, "Shutdown-Hook"));
@@ -349,7 +354,7 @@ public class GameHandler extends LGLGameHandler {
      * @param partial the partial values, whatever is set here will be updated, otherwise it will remain the same.
      */
     public static void updateUserConfig(ConfigProto.UserConfig partial) {
-        userConfig = UserConfigManager.update(userConfig, partial);
+        userConfig = ucm.update(userConfig, partial);
     }
 
     public static GameServer getServer() {

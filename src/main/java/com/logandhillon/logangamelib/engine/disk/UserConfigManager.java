@@ -1,8 +1,8 @@
 package com.logandhillon.logangamelib.engine.disk;
 
-import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 import com.logandhillon.fptgame.networking.proto.ConfigProto.UserConfig;
+import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import javafx.scene.input.KeyCode;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -31,7 +31,29 @@ public class UserConfigManager {
             .setSfxVolume(1f)
             .build();
 
-    private static File file = GameHandler.getInstance().getPathManager().getFile("logangamelib.dat");
+    private final File file;
+
+    /**
+     * Creates a new user config manager
+     *
+     * @param game game handler
+     */
+    public UserConfigManager(LGLGameHandler game) {
+        this.file = game.getPathManager().getFile("logangamelib.dat");
+    }
+
+    /**
+     *
+     * Creates a new user config manager with a custom filepath for the save file: the file that is managed by this
+     * instance.
+     *
+     * @param game     game handler
+     * @param filename name of file manage from this point on.
+     */
+    public UserConfigManager(LGLGameHandler game, String filename) {
+        file = game.getPathManager().getFile(filename);
+        LOG.info("Set managed file to {}", file.getAbsolutePath());
+    }
 
     /**
      * Saves the provided {@link UserConfig} to the disk.
@@ -40,19 +62,20 @@ public class UserConfigManager {
      *
      * @throws RuntimeException if the user config cannot be saved to disk
      */
-    public static UserConfig save(UserConfig config) {
-        try (FileOutputStream fos = new FileOutputStream(UserConfigManager.file)) {
-            if (UserConfigManager.file.getParent() != null) {
-                LOG.warn("Parent directory for user config file doesn't exist, creating folder(s).");
-                //noinspection ResultOfMethodCallIgnored
-                new File(UserConfigManager.file.getParent()).mkdirs();
-            }
+    public UserConfig save(UserConfig config) {
+        File parent = this.file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            LOG.warn("Parent directory for user config file doesn't exist, creating folder(s).");
+            //noinspection ResultOfMethodCallIgnored
+            parent.mkdirs();
+        }
 
-            LOG.info("Writing user configuration to {}", UserConfigManager.file.getAbsolutePath());
+        try (FileOutputStream fos = new FileOutputStream(this.file)) {
+            LOG.info("Writing user configuration to {}", this.file.getAbsolutePath());
             config.writeTo(fos);
             return config;
         } catch (IOException e) {
-            LOG.error("Failed to save user configuration to {}", file.getAbsolutePath());
+            LOG.error("Failed to save user configuration to {}", file.getAbsolutePath(), e);
             throw new RuntimeException(e);
         }
     }
@@ -63,7 +86,7 @@ public class UserConfigManager {
      *
      * @return user config from disk
      */
-    public static UserConfig load() {
+    public UserConfig load() {
         // if there is no save file, save the default and return
         if (!file.exists()) {
             LOG.warn("Saved user config doesn't exist, saving default config to disk");
@@ -72,7 +95,7 @@ public class UserConfigManager {
         }
 
         UserConfig c;
-        try (FileInputStream file = new FileInputStream(UserConfigManager.file)) {
+        try (FileInputStream file = new FileInputStream(this.file)) {
             c = DEFAULT_CONFIG.toBuilder().mergeFrom(UserConfig.parseFrom(file)).build();
             LOG.info("Successfully loaded user config for '{}' from disk", c.getName());
         } catch (IOException e) {
@@ -94,20 +117,9 @@ public class UserConfigManager {
      *
      * @param partial the partial values, whatever is set here will be updated, otherwise it will remain the same.
      */
-    public static UserConfig update(UserConfig current, UserConfig partial) {
+    public UserConfig update(UserConfig current, UserConfig partial) {
         LOG.debug("Updating user config with {}", partial.toString());
         UserConfig merged = current.toBuilder().mergeFrom(partial).build();
         return save(merged);
-    }
-
-    /**
-     * Sets the user config file to a custom filepath, which will be the file that is managed by this program from this
-     * point onwards.
-     *
-     * @param filename name of file manage from this point on.
-     */
-    public static void setManagedFile(String filename) {
-        file = GameHandler.getInstance().getPathManager().getFile(filename);
-        LOG.info("Set managed file to {}", file.getAbsolutePath());
     }
 }
