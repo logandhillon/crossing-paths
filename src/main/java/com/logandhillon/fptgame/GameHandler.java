@@ -13,8 +13,8 @@ import com.logandhillon.fptgame.scene.menu.MainMenuContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.engine.GameEngine;
 import com.logandhillon.logangamelib.engine.GameScene;
+import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import com.logandhillon.logangamelib.engine.disk.UserConfigManager;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Optional;
 
-public class GameHandler extends Application {
+public class GameHandler extends LGLGameHandler {
     private static final Logger LOG               = LoggerContext.getContext().getLogger(GameHandler.class);
     public static final  String GAME_NAME         = "CROSSING PATHS";
     public static final  int    CANVAS_WIDTH      = 1280; // the width of the rendered canvas
@@ -45,6 +45,10 @@ public class GameHandler extends Application {
     private static ServerDiscoverer discoverer;
 
     private static ConfigProto.UserConfig userConfig;
+
+    public GameHandler() {
+        super("crossing-paths");
+    }
 
     /**
      * Handles communication with JavaFX when this program is signalled to start.
