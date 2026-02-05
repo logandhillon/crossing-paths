@@ -2,6 +2,8 @@ package com.logandhillon.logangamelib.engine;
 
 import com.logandhillon.logangamelib.engine.disk.PathManager;
 import javafx.application.Application;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 
 /**
  * Abstract game handler for the logangamelib game engine.
@@ -10,6 +12,8 @@ import javafx.application.Application;
  * @implNote this class shall be the entrypoint of your game, handling all primary logic.
  */
 public abstract class LGLGameHandler extends Application {
+    private static final Logger LOG = LoggerContext.getContext().getLogger(LGLGameHandler.class);
+
     private static LGLGameHandler instance;
 
     private final PathManager pathMgr;
@@ -19,13 +23,15 @@ public abstract class LGLGameHandler extends Application {
      * @param gameId all lowercase, snake_case game id
      */
     public LGLGameHandler(String gameId) {
-        if (getInstance() != null)
-            throw new LGLInitializationException(
-                    "LGL game handler already instantiated! There may only be ONE instance of the game handler.");
-
         this.gameId = gameId;
         this.pathMgr = new PathManager(this);
-        instance = this;
+
+        if (getInstance() != null) {
+            LOG.warn("Created non-canonical LGL game handler instance");
+        } else {
+            LOG.info("Canonical game handler bound to {}", this);
+            instance = this;
+        }
     }
 
     /**

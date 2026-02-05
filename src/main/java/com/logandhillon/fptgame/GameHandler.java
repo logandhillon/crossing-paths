@@ -100,10 +100,10 @@ public class GameHandler extends LGLGameHandler {
     @SuppressWarnings("unused") // for some reason, intellij thinks main isn't used
     public static void main(String[] args) {
         String lglSaveFile = System.getenv("LGL_SAVE_FILE");
-        new GameHandler(); // set the singleton instance of the handler
+        new GameHandler();    // set the singleton instance of the handler
         ucm = lglSaveFile == null
-                            ? new UserConfigManager(getInstance())
-                            : new UserConfigManager(getInstance(), lglSaveFile);
+              ? new UserConfigManager()
+              : new UserConfigManager(lglSaveFile);
 
         // load user config first
         userConfig = ucm.load();

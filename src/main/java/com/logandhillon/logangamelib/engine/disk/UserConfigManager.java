@@ -35,11 +35,9 @@ public class UserConfigManager {
 
     /**
      * Creates a new user config manager
-     *
-     * @param game game handler
      */
-    public UserConfigManager(LGLGameHandler game) {
-        this.file = game.getPathManager().getFile("logangamelib.dat");
+    public UserConfigManager() {
+        this.file = LGLGameHandler.getInstance().getPathManager().getFile("logangamelib.dat");
     }
 
     /**
@@ -47,11 +45,10 @@ public class UserConfigManager {
      * Creates a new user config manager with a custom filepath for the save file: the file that is managed by this
      * instance.
      *
-     * @param game     game handler
      * @param filename name of file manage from this point on.
      */
-    public UserConfigManager(LGLGameHandler game, String filename) {
-        file = game.getPathManager().getFile(filename);
+    public UserConfigManager(String filename) {
+        file = LGLGameHandler.getInstance().getPathManager().getFile(filename);
         LOG.info("Set managed file to {}", file.getAbsolutePath());
     }
 
