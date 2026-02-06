@@ -1,5 +1,6 @@
 package com.logandhillon.logangamelib.entity;
 
+import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import com.logandhillon.logangamelib.engine.UIScene;
 import javafx.scene.input.MouseEvent;
 
@@ -11,7 +12,7 @@ import javafx.scene.input.MouseEvent;
  * @see MouseEvent
  * @see UIScene
  */
-public abstract class Clickable extends BoundEntity<UIScene> {
+public abstract class Clickable extends BoundEntity<UIScene<?>> {
     protected float w;
     protected float h;
 
@@ -45,6 +46,7 @@ public abstract class Clickable extends BoundEntity<UIScene> {
      * Called when the mouse is pressed (not clicked) on this Clickable.
      *
      * @param e javafx mouse event
+     *
      * @see MouseEvent#MOUSE_PRESSED
      */
     public void onMouseDown(MouseEvent e) {}

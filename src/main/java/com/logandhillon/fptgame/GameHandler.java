@@ -11,11 +11,9 @@ import com.logandhillon.fptgame.scene.menu.JoinGameContent;
 import com.logandhillon.fptgame.scene.menu.LobbyGameContent;
 import com.logandhillon.fptgame.scene.menu.MainMenuContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
-import com.logandhillon.logangamelib.engine.GameEngine;
 import com.logandhillon.logangamelib.engine.GameScene;
 import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import com.logandhillon.logangamelib.engine.disk.UserConfigManager;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -31,10 +29,6 @@ public class GameHandler extends LGLGameHandler {
     public static final  int    CANVAS_HEIGHT     = 720; // the height of the rendered canvas
     public static final  float  ASPECT_RATIO      = (float)CANVAS_WIDTH / CANVAS_HEIGHT;
     public static final  float  SCALING_TOLERANCE = 0.05f; // % to prefer maximizing size over aspect ratio
-
-    // game engine
-    private Stage     stage;
-    private GameScene activeScene;
 
     // game state management
     private volatile boolean isInMenu;
@@ -57,11 +51,7 @@ public class GameHandler extends LGLGameHandler {
      * @param stage the primary stage for this application, provided by the JavaFX framework.
      */
     @Override
-    public void start(Stage stage) {
-        // rename thread to shorten logs
-        Thread.currentThread().setName("FX");
-
-        this.stage = stage;
+    protected GameScene<GameHandler> onStart(Stage stage) {
         isInMenu = true;
 
         stage.setTitle(GAME_NAME);
@@ -70,24 +60,13 @@ public class GameHandler extends LGLGameHandler {
         stage.setMinWidth(CANVAS_WIDTH / 2f);
         stage.setMinHeight(CANVAS_HEIGHT / 2f);
 
-        stage.setOnCloseRequest(e -> {
-            LOG.info("Received window close request");
-            shutdown();
-            Platform.exit();
-        });
-
         // initialize resources so they are loaded in memory
         Colors.init();
         Fonts.init();
         Sounds.calcVolume();
         Textures.init();
 
-        String debugMode = System.getenv("LGL_DEBUG_MODE");
-        setScene(debugMode != null && debugMode.equalsIgnoreCase("true")
-                 ? new SingleplayerGameScene(Levels.LEVEL_1) // debug scene if LGL_DEBUG_MODE is true
-                 : new MenuHandler());
-
-        stage.show();
+        return this.isDebugMode() ? new SingleplayerGameScene(Levels.LEVEL_1) : new MenuHandler();
     }
 
     /**
@@ -108,14 +87,12 @@ public class GameHandler extends LGLGameHandler {
         // load user config first
         userConfig = ucm.load();
 
-        // register shutdown hook (handles SIGTERM/crashes)
-        Runtime.getRuntime().addShutdownHook(new Thread(GameHandler::shutdown, "Shutdown-Hook"));
-
         // then start the javafx program
         launch();
     }
 
-    private static void shutdown() {
+    @Override
+    protected void onShutdown() {
         LOG.info("Program terminated, exiting cleanly");
         try {
             if (server != null) server.stop();
@@ -130,15 +107,6 @@ public class GameHandler extends LGLGameHandler {
         }
 
         terminateDiscoverer();
-    }
-
-    /**
-     * Discards the currently active scene and replaces it with the provided one.
-     *
-     * @param scene the GameScene to switch
-     */
-    public void setScene(GameScene scene) {
-        activeScene = GameEngine.setScene(this, stage, activeScene, scene);
     }
 
     public void goToMainMenu() {
@@ -290,21 +258,6 @@ public class GameHandler extends LGLGameHandler {
             LOG.debug("No MenuHandler active, creating new one");
             setScene(MenuHandler.alert(title, message));
         }
-    }
-
-    /**
-     * Tries to return the active scene as the (expected) type, casting it to said type, and returning null if such
-     * fails.
-     *
-     * @param type the expected type of {@link GameScene}
-     *
-     * @return the active {@link GameScene} if it is the right type, or null if it's not
-     */
-    public <T extends GameScene> Optional<T> getActiveScene(Class<T> type) {
-        if (!type.isInstance(activeScene))
-            return Optional.empty();
-
-        return Optional.of(type.cast(activeScene));
     }
 
     /**

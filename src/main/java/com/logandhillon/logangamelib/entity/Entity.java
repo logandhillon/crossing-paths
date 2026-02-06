@@ -12,9 +12,9 @@ import javafx.scene.canvas.GraphicsContext;
  * @see GameScene
  */
 public abstract class Entity implements GameObject {
-    protected GameScene parent;
-    protected float     x;
-    protected float     y;
+    protected GameScene<?> parent;
+    protected float        x;
+    protected float        y;
 
     /**
      * Creates an entity at the specified position.
@@ -73,7 +73,7 @@ public abstract class Entity implements GameObject {
      *
      * @see GameScene
      */
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         this.parent = parent;
     }
 

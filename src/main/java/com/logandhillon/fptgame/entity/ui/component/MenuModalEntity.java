@@ -53,7 +53,7 @@ public class MenuModalEntity extends ModalEntity {
     }
 
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
         // add back button AFTER moving the other entities
         if (this.back) {

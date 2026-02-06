@@ -20,11 +20,13 @@ import java.util.function.Predicate;
  * <p>
  * UI scenes are used with {@link Clickable} entities. Clickables can only be used in UI scenes.
  *
+ * @param <H> expected type of {@link LGLGameHandler} that this game scene shall work with.
+ *
  * @author Logan Dhillon
  * @see Clickable
  * @see MenuHandler
  */
-public abstract class UIScene extends GameScene {
+public abstract class UIScene<H extends LGLGameHandler> extends GameScene<H> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(UIScene.class);
 
     private final HashMap<Clickable, ClickableFlags> clickables       = new HashMap<>();

@@ -1,6 +1,5 @@
 package com.logandhillon.logangamelib.engine;
 
-import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.resource.Colors;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
@@ -31,7 +30,7 @@ public class GameEngine {
      *
      * @return a pointer to the {@link GameScene} that is now displayed
      */
-    public static GameScene setScene(GameHandler game, Stage stage, GameScene oldScene, GameScene newScene) {
+    public static GameScene setScene(LGLGameHandler game, Stage stage, GameScene oldScene, GameScene newScene) {
         LOG.info("Switching scene to {}", newScene);
 
         Scene currentScene = stage.getScene();

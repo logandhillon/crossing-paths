@@ -17,7 +17,7 @@ public class ModalEntity extends Entity {
     private final Entity[] entities;
     private final int cornerDiameter;
 
-    private GameScene parent;
+    private GameScene<?> parent;
 
     /**
      * Creates an entity at the specified position. All entities passed to this modal will be translated such that (0,
@@ -73,7 +73,7 @@ public class ModalEntity extends Entity {
      * @param parent the parent that this object is now attached to.
      */
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
         this.parent = parent;
 
