@@ -30,7 +30,7 @@ public class PathManager {
      *
      * @apiNote sys:LGL_BASE_PATH (system property) must be set!
      */
-    public PathManager(LGLGameHandler game) {
+    public PathManager(LGLGameHandler<?> game) {
         String rawPath = System.getProperty("LGL_BASE_PATH");
         if (rawPath == null || rawPath.isBlank()) {
             throw new IllegalStateException("LGL_BASE_PATH is not set!");
