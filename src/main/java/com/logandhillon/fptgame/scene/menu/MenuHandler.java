@@ -19,7 +19,7 @@ import org.apache.logging.log4j.core.LoggerContext;
  * @author Jack Ross
  * @see MenuContent
  */
-public class MenuHandler extends UIScene {
+public class MenuHandler extends UIScene<GameHandler> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(MenuHandler.class);
 
     private final ParallaxBackground background = Textures.ocean8();
@@ -78,6 +78,7 @@ public class MenuHandler extends UIScene {
 
         content.onShow();
     }
+
     /**
      * Renders the constants for all menus
      *
@@ -107,6 +108,4 @@ public class MenuHandler extends UIScene {
     public MenuContent getContent() {
         return content;
     }
-
-
 }

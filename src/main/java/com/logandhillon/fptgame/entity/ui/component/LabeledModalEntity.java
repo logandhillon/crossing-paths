@@ -68,7 +68,7 @@ public class LabeledModalEntity extends ModalEntity {
     }
 
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
         // add back button AFTER moving the other entities
         parent.addEntity(new BackButtonEntity(x + MARGIN, y + 20, menu));

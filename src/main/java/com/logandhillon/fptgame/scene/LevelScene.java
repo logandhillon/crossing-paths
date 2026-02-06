@@ -25,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Logan Dhillon
  */
-public abstract class LevelScene extends GameScene {
+public abstract class LevelScene extends GameScene<GameHandler> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(LevelScene.class);
 
     private final LevelProto.LevelData            level;

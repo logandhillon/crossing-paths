@@ -1,6 +1,5 @@
 package com.logandhillon.logangamelib.engine;
 
-import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.logangamelib.entity.physics.CollisionEntity;
 import javafx.animation.AnimationTimer;
@@ -27,12 +26,14 @@ import static com.logandhillon.fptgame.GameHandler.*;
 /**
  * A GameScene is the lowest-level of the engine; controlling the game's lifecycle, rendering, and creating a game loop.
  * It represents a "scene" of the game, that being a section of the game that is related (e.g. a game level, the main
- * menu, etc.) GameScenes are rendered with {@link GameScene#build(GameHandler)}, which prepares the engine code for
+ * menu, etc.) GameScenes are rendered with {@link GameScene#build(LGLGameHandler)}, which prepares the engine code for
  * JavaFX, allowing it to be executed and ran.
+ *
+ * @param <H> expected type of {@link LGLGameHandler} that this game scene shall work with.
  *
  * @author Logan Dhillon
  */
-public abstract class GameScene {
+public abstract class GameScene<H extends LGLGameHandler<H>> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(GameScene.class);
 
     private final List<Entity>          entities          = new ArrayList<>();
@@ -40,7 +41,7 @@ public abstract class GameScene {
     private final List<HandlerRef<?>>   handlers          = new ArrayList<>();
 
     private AnimationTimer lifecycle;
-    private GameHandler    game;
+    private H              game;
     private Scene          scene;
 
     public record HandlerRef<T extends Event>(EventType<T> type, EventHandler<? super T> handler) {}
@@ -48,7 +49,7 @@ public abstract class GameScene {
     /**
      * Do not instantiate this class.
      *
-     * @see GameScene#build(GameHandler)
+     * @see GameScene#build(LGLGameHandler)
      */
     protected GameScene() {}
 
@@ -80,7 +81,7 @@ public abstract class GameScene {
      *
      * @return Scene containing the GameScene's GUI elements
      */
-    public Scene build(GameHandler game) {
+    public Scene build(H game) {
         LOG.debug("Building game scene {} to stage", this);
 
         Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -165,7 +166,7 @@ public abstract class GameScene {
     /**
      * Updates the scaling of the canvas wrapper (parent) based on the dimensions of the window (scene)
      *
-     * @param scene  the {@link Scene} that contains the canvas from {@link GameScene#build(GameHandler)}
+     * @param scene  the {@link Scene} that contains the canvas from {@link GameScene#build(LGLGameHandler)}
      * @param parent the parent of the canvas (not the canvas itself) that has the content
      */
     private void updateScale(Scene scene, Group parent) {
@@ -376,7 +377,7 @@ public abstract class GameScene {
         handlers.clear();
     }
 
-    protected GameHandler getParent() {
+    protected H getParent() {
         return game;
     }
 }

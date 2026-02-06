@@ -140,7 +140,7 @@ public class InputBoxEntity extends Clickable {
     }
 
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
         parent.addHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         parent.addHandler(KeyEvent.KEY_TYPED, this::onKeyTyped);

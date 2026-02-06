@@ -99,7 +99,7 @@ public class MenuController extends Entity {
      * @param parent the parent that this object is now attached to.
      */
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
 
         // add all buttons to parent

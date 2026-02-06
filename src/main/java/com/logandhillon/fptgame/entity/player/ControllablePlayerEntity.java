@@ -34,7 +34,7 @@ public class ControllablePlayerEntity extends PlayerEntity {
     }
 
     @Override
-    public void onAttach(GameScene parent) {
+    public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
         LOG.info("Registering events");
         parent.addHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);

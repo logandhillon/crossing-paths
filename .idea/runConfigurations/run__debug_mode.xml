@@ -1,16 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="fptgame; clit" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="run; debug mode" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="LGL_DEV_MDOE" value="true" />
-          <entry key="LGL_SAVE_FILE" value="cp-client" />
+          <entry key="LGL_DEBUG_MODE" value="TRUE" />
         </map>
       </option>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="passParentEnvs" value="false" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
         <list />
