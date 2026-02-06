@@ -79,11 +79,11 @@ test {
 // derive base path for game
 def lglBasePath
 if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-    lglBasePath = '${user.home}/Library/Application Support/crossing-paths'
+    lglBasePath = '${user.home}/Library/Application Support/logangamelib/crossing-paths'
 } else if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
-    lglBasePath = '${env:APPDATA}/crossing-paths'
+    lglBasePath = '${env:APPDATA}/logangamelib/crossing-paths'
 } else {
-    lglBasePath = '${user.home}/.config/crossing-paths'
+    lglBasePath = '${user.home}/.config/logangamelib/crossing-paths'
 }
 
 jlink {
@@ -92,9 +92,7 @@ jlink {
 
     launcher {
         name = 'crossing-paths'
-        jvmArgs = [
-                "-DLGL_BASE_PATH=${lglBasePath}"
-        ]
+        jvmArgs = ["-DLGL_BASE_PATH=${lglBasePath}"]
     }
 
 
