@@ -26,7 +26,7 @@ public class ResourceLoader {
      */
     public static <T> T loadSafe(Class<? extends Resource<T>> resource, String pathname) {
         try (var res = resource.getDeclaredConstructor(String.class).newInstance(pathname)) {
-            LOG.info("Loaded {} from {}", resource.getSimpleName(), pathname);
+            LOG.debug("Loaded {} from {}", resource.getSimpleName(), pathname);
             return res.load();
         } catch (IOException e) {
             throw new ResourceLoaderException(e);

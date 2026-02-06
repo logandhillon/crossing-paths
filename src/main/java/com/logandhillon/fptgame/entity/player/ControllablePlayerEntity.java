@@ -36,7 +36,7 @@ public class ControllablePlayerEntity extends PlayerEntity {
     @Override
     public void onAttach(GameScene<?> parent) {
         super.onAttach(parent);
-        LOG.info("Registering events");
+        LOG.debug("Registering events");
         parent.addHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         parent.addHandler(KeyEvent.KEY_RELEASED, this::onKeyReleased);
     }
@@ -50,7 +50,7 @@ public class ControllablePlayerEntity extends PlayerEntity {
         if (e.getCode().name().equals(keyInteract) &&
             parent.getCollisionIf(x, y, w, h, this, LevelButtonEntity.class::isInstance) != null &&
             !buttonPressed) {
-            LOG.info("Button pressed");
+            LOG.debug("Button pressed");
             buttonPressed = true;
             if (listener != null) listener.onButtonPressed();
             // since the player can only be in a level, cast to LevelScene and trigger button press.

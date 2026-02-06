@@ -41,7 +41,7 @@ public class TextureAtlas {
      * @param path the name of the image (and atlas file) in the gfx folder.
      */
     private TextureAtlas(String path) {
-        LOG.info("Computing new texture atlas for '{}'", path);
+        LOG.debug("Computing new texture atlas for '{}'", path);
         try (var img = new ImageResource(path);
              var meta = new TextResource("gfx/" + path + ".atlas")
         ) {

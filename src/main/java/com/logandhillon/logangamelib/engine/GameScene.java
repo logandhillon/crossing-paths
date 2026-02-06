@@ -235,7 +235,7 @@ public abstract class GameScene<H extends LGLGameHandler<H>> {
                 if (discard) e.onDestroy();
             }
         }
-        LOG.info("Successfully removed all matching entities from this scene");
+        LOG.debug("Successfully removed all matching entities from this scene");
 
         for (Iterator<CollisionEntity> it = collisionEntities.iterator(); it.hasNext(); ) {
             var e = it.next();
@@ -244,7 +244,7 @@ public abstract class GameScene<H extends LGLGameHandler<H>> {
                 if (discard) e.onDestroy();
             }
         }
-        LOG.info("Successfully removed all matching collision entities from this scene");
+        LOG.debug("Successfully removed all matching collision entities from this scene");
     }
 
     /**

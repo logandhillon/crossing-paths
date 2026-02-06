@@ -104,7 +104,7 @@ public class LobbyGameContent implements MenuContent {
      * Clears players from list of players
      */
     public void clearPlayers() {
-        LOG.info("Clearing player list");
+        LOG.debug("Clearing player list");
         playerCount = 0;
         menu.clearEntities(true, PlayerIconEntity.class::isInstance);
         startButton.setFlags(false, true);
