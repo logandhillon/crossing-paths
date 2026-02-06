@@ -91,7 +91,7 @@ public abstract class SaveFileManager<M extends Message> {
      * @param partial the partial values, whatever is set here will be updated, otherwise it will remain the same.
      */
     public M update(M current, M partial) {
-        LOG.debug("Updating user config with {}", partial.toString());
+        LOG.debug("Updating {} save file with {}", prefix, partial.toString().trim());
         M merged = build(current.toBuilder().mergeFrom(partial));
         return save(merged);
     }

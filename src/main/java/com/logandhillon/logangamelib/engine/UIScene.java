@@ -83,7 +83,7 @@ public abstract class UIScene<H extends LGLGameHandler<H>> extends GameScene<H> 
                 if (discard) e.onDestroy();
             }
         }
-        LOG.info("Safely removed all matching Clickables from this UI scene");
+        LOG.debug("Safely removed all matching Clickables from this UI scene");
 
         cachedClickables = clickables.keySet().toArray(new Clickable[0]);
         LOG.debug("Reloaded clickable cache");
