@@ -4,7 +4,7 @@
       <option name="env">
         <map>
           <entry key="LGL_DEV_MDOE" value="true" />
-          <entry key="LGL_SAVE_FILE" value="logangamelib.client.dat" />
+          <entry key="LGL_SAVE_FILE" value="cp-client" />
         </map>
       </option>
       <option name="executionName" />

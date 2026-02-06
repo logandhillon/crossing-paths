@@ -13,7 +13,6 @@ import com.logandhillon.fptgame.scene.menu.MainMenuContent;
 import com.logandhillon.fptgame.scene.menu.MenuHandler;
 import com.logandhillon.logangamelib.engine.GameScene;
 import com.logandhillon.logangamelib.engine.LGLGameHandler;
-import com.logandhillon.logangamelib.engine.disk.UserConfigManager;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
