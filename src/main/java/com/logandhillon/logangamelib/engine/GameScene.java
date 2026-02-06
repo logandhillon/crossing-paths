@@ -33,7 +33,7 @@ import static com.logandhillon.fptgame.GameHandler.*;
  *
  * @author Logan Dhillon
  */
-public abstract class GameScene<H extends LGLGameHandler> {
+public abstract class GameScene<H extends LGLGameHandler<H>> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(GameScene.class);
 
     private final List<Entity>          entities          = new ArrayList<>();

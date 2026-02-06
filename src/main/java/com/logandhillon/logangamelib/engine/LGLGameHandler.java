@@ -1,10 +1,16 @@
 package com.logandhillon.logangamelib.engine;
 
 import com.logandhillon.fptgame.GameHandler;
+import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.logangamelib.engine.disk.PathManager;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -16,16 +22,18 @@ import java.util.Optional;
  * @author Logan Dhillon
  * @implNote this class shall be the entrypoint of your game, handling all primary logic.
  */
-public abstract class LGLGameHandler extends Application {
+public abstract class LGLGameHandler<H extends LGLGameHandler<H>> extends Application {
     private static final Logger LOG = LoggerContext.getContext().getLogger(LGLGameHandler.class);
 
-    private static LGLGameHandler instance;
+    private static final int FADE_TIME = 200;
+
+    private static LGLGameHandler<?> instance;
 
     private final PathManager pathMgr;
     private final String      gameId;
 
     protected Stage        stage;
-    protected GameScene<?> activeScene;
+    protected GameScene<H> activeScene;
 
     protected boolean debugMode;
 
@@ -73,7 +81,7 @@ public abstract class LGLGameHandler extends Application {
      * <p>
      * Use this method to initialize the {@link Stage} and set up your game.
      */
-    protected abstract GameScene<?> onStart(Stage stage);
+    protected abstract GameScene<H> onStart(Stage stage);
 
     /**
      * Runs when this game is shutdown or otherwise closed.
@@ -89,7 +97,7 @@ public abstract class LGLGameHandler extends Application {
         return gameId;
     }
 
-    public static LGLGameHandler getInstance() {
+    public static LGLGameHandler<?> getInstance() {
         return instance;
     }
 
@@ -121,8 +129,74 @@ public abstract class LGLGameHandler extends Application {
      *
      * @param scene the GameScene to switch
      */
-    public void setScene(GameScene<?> scene) {
-        activeScene = GameEngine.setScene(this, stage, activeScene, scene);
+    public void setScene(GameScene<H> scene) {
+        activeScene = transitionScene(stage, activeScene, scene);
+    }
+
+    /**
+     * Discards the old {@link GameScene}, builds the new {@link GameScene}, and displays the built scene to the
+     * {@link Stage}
+     *
+     * @param stage    the javafx application stage
+     * @param oldScene the previously active scene that will be discarded
+     * @param newScene the new scene that will be built and displayed
+     *
+     * @return a pointer to the {@link GameScene} that is now displayed
+     */
+    private GameScene<H> transitionScene(Stage stage, GameScene<H> oldScene, GameScene<H> newScene) {
+        LOG.info("Switching scene to {}", newScene);
+
+        Scene currentScene = stage.getScene();
+        Pane overlayPane = new Pane();
+        overlayPane.setPrefSize(stage.getWidth(), stage.getHeight());
+
+        Rectangle fadeRect = new Rectangle(stage.getWidth(), stage.getHeight(), Colors.GENERIC_BG);
+        fadeRect.setOpacity(0);
+        overlayPane.getChildren().add(fadeRect);
+
+        if (currentScene == null) {
+            // no previous scene, just immediately show the new one
+            stage.setScene(newScene.build(self()));
+            return newScene;
+        }
+
+        // add fade rect to current scene
+        ((Pane)currentScene.getRoot()).getChildren().add(overlayPane);
+
+        // fade the rect to black
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(FADE_TIME), fadeRect);
+        fadeOut.setFromValue(0);
+        fadeOut.setToValue(1);
+
+        fadeOut.setOnFinished(e -> {
+            if (oldScene != null) oldScene.discard(currentScene);
+
+            // Switch scene
+            Scene newFxScene = newScene.build(self());
+            stage.setScene(newFxScene);
+
+            // put the rect on the new scene too...
+            ((Pane)newFxScene.getRoot()).getChildren().add(fadeRect);
+
+            // ...and fade it in
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(FADE_TIME), fadeRect);
+            fadeIn.setFromValue(1);
+            fadeIn.setToValue(0);
+            fadeIn.setOnFinished(ev -> {
+                // finally , it can be removed!!!
+                ((Pane)newFxScene.getRoot()).getChildren().remove(fadeRect);
+            });
+            fadeIn.play();
+        });
+
+        fadeOut.play();
+
+        return newScene;
+    }
+
+    @SuppressWarnings("unchecked")
+    private H self() {
+        return (H)this;
     }
 
     static {

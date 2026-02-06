@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  * @see Clickable
  * @see MenuHandler
  */
-public abstract class UIScene<H extends LGLGameHandler> extends GameScene<H> {
+public abstract class UIScene<H extends LGLGameHandler<H>> extends GameScene<H> {
     private static final Logger LOG = LoggerContext.getContext().getLogger(UIScene.class);
 
     private final HashMap<Clickable, ClickableFlags> clickables       = new HashMap<>();

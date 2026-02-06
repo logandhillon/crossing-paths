@@ -1,6 +1,5 @@
 package com.logandhillon.logangamelib.entity;
 
-import com.logandhillon.logangamelib.engine.LGLGameHandler;
 import com.logandhillon.logangamelib.engine.UIScene;
 import javafx.scene.input.MouseEvent;
 

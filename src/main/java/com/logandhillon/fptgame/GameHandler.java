@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Optional;
 
-public class GameHandler extends LGLGameHandler {
+public class GameHandler extends LGLGameHandler<GameHandler> {
     private static final Logger LOG               = LoggerContext.getContext().getLogger(GameHandler.class);
     public static final  String GAME_NAME         = "CROSSING PATHS";
     public static final  int    CANVAS_WIDTH      = 1280; // the width of the rendered canvas
