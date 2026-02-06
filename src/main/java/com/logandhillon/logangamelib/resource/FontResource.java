@@ -1,6 +1,5 @@
 package com.logandhillon.logangamelib.resource;
 
-import com.logandhillon.fptgame.resource.Fonts;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
@@ -43,7 +42,7 @@ public class FontResource implements IResource<String> {
         for (String file: files) {
             String path = folder + file;
 
-            try (InputStream font = Fonts.class.getResourceAsStream(path)) {
+            try (InputStream font = FontResource.class.getResourceAsStream(path)) {
                 if (font == null) throw new FontNotFoundException(path); // font didn't load? throw error
                 if (family == null) family = Font.loadFont(font, 0).getFamily(); // no family yet? define it
             } catch (IOException e) {
