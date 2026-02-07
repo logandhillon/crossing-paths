@@ -1,7 +1,7 @@
 package com.logandhillon.logangamelib.engine;
 
 import com.logandhillon.fptgame.GameHandler;
-import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.logangamelib.resource.base.Colors;
 import com.logandhillon.logangamelib.engine.disk.PathManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;

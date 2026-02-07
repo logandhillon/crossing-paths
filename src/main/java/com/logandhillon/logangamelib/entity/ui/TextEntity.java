@@ -1,6 +1,6 @@
 package com.logandhillon.logangamelib.entity.ui;
 
-import com.logandhillon.fptgame.resource.Colors;
+import com.logandhillon.logangamelib.resource.base.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.logangamelib.entity.Entity;
 import javafx.geometry.VPos;

@@ -1,6 +1,7 @@
 package com.logandhillon.fptgame.scene.menu;
 
 import com.logandhillon.fptgame.GameHandler;
+import com.logandhillon.fptgame.entity.ui.InputBox;
 import com.logandhillon.fptgame.entity.ui.ServerEntryEntity;
 import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
@@ -8,7 +9,6 @@ import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
 import com.logandhillon.logangamelib.entity.Entity;
 import com.logandhillon.logangamelib.entity.Renderable;
-import com.logandhillon.logangamelib.entity.ui.InputBoxEntity;
 import com.logandhillon.logangamelib.entity.ui.TextEntity;
 import javafx.geometry.VPos;
 import javafx.scene.input.KeyCode;
@@ -52,7 +52,8 @@ public class JoinGameContent implements MenuContent {
      */
     public JoinGameContent(MenuHandler menu, JoinGameHandler onJoin) {
         // rect in background for server list
-        Renderable serverListRect = new Renderable(32, 326, (g, x, y) -> {
+        Renderable serverListRect = new Renderable(
+                32, 326, (g, x, y) -> {
             g.setFill(Colors.BUTTON_NORMAL);
             g.fillRoundRect(x, y, 459, 228, CORNER_DIAMETER, CORNER_DIAMETER);
         });
@@ -67,17 +68,20 @@ public class JoinGameContent implements MenuContent {
                 .build();
 
         // join server input field
-        InputBoxEntity joinServer = new InputBoxEntity(32, 193, 328, "ex. 192.168.0.1",
-                                                       "JOIN A SERVER DIRECTLY", 39);
+        InputBox joinServer = new InputBox(
+                32, 193, 328, "ex. 192.168.0.1",
+                "JOIN A SERVER DIRECTLY", 39);
 
         // join button (direct)
-        MenuButton joinDirectButton = new MenuButton("JOIN", 368, 193, 139, 48, () -> {
+        MenuButton joinDirectButton = new MenuButton(
+                "JOIN", 368, 193, 139, 48, () -> {
             LOG.info("Attempting to join {} via manual input", joinServer.getInput());
             onJoin.handleJoin(joinServer.getInput());
         });
 
         // join button (discovery)
-        MenuButton joinDiscoverButton = new MenuButton("JOIN", 32, 640, 459, 48, () -> {
+        MenuButton joinDiscoverButton = new MenuButton(
+                "JOIN", 32, 640, 459, 48, () -> {
             if (selectedServerAddr == null) {
                 LOG.warn("Tried to join discovered server, but no server was selected. Ignoring");
                 return;

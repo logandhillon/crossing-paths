@@ -3,7 +3,7 @@ package com.logandhillon.fptgame.scene.menu;
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.entity.ui.component.MenuButton;
 import com.logandhillon.fptgame.entity.ui.component.MenuModalEntity;
-import com.logandhillon.fptgame.entity.ui.component.SliderEntity;
+import com.logandhillon.logangamelib.entity.ui.SliderEntity;
 import com.logandhillon.fptgame.networking.proto.ConfigProto;
 import com.logandhillon.fptgame.resource.Colors;
 import com.logandhillon.fptgame.resource.Fonts;
