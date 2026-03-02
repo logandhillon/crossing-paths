@@ -2,6 +2,7 @@ package com.logandhillon.fptgame.scene;
 
 import com.logandhillon.fptgame.GameHandler;
 import com.logandhillon.fptgame.entity.game.MovingPlatformEntity;
+import com.logandhillon.fptgame.entity.game.MovingPortalEntity;
 import com.logandhillon.fptgame.entity.game.PlatformEntity;
 import com.logandhillon.fptgame.level.LevelFactory;
 import com.logandhillon.fptgame.level.LevelObject;
@@ -30,6 +31,7 @@ public abstract class LevelScene extends GameScene<GameHandler> {
 
     private final LevelProto.LevelData            level;
     private final ArrayList<MovingPlatformEntity> movingPlatforms = new ArrayList<>();
+    private final ArrayList<MovingPortalEntity>   movingPortals   = new ArrayList<>();
     private final ArrayList<PlatformEntity>       platforms       = new ArrayList<>();
 
     /**
@@ -99,7 +101,8 @@ public abstract class LevelScene extends GameScene<GameHandler> {
      * what happens when a {@link com.logandhillon.fptgame.entity.game.LevelButtonEntity} is pressed.
      */
     public void onButtonPressed() {
-        for (MovingPlatformEntity e: movingPlatforms) e.invertGoingTowardsDest();
+        for (MovingPlatformEntity e : movingPlatforms) e.invertGoingTowardsDest();
+        for (MovingPortalEntity e : movingPortals) e.invertGoingTowardsDest();
         for (PlatformEntity e: platforms) e.invertColor();
     }
 }

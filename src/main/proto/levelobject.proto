@@ -42,6 +42,16 @@ message Portal {
   bool is_red = 1;
 }
 
+message MovingPortal {
+  bool is_red = 1;
+
+    float dest_x = 2;
+    float dest_y = 3;
+    float speed = 4; // speed of platform in m/s
+
+    bool going_towards_dest = 5;
+}
+
 message LevelButton {
 }
 
@@ -54,6 +64,7 @@ message LevelObject {
     Portal portal = 4;
     MovingPlatform moving_platform = 5;
     LevelButton level_button = 6;
+    MovingPortal moving_portal = 7;
   }
 }
 

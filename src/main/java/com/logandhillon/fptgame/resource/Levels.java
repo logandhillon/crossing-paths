@@ -1,9 +1,6 @@
 package com.logandhillon.fptgame.resource;
 
-import com.logandhillon.fptgame.entity.game.LevelButtonEntity;
-import com.logandhillon.fptgame.entity.game.MovingPlatformEntity;
-import com.logandhillon.fptgame.entity.game.PlatformEntity;
-import com.logandhillon.fptgame.entity.game.PortalEntity;
+import com.logandhillon.fptgame.entity.game.*;
 import com.logandhillon.fptgame.networking.proto.LevelProto;
 
 /**
@@ -28,7 +25,7 @@ public class Levels {
                 .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 0, 720 - 40, 1280, 40).serialize())
                 .addObjects(new PlatformEntity(Textures.UNDERGROUND_BRICKS, 400, 560, 320, 40).serialize())
                 .addObjects(new PlatformEntity(Textures.UNDERGROUND_PIPE, 300, 200, 40, 320).serialize())
-                .addObjects(new PortalEntity(900, 500, true).serialize())
+                .addObjects(new MovingPortalEntity(900, 500, 900, 200, 0.4f,false, true).serialize())
 
                 .build();
 
